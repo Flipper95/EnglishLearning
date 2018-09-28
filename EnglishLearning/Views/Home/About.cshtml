@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+@model IList<string>
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>Use this area to provide additional information.</p>
+@foreach (var el in Model){
+    <p>@el</p>
+    <hr/>
+}

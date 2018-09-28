@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IQueryable<EnglishLearning.Models.Group>
+
+<h2>Index</h2>
+
+<h2>Index</h2>
+<ul>
+    @foreach (var el in Model)
+    {
+        <li style="width: 31%;float: left;padding: 15px;margin: 10px;background: #fff;border-radius: 5px;">
+            <a href="@Url.Action("Index", "Home")">
+                <strong>@el.Name</strong>
+                <br>
+                Слів: <i>@el.WordsCount</i>
+                <br />
+                Складність: <i>@el.Difficult</i>
+                <br>
+                @{
+                    var base64 = Convert.ToBase64String(el.Image);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                }
+                <img src="data:image;base64,@System.Convert.ToBase64String(el.Image)" style="width:70%"/>
+            </a>
+        </li>
+    }
+</ul>

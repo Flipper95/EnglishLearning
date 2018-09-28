@@ -1,0 +1,805 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище EnglishLearningModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="AnswerText" Type="ntext" Nullable="false" />
+          <Property Name="Rightness" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Difficult" Type="nvarchar" MaxLength="20" />
+          <Property Name="WordsCount" Type="int" />
+          <Property Name="OwnerId" Type="int" Nullable="false" />
+          <Property Name="Image" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="LearningWord">
+          <Key>
+            <PropertyRef Name="LearningWordId" />
+          </Key>
+          <Property Name="LearningWordId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WordId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="LearnedDate" Type="datetime" />
+          <Property Name="AddedDate" Type="datetime" />
+          <Property Name="LearnPercent" Type="float" Nullable="false" />
+          <Property Name="ExcerciseDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Lection">
+          <Key>
+            <PropertyRef Name="LectionId" />
+          </Key>
+          <Property Name="LectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="OwnerId" Type="int" Nullable="false" />
+          <Property Name="LectionType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="LectionText" Type="varbinary(max)" />
+          <Property Name="Editable" Type="bit" />
+          <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TestId" Type="int" Nullable="false" />
+          <Property Name="QuestText" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Synonym">
+          <Key>
+            <PropertyRef Name="SynonymId" />
+          </Key>
+          <Property Name="SynonymId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstWordId" Type="int" Nullable="false" />
+          <Property Name="Synonyms" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="TestId" />
+          </Key>
+          <Property Name="TestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="OwnerId" Type="int" Nullable="false" />
+          <Property Name="Difficult" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TaskCount" Type="int" Nullable="false" />
+          <Property Name="TestType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Editable" Type="bit" />
+          <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TestHistory">
+          <Key>
+            <PropertyRef Name="TestHistoryId" />
+          </Key>
+          <Property Name="TestHistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TestId" Type="int" Nullable="false" />
+          <Property Name="PassDate" Type="datetime" Nullable="false" />
+          <Property Name="SuccessPercent" Type="float" Nullable="false" />
+          <Property Name="Questions" Type="ntext" Nullable="false" />
+          <Property Name="Answers" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tested" Type="bit" Nullable="false" />
+          <Property Name="Level" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ObjectiveLevel" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="IdentityId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Word">
+          <Key>
+            <PropertyRef Name="WordId" />
+          </Key>
+          <Property Name="WordId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Word" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Translate" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="PartOfSpeech" Type="nvarchar" MaxLength="100" />
+          <Property Name="Voice" Type="varbinary(max)" />
+          <Property Name="Transcription" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Group_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LearningWord_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LearningWord" Type="Self.LearningWord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="LearningWord">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LearningWord_Word">
+          <End Role="Word" Type="Self.Word" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LearningWord" Type="Self.LearningWord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Word">
+              <PropertyRef Name="WordId" />
+            </Principal>
+            <Dependent Role="LearningWord">
+              <PropertyRef Name="WordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Lection_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Lection" Type="Self.Lection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Lection">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Question_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Synonym_Word">
+          <End Role="Word" Type="Self.Word" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Synonym" Type="Self.Synonym" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Word">
+              <PropertyRef Name="WordId" />
+            </Principal>
+            <Dependent Role="Synonym">
+              <PropertyRef Name="FirstWordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Test_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TestHistory_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="TestHistory" Type="Self.TestHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="TestHistory">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TestHistory_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TestHistory" Type="Self.TestHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TestHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Word_Group">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Word" Type="Self.Word" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Word">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище EnglishLearningModelContainer">
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LearningWord" EntityType="Self.LearningWord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lection" EntityType="Self.Lection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Synonym" EntityType="Self.Synonym" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestHistory" EntityType="Self.TestHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Word" EntityType="Self.Word" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Answer_Question" Association="Self.Answer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="Group_User" Association="Self.Group_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+          <AssociationSet Name="LearningWord_User" Association="Self.LearningWord_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="LearningWord" EntitySet="LearningWord" />
+          </AssociationSet>
+          <AssociationSet Name="LearningWord_Word" Association="Self.LearningWord_Word">
+            <End Role="Word" EntitySet="Word" />
+            <End Role="LearningWord" EntitySet="LearningWord" />
+          </AssociationSet>
+          <AssociationSet Name="Lection_User" Association="Self.Lection_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Lection" EntitySet="Lection" />
+          </AssociationSet>
+          <AssociationSet Name="Question_Test" Association="Self.Question_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="Synonym_Word" Association="Self.Synonym_Word">
+            <End Role="Word" EntitySet="Word" />
+            <End Role="Synonym" EntitySet="Synonym" />
+          </AssociationSet>
+          <AssociationSet Name="Test_User" Association="Self.Test_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
+          <AssociationSet Name="TestHistory_Test" Association="Self.TestHistory_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestHistory" EntitySet="TestHistory" />
+          </AssociationSet>
+          <AssociationSet Name="TestHistory_User" Association="Self.TestHistory_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TestHistory" EntitySet="TestHistory" />
+          </AssociationSet>
+          <AssociationSet Name="Word_Group" Association="Self.Word_Group">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Word" EntitySet="Word" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EnglishLearningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="AnswerText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rightness" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.Answer_Question" FromRole="Answer" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Difficult" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WordsCount" Type="Int32" />
+          <Property Name="OwnerId" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="User" Relationship="Self.Group_User" FromRole="Group" ToRole="User" />
+          <NavigationProperty Name="Word" Relationship="Self.Word_Group" FromRole="Group" ToRole="Word" />
+        </EntityType>
+        <EntityType Name="LearningWord">
+          <Key>
+            <PropertyRef Name="LearningWordId" />
+          </Key>
+          <Property Name="LearningWordId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WordId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="LearnedDate" Type="DateTime" Precision="3" />
+          <Property Name="AddedDate" Type="DateTime" Precision="3" />
+          <Property Name="LearnPercent" Type="Double" Nullable="false" />
+          <Property Name="ExcerciseDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.LearningWord_User" FromRole="LearningWord" ToRole="User" />
+          <NavigationProperty Name="Word" Relationship="Self.LearningWord_Word" FromRole="LearningWord" ToRole="Word" />
+        </EntityType>
+        <EntityType Name="Lection">
+          <Key>
+            <PropertyRef Name="LectionId" />
+          </Key>
+          <Property Name="LectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OwnerId" Type="Int32" Nullable="false" />
+          <Property Name="LectionType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LectionText" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Editable" Type="Boolean" />
+          <Property Name="ExportOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.Lection_User" FromRole="Lection" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TestId" Type="Int32" Nullable="false" />
+          <Property Name="QuestText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.Answer_Question" FromRole="Question" ToRole="Answer" />
+          <NavigationProperty Name="Test" Relationship="Self.Question_Test" FromRole="Question" ToRole="Test" />
+        </EntityType>
+        <EntityType Name="Synonym">
+          <Key>
+            <PropertyRef Name="SynonymId" />
+          </Key>
+          <Property Name="SynonymId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstWordId" Type="Int32" Nullable="false" />
+          <Property Name="Synonyms" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Word" Relationship="Self.Synonym_Word" FromRole="Synonym" ToRole="Word" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="TestId" />
+          </Key>
+          <Property Name="TestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OwnerId" Type="Int32" Nullable="false" />
+          <Property Name="Difficult" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TaskCount" Type="Int32" Nullable="false" />
+          <Property Name="TestType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Editable" Type="Boolean" />
+          <Property Name="ExportOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Question" Relationship="Self.Question_Test" FromRole="Test" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Self.Test_User" FromRole="Test" ToRole="User" />
+          <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_Test" FromRole="Test" ToRole="TestHistory" />
+        </EntityType>
+        <EntityType Name="TestHistory">
+          <Key>
+            <PropertyRef Name="TestHistoryId" />
+          </Key>
+          <Property Name="TestHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TestId" Type="Int32" Nullable="false" />
+          <Property Name="PassDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SuccessPercent" Type="Double" Nullable="false" />
+          <Property Name="Questions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Answers" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Test" Relationship="Self.TestHistory_Test" FromRole="TestHistory" ToRole="Test" />
+          <NavigationProperty Name="User" Relationship="Self.TestHistory_User" FromRole="TestHistory" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tested" Type="Boolean" Nullable="false" />
+          <Property Name="Level" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ObjectiveLevel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="Self.Group_User" FromRole="User" ToRole="Group" />
+          <NavigationProperty Name="LearningWord" Relationship="Self.LearningWord_User" FromRole="User" ToRole="LearningWord" />
+          <NavigationProperty Name="Lection" Relationship="Self.Lection_User" FromRole="User" ToRole="Lection" />
+          <NavigationProperty Name="Test" Relationship="Self.Test_User" FromRole="User" ToRole="Test" />
+          <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_User" FromRole="User" ToRole="TestHistory" />
+          <Property Name="IdentityId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Word">
+          <Key>
+            <PropertyRef Name="WordId" />
+          </Key>
+          <Property Name="WordId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Word1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Translate" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="PartOfSpeech" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Voice" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Transcription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Group" Relationship="Self.Word_Group" FromRole="Word" ToRole="Group" />
+          <NavigationProperty Name="LearningWord" Relationship="Self.LearningWord_Word" FromRole="Word" ToRole="LearningWord" />
+          <NavigationProperty Name="Synonym" Relationship="Self.Synonym_Word" FromRole="Word" ToRole="Synonym" />
+        </EntityType>
+        <Association Name="Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Group_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Word_Group">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Word" Type="Self.Word" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Word">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LearningWord_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LearningWord" Type="Self.LearningWord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="LearningWord">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LearningWord_Word">
+          <End Role="Word" Type="Self.Word" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LearningWord" Type="Self.LearningWord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Word">
+              <PropertyRef Name="WordId" />
+            </Principal>
+            <Dependent Role="LearningWord">
+              <PropertyRef Name="WordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Lection_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Lection" Type="Self.Lection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Lection">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Question_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Synonym_Word">
+          <End Role="Word" Type="Self.Word" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Synonym" Type="Self.Synonym" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Word">
+              <PropertyRef Name="WordId" />
+            </Principal>
+            <Dependent Role="Synonym">
+              <PropertyRef Name="FirstWordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Test_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TestHistory_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="TestHistory" Type="Self.TestHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="TestHistory">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TestHistory_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TestHistory" Type="Self.TestHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TestHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EnglishLearningEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Answer" EntityType="Self.Answer" />
+          <EntitySet Name="Group" EntityType="Self.Group" />
+          <EntitySet Name="LearningWord" EntityType="Self.LearningWord" />
+          <EntitySet Name="Lection" EntityType="Self.Lection" />
+          <EntitySet Name="Question" EntityType="Self.Question" />
+          <EntitySet Name="Synonym" EntityType="Self.Synonym" />
+          <EntitySet Name="Test" EntityType="Self.Test" />
+          <EntitySet Name="TestHistory" EntityType="Self.TestHistory" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="Word" EntityType="Self.Word" />
+          <AssociationSet Name="Answer_Question" Association="Self.Answer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="Group_User" Association="Self.Group_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+          <AssociationSet Name="Word_Group" Association="Self.Word_Group">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Word" EntitySet="Word" />
+          </AssociationSet>
+          <AssociationSet Name="LearningWord_User" Association="Self.LearningWord_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="LearningWord" EntitySet="LearningWord" />
+          </AssociationSet>
+          <AssociationSet Name="LearningWord_Word" Association="Self.LearningWord_Word">
+            <End Role="Word" EntitySet="Word" />
+            <End Role="LearningWord" EntitySet="LearningWord" />
+          </AssociationSet>
+          <AssociationSet Name="Lection_User" Association="Self.Lection_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Lection" EntitySet="Lection" />
+          </AssociationSet>
+          <AssociationSet Name="Question_Test" Association="Self.Question_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="Synonym_Word" Association="Self.Synonym_Word">
+            <End Role="Word" EntitySet="Word" />
+            <End Role="Synonym" EntitySet="Synonym" />
+          </AssociationSet>
+          <AssociationSet Name="Test_User" Association="Self.Test_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
+          <AssociationSet Name="TestHistory_Test" Association="Self.TestHistory_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestHistory" EntitySet="TestHistory" />
+          </AssociationSet>
+          <AssociationSet Name="TestHistory_User" Association="Self.TestHistory_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TestHistory" EntitySet="TestHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище EnglishLearningModelContainer" CdmEntityContainer="EnglishLearningEntities">
+          <EntitySetMapping Name="Answer">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
+                <ScalarProperty Name="Rightness" ColumnName="Rightness" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Group">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Difficult" ColumnName="Difficult" />
+                <ScalarProperty Name="WordsCount" ColumnName="WordsCount" />
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LearningWord">
+            <EntityTypeMapping TypeName="EnglishLearningModel.LearningWord">
+              <MappingFragment StoreEntitySet="LearningWord">
+                <ScalarProperty Name="LearningWordId" ColumnName="LearningWordId" />
+                <ScalarProperty Name="WordId" ColumnName="WordId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LearnedDate" ColumnName="LearnedDate" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="LearnPercent" ColumnName="LearnPercent" />
+                <ScalarProperty Name="ExcerciseDate" ColumnName="ExcerciseDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lection">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Lection">
+              <MappingFragment StoreEntitySet="Lection">
+                <ScalarProperty Name="LectionId" ColumnName="LectionId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+                <ScalarProperty Name="LectionType" ColumnName="LectionType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LectionText" ColumnName="LectionText" />
+                <ScalarProperty Name="Editable" ColumnName="Editable" />
+                <ScalarProperty Name="ExportOwner" ColumnName="ExportOwner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Question">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="QuestText" ColumnName="QuestText" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Synonym">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Synonym">
+              <MappingFragment StoreEntitySet="Synonym">
+                <ScalarProperty Name="SynonymId" ColumnName="SynonymId" />
+                <ScalarProperty Name="FirstWordId" ColumnName="FirstWordId" />
+                <ScalarProperty Name="Synonyms" ColumnName="Synonyms" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Test">
+              <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+                <ScalarProperty Name="Difficult" ColumnName="Difficult" />
+                <ScalarProperty Name="TaskCount" ColumnName="TaskCount" />
+                <ScalarProperty Name="TestType" ColumnName="TestType" />
+                <ScalarProperty Name="Editable" ColumnName="Editable" />
+                <ScalarProperty Name="ExportOwner" ColumnName="ExportOwner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestHistory">
+            <EntityTypeMapping TypeName="EnglishLearningModel.TestHistory">
+              <MappingFragment StoreEntitySet="TestHistory">
+                <ScalarProperty Name="TestHistoryId" ColumnName="TestHistoryId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="PassDate" ColumnName="PassDate" />
+                <ScalarProperty Name="SuccessPercent" ColumnName="SuccessPercent" />
+                <ScalarProperty Name="Questions" ColumnName="Questions" />
+                <ScalarProperty Name="Answers" ColumnName="Answers" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="EnglishLearningModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IdentityId" ColumnName="IdentityId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Tested" ColumnName="Tested" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="ObjectiveLevel" ColumnName="ObjectiveLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Word">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Word">
+              <MappingFragment StoreEntitySet="Word">
+                <ScalarProperty Name="WordId" ColumnName="WordId" />
+                <ScalarProperty Name="Word1" ColumnName="Word" />
+                <ScalarProperty Name="Translate" ColumnName="Translate" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="PartOfSpeech" ColumnName="PartOfSpeech" />
+                <ScalarProperty Name="Voice" ColumnName="Voice" />
+                <ScalarProperty Name="Transcription" ColumnName="Transcription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
