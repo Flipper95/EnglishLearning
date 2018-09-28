@@ -27,54 +27,54 @@ namespace EnglishLearning.Models
 
     public class SetPasswordViewModel
     {
-        [Required]
-        [StringLength(100, ErrorMessage = "Значение {0} должно содержать символов не менее: {2}.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Поле {0} не може бути пустим")]
+        [StringLength(100, ErrorMessage = "Значення {0} повинно містити символів не менше: {2}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Новый пароль")]
+        [Display(Name = "Новий пароль")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение нового пароля")]
-        [Compare("NewPassword", ErrorMessage = "Новый пароль и его подтверждение не совпадают.")]
+        [Display(Name = "Підтвердження нового паролю")]
+        [Compare("NewPassword", ErrorMessage = "Новий пароль і його підтвердження не співпадають.")]
         public string ConfirmPassword { get; set; }
     }
 
     public class ChangePasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Поле {0} не може бути пустим")]
         [DataType(DataType.Password)]
-        [Display(Name = "Текущий пароль")]
+        [Display(Name = "Поточний пароль")]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "Значение {0} должно содержать символов не менее: {2}.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Поле {0} не може бути пустим")]
+        [StringLength(100, ErrorMessage = "Значення {0} повинно містити символів не менше: {2}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Новый пароль")]
+        [Display(Name = "Новий пароль")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение нового пароля")]
-        [Compare("NewPassword", ErrorMessage = "Новый пароль и его подтверждение не совпадают.")]
+        [Display(Name = "Підтвердження нового паролю")]
+        [Compare("NewPassword", ErrorMessage = "Новий пароль і його підтврдження не співпадають.")]
         public string ConfirmPassword { get; set; }
     }
 
     public class AddPhoneNumberViewModel
     {
-        [Required]
-        [Phone]
-        [Display(Name = "Номер телефона")]
+        [Required(ErrorMessage = "Поле {0} не може бути пустим")]
+        [Phone(ErrorMessage = "Поле {0} не містить допустимий номер.")]
+        [Display(Name = "Номер телефону")]
         public string Number { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Поле {0} не може бути пустим")]
         [Display(Name = "Код")]
         public string Code { get; set; }
 
-        [Required]
-        [Phone]
-        [Display(Name = "Номер телефона")]
+        [Required(ErrorMessage = "Поле {0} не може бути пустим")]
+        [Phone(ErrorMessage = "Поле {0} не містить допустимий номер.")]
+        [Display(Name = "Номер телефону")]
         public string PhoneNumber { get; set; }
     }
 

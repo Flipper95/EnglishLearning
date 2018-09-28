@@ -88,7 +88,7 @@ namespace EnglishLearning.Controllers
                                 return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                             case SignInStatus.Failure:
                             default:
-                                ModelState.AddModelError("", "Неудачная попытка входа.");
+                                ModelState.AddModelError("", "Невдала спроба входу.");
                                 return View(model);
                         }
                     }
@@ -142,7 +142,7 @@ namespace EnglishLearning.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Неправильный код.");
+                    ModelState.AddModelError("", "Неправильний код.");
                     return View(model);
             }
         }

@@ -27,7 +27,7 @@ namespace EnglishLearning.Controllers
         [Authorize]
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Опис сторінки.";
             IList<string> roles = new List<string>();
             ApplicationUserManager userManager = HttpContext.GetOwinContext()
                                             .GetUserManager<ApplicationUserManager>();
@@ -39,7 +39,7 @@ namespace EnglishLearning.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Контакти.";
 
             return View();
         }

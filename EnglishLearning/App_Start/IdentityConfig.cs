@@ -80,14 +80,14 @@ namespace EnglishLearning
 
             // Регистрация поставщиков двухфакторной проверки подлинности. Для получения кода проверки пользователя в данном приложении используется телефон и сообщения электронной почты
             // Здесь можно указать собственный поставщик и подключить его.
-            manager.RegisterTwoFactorProvider("Код, полученный по телефону", new PhoneNumberTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Код, отриманий на телефон", new PhoneNumberTokenProvider<ApplicationUser>
             {
-                MessageFormat = "Ваш код безопасности: {0}"
+                MessageFormat = "Ваш код безпеки: {0}"
             });
-            manager.RegisterTwoFactorProvider("Код из сообщения", new EmailTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Код з повідомлення", new EmailTokenProvider<ApplicationUser>
             {
-                Subject = "Код безопасности",
-                BodyFormat = "Ваш код безопасности: {0}"
+                Subject = "Код безпеки",
+                BodyFormat = "Ваш код безпеки: {0}"
             });
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();

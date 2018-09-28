@@ -1,13 +1,13 @@
 ﻿@model EnglishLearning.Models.IndexViewModel
 @{
-    ViewBag.Title = "Управление";
+    ViewBag.Title = "Керування";
 }
 
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-    <h4>Изменение параметров учетной записи</h4>
+    <h4>Зміна параметрів облікового запису</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>Пароль:</dt>
@@ -15,18 +15,18 @@
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Смена пароля", "ChangePassword")
+                @Html.ActionLink("Зміна паролю", "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("Создать", "SetPassword")
+                @Html.ActionLink("Створити", "SetPassword")
             }
             ]
         </dd>
         <dt>Внешние имена входа:</dt>
         <dd>
             @Model.Logins.Count [
-            @Html.ActionLink("Управление", "ManageLogins") ]
+            @Html.ActionLink("Керування", "ManageLogins") ]
         </dd>
         @*
             Номера телефонов можно использовать в качестве второго проверочного фактора для системы двухфакторной проверки подлинности.

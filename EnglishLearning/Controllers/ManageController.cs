@@ -55,12 +55,12 @@ namespace EnglishLearning.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Ваш пароль изменен."
-                : message == ManageMessageId.SetPasswordSuccess ? "Пароль задан."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Настроен поставщик двухфакторной проверки подлинности."
-                : message == ManageMessageId.Error ? "Произошла ошибка."
-                : message == ManageMessageId.AddPhoneSuccess ? "Ваш номер телефона добавлен."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Ваш номер телефона удален."
+                message == ManageMessageId.ChangePasswordSuccess ? "Ваш пароль змінено."
+                : message == ManageMessageId.SetPasswordSuccess ? "Пароль задано."
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Налаштовано постачальник двухфакторної перевірки достовірності."
+                : message == ManageMessageId.Error ? "Виникла помилка."
+                : message == ManageMessageId.AddPhoneSuccess ? "Ваш номер телефону додано."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Ваш номер телефона видалено."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -123,7 +123,7 @@ namespace EnglishLearning.Controllers
                 var message = new IdentityMessage
                 {
                     Destination = model.Number,
-                    Body = "Ваш код безопасности: " + code
+                    Body = "Ваш код безпеки: " + code
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
@@ -190,7 +190,7 @@ namespace EnglishLearning.Controllers
                 return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
             }
             // Это сообщение означает наличие ошибки; повторное отображение формы
-            ModelState.AddModelError("", "Не удалось проверить телефон");
+            ModelState.AddModelError("", "Не вдалося перевірити телефон");
             return View(model);
         }
 
@@ -281,8 +281,8 @@ namespace EnglishLearning.Controllers
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "Внешнее имя входа удалено."
-                : message == ManageMessageId.Error ? "Произошла ошибка."
+                message == ManageMessageId.RemoveLoginSuccess ? "Зовнішнє ім'я входу видалено."
+                : message == ManageMessageId.Error ? "Виникла помилка."
                 : "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
