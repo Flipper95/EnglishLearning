@@ -1,0 +1,86 @@
+﻿@model IQueryable<EnglishLearning.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(source: Model, rowsPerPage: 10);
+}
+
+<h2>Перегляд користувачів</h2>
+
+@using (Html.BeginForm("Index", "Users", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+{
+
+    <div class="form-group mb-2">
+        <label type="text" readonly class="form-control-plaintext" value="Пошук користувача за емейлом:" />
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <input class="form-control" id="SearchEmail" name="SearchEmail" placeholder="example@dot.net">
+    </div>
+    <button type="submit" class="btn btn-info mb-2">Шукати</button>
+}
+
+@grid.GetHtml(tableStyle: "table table-dark table-hover", caption: "Користувачі", mode: WebGridPagerModes.All,
+    previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText:"Остання",
+    numericLinksCount: 5,
+    columns: grid.Columns(
+        grid.Column(columnName: "Email", header: "Логін користувача"),
+        grid.Column(columnName: "EmailConfirmed", header: "Email підтверджено", format: @<input type="checkbox" disabled checked="@item.EmailConfirmed">),
+        grid.Column(columnName: "Roles", header: "Ролі", format:@<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Ролі<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        @foreach (var el in item.Roles)
+        {
+             <li><a class="dropdown-item" href="#">@(((ViewBag.Roles) as List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>).Find(x => x.Id == @el.RoleId).Name)</a></li>
+        }
+    </ul>
+    </div>)))
+
+@using (Html.BeginForm("UserRole", "Users", new { area = "Admin" }, FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+{
+    <h5>Модифікація ролей користувача:</h5>
+    <div class="form-group mb-2">
+        <label type="text" readonly class="form-control-plaintext" value="Введіть емейл користувача:" />
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <input class="form-control" id="RoleEmail" name="RoleEmail" placeholder="example@dot.net"
+               @if (@ViewBag.UserModified != null) { @: value=@ViewBag.UserModified
+               }>
+    </div>
+    @Html.DropDownList("UserRoleEdit", new SelectList(((ViewBag.Roles) as List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>), "Name", "Name"), new { @class = "btn btn-outline-secondary" }); //"Id", "Name"
+    <button type="submit" name="submit" class="btn btn-success mb-2" value="add">Додати роль</button>
+    <button type="submit" name="submit" class="btn btn-danger mb-2" value="delete">Видалити роль</button>
+}
+
+@if (ViewBag.UserRoleModified == true)
+{
+    <div class="alert alert-warning alert-dismissible show" role="alert">
+        <strong>Ролі користувача @ViewBag.UserModified було модифіковано</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@*@using (Html.BeginForm("RoleEdit", "Users", new { area = "Admin" }, FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+{
+    <input class="form-control" id="Role" name="Role" placeholder="admin">
+    <button type="submit" name="submit" class="btn btn-info mb-2" value="add">Додати роль</button>
+    <button type="submit" name="submit" class="btn btn-info mb-2" value="delete">Видалити роль</button>
+    if (ViewBag.RoleModified == true)
+    {
+        <div class="alert alert-warning alert-dismissible show" role="alert">
+            <strong>Таблицю ролей було модифіковано</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/bootstrapAdditional")
+}
