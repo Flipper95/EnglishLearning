@@ -18,5 +18,9 @@ namespace EnglishLearning.Controllers
                         select g;
             return View(query);
         }
+
+        public ActionResult Words(int id) {
+            return View();
+        }
     }
 }

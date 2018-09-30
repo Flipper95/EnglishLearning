@@ -20,7 +20,7 @@
     <button type="submit" class="btn btn-info mb-2">Шукати</button>
 }
 
-@grid.GetHtml(tableStyle: "table table-dark table-hover", caption: "Користувачі", mode: WebGridPagerModes.All,
+@grid.GetHtml(tableStyle: "table table-light table-hover", caption: "Користувачі", mode: WebGridPagerModes.All,
     previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText:"Остання",
     numericLinksCount: 5,
     columns: grid.Columns(
@@ -42,17 +42,23 @@
 @using (Html.BeginForm("UserRole", "Users", new { area = "Admin" }, FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
 {
     <h5>Модифікація ролей користувача:</h5>
-    <div class="form-group mb-2">
-        <label type="text" readonly class="form-control-plaintext" value="Введіть емейл користувача:" />
+    <div class="container d-flex flex-column">
+    <div class="p-2 align-self-center">
+        <label type="text" readonly>Введіть емейл користувача:</label>
     </div>
-    <div class="form-group mx-sm-3 mb-2">
-        <input class="form-control" id="RoleEmail" name="RoleEmail" placeholder="example@dot.net"
+    <div class="p-2 align-self-center">
+        <input class="form-control my-2" id="RoleEmail" name="RoleEmail" placeholder="example@dot.net"
                @if (@ViewBag.UserModified != null) { @: value=@ViewBag.UserModified
                }>
     </div>
-    @Html.DropDownList("UserRoleEdit", new SelectList(((ViewBag.Roles) as List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>), "Name", "Name"), new { @class = "btn btn-outline-secondary" }); //"Id", "Name"
-    <button type="submit" name="submit" class="btn btn-success mb-2" value="add">Додати роль</button>
-    <button type="submit" name="submit" class="btn btn-danger mb-2" value="delete">Видалити роль</button>
+        <div class="p-2 align-self-center">
+    @Html.DropDownList("UserRoleEdit", new SelectList(((ViewBag.Roles) as List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>), "Name", "Name"), new { @class = "my-2 btn btn-outline-secondary" })
+            </div>
+        <div class="p-2 align-self-center">
+            <button type="submit" name="submit" class="btn btn-danger m-2" value="delete">Видалити роль</button>
+            <button type="submit" name="submit" class="btn btn-success m-2" value="add">Додати роль</button>
+        </div>
+        </div>
 }
 
 @if (ViewBag.UserRoleModified == true)
@@ -82,5 +88,5 @@
 }*@
 
 @section Scripts {
-    @Scripts.Render("~/bundles/bootstrapAdditional")
+    @Scripts.Render("~/bundles/popperBootstrap")
 }

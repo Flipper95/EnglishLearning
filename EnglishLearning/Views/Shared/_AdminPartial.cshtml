@@ -3,10 +3,8 @@
 {
     if (User.IsInRole("admin"))
     {
-<ul class="nav navbar-nav navbar-left">
-    <li class="nav-item">
-        @Html.ActionLink("Робота з користувачами", "Index", "Users", new { area="Admin"}, new { @class = "nav-link" });
-    </li>
-        </ul>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Users", new { area = "Admin" })">Робота з користувачами</a>
+        </li>
     }
 }

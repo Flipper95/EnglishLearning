@@ -8,7 +8,7 @@
 <h2>Index</h2>
 
 <h2>Index</h2>
-<ul>
+@*<ul>
     @foreach (var el in Model)
     {
         <li style="width: 31%;float: left;padding: 15px;margin: 10px;background: #fff;border-radius: 5px;">
@@ -27,4 +27,25 @@
             </a>
         </li>
     }
-</ul>
+</ul>*@
+
+<div class="d-flex flex-wrap">
+    @foreach (var el in Model)
+    {
+    <div class="card mr-2 mb-2 flex-shrink-1 shadow-lg" style="width: 13rem;">
+        @{
+            var base64 = Convert.ToBase64String(el.Image);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+        }
+        <img class="card-img-top rounded-top mb-2" src="data:image;base64,@System.Convert.ToBase64String(el.Image)" alt="Card image cap">
+        <div class="card-body text-center bg-dark text-light p-0 rounded-bottom">
+            <h5 class="card-title mt-2">@el.Name</h5>
+            <p class="card-text">Слів: <br><i>@el.WordsCount</i></p>
+            <p class="card-text">Складність: <br><i>@el.Difficult</i></p>
+            <div class="card-footer">
+            <a href="@Url.Action("Words","Dictionary",new { id = el.GroupId, area = ""})" class="btn btn-success">Вивчити</a>
+                </div>
+        </div>
+    </div>
+    }
+    </div>

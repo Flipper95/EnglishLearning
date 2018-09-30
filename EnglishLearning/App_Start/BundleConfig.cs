@@ -19,11 +19,11 @@ namespace EnglishLearning
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/popperBootstrap").Include(
+                       "~/Scripts/bootstrap.bundle.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrapAdditional").Include(
-                "~/Scripts/bootstrap.bundle*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

@@ -1,22 +1,29 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Вітаємо, " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Вийти</a></li>
-    </ul>
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+    {
+
+        @Html.AntiForgeryToken();
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                @Html.ActionLink("Вітаємо, " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Вийти</a>
+            </li>
+        </ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Реєстрація", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Виконати вхід", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" id="registerLink" href="@Url.Action("Register", "Account", new { area = "" })">Реєстрація</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="loginLink" href="@Url.Action("Login", "Account", new { area = "" })">Виконати вхід</a>
+        </li>
     </ul>
 }
