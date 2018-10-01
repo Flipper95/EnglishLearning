@@ -1,0 +1,42 @@
+﻿@*@model IEnumerable<object[]>*@
+@model IEnumerable<dynamic>
+@{
+    ViewBag.Title = "Words";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(source: Model, rowsPerPage: 100);
+    @*@:<script>$("#RowsPerPage").text()</script>*@
+}
+
+<h2>Words</h2>
+
+<div class="thead-dark">
+</div>
+@Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })
+
+@grid.GetHtml(
+    tableStyle: "table table-hover", headerStyle: "thead-dark", caption: "Вибір слів на вивчення",
+    mode: WebGridPagerModes.All, numericLinksCount: 5,
+    columns: grid.Columns(
+        grid.Column("InLearning","Відмітити", format: @<input type="checkbox" checked="@item.InLearning">),
+        grid.Column(header: "Слово", format: @<div>@item.word</div>),
+        grid.Column(header: "Значення", format: @<div>@item.translate</div>)), @*@item[1].Translate*@
+    previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText: "Остання")
+@*<table class="table table-hover">
+        <thead>
+            <tr>
+                <th>На вивченні</th>
+                <th>Слово</th>
+                <th>Переклад</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (dynamic el in Model)
+            {
+                <tr>
+                    <td>@el.InLearning</td>
+                    <td>@el.word.Word1</td>
+                    <td>@el.word.Translate</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
