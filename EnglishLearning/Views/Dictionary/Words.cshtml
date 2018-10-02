@@ -13,7 +13,7 @@
 
 <div class="thead-dark">
 </div>
-@Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })
+@*@Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })*@
 @*<select id="RowsPerPage" name="RowsPerPage" class="btn btn-secondary text-light">
     <option>
         @Html.RouteLink("10", new { controller="Dictionary", action="Words", area="", pageSize = 10, id = ViewBag.GroupId })
@@ -25,6 +25,28 @@
         @Html.ActionLink("50", "Words", new { area = "", pageSize = 50 })
     </option>
 </select>*@
+@*@using(Html.BeginForm("RowsPerPage", "Dictionary"))
+{*@
+<div class="d-flex flex-row">
+    <select class="btn btn-outline-info mb-1 mr-1" id="rowsperpage" name="rowsperpage" val="@Model.PageSize">
+        <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 10 })" value="10">10</option>  @*page = Model.CurrentPage, prevPageSize = Model.PageSize,totalPages = Model.TotalPages*@
+        <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 25 })" value="25">25</option>
+        <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 50 })" value="50">50</option>
+        <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 100 })" value="100">100</option>
+    </select>
+    @*}*@
+
+
+    <div class="ml-auto">
+        <div class="input-group mb-1">
+          <input id="searchData" type="text" class="form-control" placeholder="Слово або значення" aria-label="Слово або значення" aria-describedby="button-addon2" value="@(ViewBag.SearchData == null ? "" : ViewBag.SearchData)">
+          <div class="input-group-append">
+            <button id="search" class="btn btn-outline-secondary" type="button" data-url="@Url.Action("Search", new { area = "", id = ViewBag.GroupId })">Пошук</button>
+          </div>
+        </div>
+    </div>
+</div>
+
 @*//TO DO:ajax - on begin change badge class not use respond from server*@
 @grid.GetHtml(
     tableStyle: "table table-hover", headerStyle: "thead-dark", caption: "Вибір слів на вивчення",
@@ -71,20 +93,22 @@
 
 @section Scripts{
     <script type="text/javascript">
-        window.onload =
-            $(document).ready(function () {
-                $("tfoot a").addClass('btn btn-secondary'); // add bootstrap buttons
 
-                // add active bootstrap button
-                $("tfoot td")
-                    .contents()
-                    .filter(function () {
-                        if (this.nodeType === 3 && this.length > 1) {
-                            return this.nodeType
-                        }
-                    })
-                    .wrap('<span class="btn btn-primary mx-1" />');
-            })
+        var BuildUrl = function () {
+            var searchData = $("#searchData").val();
+            var urlSize = $("#rowsperpage option:selected").data('url');
+            var url;
+            if (searchData) {
+                var urlSearch = $("#search").data('url');
+                urlSize = urlSize.substring(urlSize.indexOf("?") + 1);
+                urlSearch += "?search="+searchData;
+                url = urlSearch + "&" + urlSize;
+            }
+            else {
+                url = urlSize;
+            }
+            document.location = url;
+        }
 
         var WordInLearningChange = function (data) {
             var clas = $("#cb_" + data).attr('class');
@@ -105,6 +129,38 @@
                 + "<button type = 'button' class= 'close' data - dismiss='alert' aria - label='Close' >"
                 + "<span aria-hidden='true'>&times;</span></button ></div >");
         }
+
+        window.onload =
+            $(document).ready(function () {
+                $("tfoot a").addClass('btn btn-secondary mb-1'); // add bootstrap buttons
+
+                // add active bootstrap button
+                $("tfoot td")
+                    .contents()
+                    .filter(function () {
+                        if (this.nodeType === 3 && this.length > 1) {
+                            return this.nodeType
+                        }
+                    })
+                    .wrap('<span class="btn btn-primary mx-1 mb-1" />');
+
+                var value = $("#rowsperpage").attr("val");
+                $("#rowsperpage").val(value);
+
+            $("#rowsperpage").change(function () { BuildUrl(); });
+                //    function () {
+                //    var url = $("#rowsperpage option:selected").data('url');
+                //    document.location = url;
+                //    }
+                //);
+
+            $("#search").on("click", function () { BuildUrl(); });
+
+            $("#searchData").change(function () {
+                if (!$("#searchData").val()) { BuildUrl(); }
+            });
+            }
+            )
     </script>
 
     @Scripts.Render("~/bundles/ajax")

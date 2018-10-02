@@ -23,7 +23,32 @@ namespace EnglishLearning.Controllers
             return View(query);
         }
 
-        public ActionResult Words(int id, int page = 1, int pageSize = 100) {
+        //TO DO: решить стоит ли вообще использовать такой код, в плане перехода на другую страницу, если да, сменить параметры с nullable на обычные, расскоментировать
+        //<option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId,page = Model.CurrentPage, prevPageSize = Model.PageSize, totalPages = Model.TotalPages, pageSize = 10 })" value="10">10</option>
+        //TO DO: осторожно хрупкий код, даже не переставлять строки totalPages-1 может быть 0 (когда на первой странице с 100 записями переход на 10 записей)
+        public ActionResult RowsPerPage(int id, int? prevPageSize, int? totalPages, int page = 1, int pageSize = 25) {
+                //if (prevPageSize != pageSize)
+                //{
+                //    page = (int)Math.Ceiling(page * ((double)prevPageSize / (double)pageSize));
+                //    int newTotalPages = (int)Math.Ceiling((prevPageSize * (totalPages-1)) / (double)pageSize);
+                //    if (page > newTotalPages) page = newTotalPages;
+                //    if (page <= 0) page = 1;
+                //}
+            return RedirectToAction("Words", new { id, page, pageSize });
+        }
+
+        public ActionResult Search(int id, int pageSize, string search, int page = 1) {
+            return RedirectToAction("Words", new { id, page, pageSize,search });
+        }
+
+        public ActionResult Words(int id, int page = 1, int pageSize = 25, string search="")
+        {//int? prevPageSize,
+            //if (prevPageSize != null) {
+            //    if (prevPageSize != pageSize)
+            //    {
+            //        page = (int)Math.Ceiling(page * (double)((int)prevPageSize/pageSize);
+            //    }
+            //}
             string userIdentity = User.Identity.GetUserId();
             var user = (from users in db.User where users.IdentityId == userIdentity select users).First();
 
@@ -35,6 +60,10 @@ namespace EnglishLearning.Controllers
                           select new WordsDisplay { inLearning = item == null ? false : true, word = word.Word1, translate = word.Translate, wordId = word.WordId });//.Select(c=>c.ToExpando());//left outer join
             //var list = query2.AsEnumerable().Select(x => x.ToExpando()).ToList();// { dynamic d = new ExpandoObject(); d.InLearning = x.InLearning; d.word = x.word; d.translate = x.translate; return d; }).ToList();
             //Word w = new Word();
+            if (!string.IsNullOrWhiteSpace(search)) {
+                ViewBag.SearchData = search;
+                query = query.Where(x => x.word.Contains(search) || x.translate.Contains(search));
+            }
             ViewBag.GroupId = id;
             PagedList<WordsDisplay> list = new PagedList<WordsDisplay>();
             list.CurrentPage = page;

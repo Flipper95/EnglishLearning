@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using EnglishLearning.Models;
 using System.Net.Mail;
+using System.IO;
 
 namespace EnglishLearning
 {
@@ -20,8 +21,13 @@ namespace EnglishLearning
         public Task SendAsync(IdentityMessage message)
         {
             // Подключите здесь службу электронной почты для отправки сообщения электронной почты.
-            var from = "bodya7b8b@gmail.com";
-            var password = "Grim2009";
+            List<string> file = new List<string>();
+            var lines = File.ReadLines(HttpContext.Current.Server.MapPath("~/App_Data/pass.txt"));
+            foreach(var el in lines){
+                file.Add(el);
+            }
+            var from = file[0];
+            var password = file[1];
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;

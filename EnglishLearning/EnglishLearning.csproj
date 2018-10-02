@@ -263,6 +263,7 @@
     <Content Include="App_Data\EnglishLearning_log.ldf">
       <DependentUpon>EnglishLearning.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Data\pass.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
