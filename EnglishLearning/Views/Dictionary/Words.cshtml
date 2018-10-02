@@ -1,9 +1,11 @@
 ﻿@*@model IEnumerable<object[]>*@
-@model IEnumerable<dynamic>
+@using EnglishLearning.ExtendClasses;
+@model EnglishLearning.Controllers.PagedList<EnglishLearning.Controllers.WordsDisplay>
 @{
     ViewBag.Title = "Words";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var grid = new WebGrid(source: Model, rowsPerPage: 100);
+    var grid = new WebGrid(canPage: true, rowsPerPage: Model.PageSize, ajaxUpdateContainerId: "grid");
+    grid.Bind(source: Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
     @*@:<script>$("#RowsPerPage").text()</script>*@
 }
 
@@ -12,15 +14,110 @@
 <div class="thead-dark">
 </div>
 @Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })
-
+@*<select id="RowsPerPage" name="RowsPerPage" class="btn btn-secondary text-light">
+    <option>
+        @Html.RouteLink("10", new { controller="Dictionary", action="Words", area="", pageSize = 10, id = ViewBag.GroupId })
+        </option>
+    <option>
+        @Html.ActionLink("25", "Words", new { area = "", pageSize = 25, id = ViewBag.GroupId })
+        </option>
+    <option>
+        @Html.ActionLink("50", "Words", new { area = "", pageSize = 50 })
+    </option>
+</select>*@
+@*//TO DO:ajax - on begin change badge class not use respond from server*@
 @grid.GetHtml(
     tableStyle: "table table-hover", headerStyle: "thead-dark", caption: "Вибір слів на вивчення",
     mode: WebGridPagerModes.All, numericLinksCount: 5,
     columns: grid.Columns(
-        grid.Column("InLearning","Відмітити", format: @<input type="checkbox" checked="@item.InLearning">),
-        grid.Column(header: "Слово", format: @<div>@item.word</div>),
-        grid.Column(header: "Значення", format: @<div>@item.translate</div>)), @*@item[1].Translate*@
-    previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText: "Остання")
+        grid.Column(header: "Відмітити", format:
+        //<input type="checkbox" id="cb_@item.Value.wordId" checked="@item.Value.inLearning">
+        @*@<input type = 'checkbox' id = cb_" + (@item.Value.wordId as int?) + " checked= '" + (@item.Value.inLearning as bool?) + "' >*@
+        @:@Ajax.RawActionLink( @item.Value.inLearning == false ? "<div id = cb_" + (@item.Value.wordId as int?) + " class='badge badge-secondary'>Додати слово</div>" : "<div id = cb_" + (@item.Value.wordId as int?) + " class='badge badge-success'>На вивченні</div>", "EditWord", "Dictionary", new{ area = "", id = @item.Value.wordId, check = @item.Value.inLearning },
+       new AjaxOptions {
+           OnBegin = "WordInLearningChange(" + @item.Value.wordId + ")",
+           OnSuccess = "MessageShow"
+       }, null)
+),
+                                grid.Column("word", header: "Слово", format: @<div>@item.Value.word</div>),
+                                                        grid.Column("translate", header: "Значення", format:@<div>@item.Value.translate</div>)), @*@item[1].Translate*@
+                                                        previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText: "Остання",
+                        footerStyle: "tfoot", htmlAttributes: new { id = "grid" })
+
+@*<nav aria-label="...">
+        <ul class="pagination">
+            <li @(Model.CurrentPage>1 ? "page-item disabled" : "page-item")>
+                @Html.ActionLink("Попередня", "Words", new { area = "", id = ViewBag.GroupId, page = Model.CurrentPage - 1, size = Model.PageSize }, new { @class = "page-link" })
+            </li>
+            @for(int i=0; i<)
+            @if (Model.CurrentPage > 1) {
+                <li class="page-item">
+                    @Html.ActionLink((Model.CurrentPage-1).ToString(), "Words", new { area = "", id = ViewBag.GroupId, page = Model.CurrentPage - 1, size = Model.PageSize }, new { @class = "page-link" })
+                </li>
+            }
+
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active">
+                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>*@
+@*OnSuccess = "MessageShow(data)",*@
+<div id="messages"></div>
+
+@section Scripts{
+    <script type="text/javascript">
+        window.onload =
+            $(document).ready(function () {
+                $("tfoot a").addClass('btn btn-secondary'); // add bootstrap buttons
+
+                // add active bootstrap button
+                $("tfoot td")
+                    .contents()
+                    .filter(function () {
+                        if (this.nodeType === 3 && this.length > 1) {
+                            return this.nodeType
+                        }
+                    })
+                    .wrap('<span class="btn btn-primary mx-1" />');
+            })
+
+        var WordInLearningChange = function (data) {
+            var clas = $("#cb_" + data).attr('class');
+            var val1 = "badge badge-secondary";
+            var val2 = "badge badge-success";
+            if (clas === val1) {
+                $("#cb_" + data).attr('class', val2);
+                $("#cb_" + data).text("На вивченні");
+            }
+            else {
+                $("#cb_" + data).attr('class', val1);
+                $("#cb_" + data).text("Додати слово");
+            }
+        }
+        var MessageShow = function () {
+            $("#messages").html("<div class='alert alert - warning alert - dismissible fade show' role='alert'>"
+                + "Ваш словник було успішно змінено"
+                + "<button type = 'button' class= 'close' data - dismiss='alert' aria - label='Close' >"
+                + "<span aria-hidden='true'>&times;</span></button ></div >");
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/ajax")
+}
+@*@Ajax.RawActionLink("<input type='checkbox' id=cb_" + @item.Value.wordId+" checked="+@item.Value.inLearning+">", "EditWord","Dictionary",
+    new { area = "", id = @item.Value.wordId, @*check = @<script>$("#cb" +@item.Value.wordId).prop("checked")</script>
+            },
+            new AjaxOptions
+            {
+                UpdateTargetId = "grid"
+            }, null)*@
+
+
 @*<table class="table table-hover">
         <thead>
             <tr>

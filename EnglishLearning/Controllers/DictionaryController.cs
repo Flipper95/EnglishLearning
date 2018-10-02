@@ -23,44 +23,55 @@ namespace EnglishLearning.Controllers
             return View(query);
         }
 
-        public ActionResult Words(int id) {
+        public ActionResult Words(int id, int page = 1, int pageSize = 100) {
             string userIdentity = User.Identity.GetUserId();
             var user = (from users in db.User where users.IdentityId == userIdentity select users).First();
 
-            int page = 1;
-            int pageSize = 100;
-
-            //var query = (from word in db.Word join learning in db.LearningWord on word.WordId equals learning.WordId
-            //             where learning.UserId == user.UserId && word.GroupId == id
-            //             orderby word.WordId
-            //             select new { word, learning}).Skip((page - 1) * pageSize).Take(pageSize);
-            var query2 = (from word in db.Word
+            var query = (from word in db.Word
                           join learning in db.LearningWord on word.WordId equals learning.WordId into WordGroup
                           from item in WordGroup.DefaultIfEmpty()
                           where word.GroupId == id && (item.UserId == user.UserId || item == null)
                           orderby word.WordId
-                          select new { InLearning = item == null ? false : true, word = word.Word1, translate = word.Translate, wordId = word.WordId }).Skip((page - 1) * pageSize).Take(pageSize);//.Select(c=>c.ToExpando());//left outer join
-            //List<object[]> list = new List<object[]>{ new object[] { query2 } };
-            //List<dynamic> list = new List<dynamic>();
-            //foreach (dynamic el in query2) {
-            //    list.Add(el.ToExpando());
-            //}
-            //ViewBag.Words = query2;
-            var list = query2.AsEnumerable().Select(x => x.ToExpando()).ToList();// { dynamic d = new ExpandoObject(); d.InLearning = x.InLearning; d.word = x.word; d.translate = x.translate; return d; }).ToList();
+                          select new WordsDisplay { inLearning = item == null ? false : true, word = word.Word1, translate = word.Translate, wordId = word.WordId });//.Select(c=>c.ToExpando());//left outer join
+            //var list = query2.AsEnumerable().Select(x => x.ToExpando()).ToList();// { dynamic d = new ExpandoObject(); d.InLearning = x.InLearning; d.word = x.word; d.translate = x.translate; return d; }).ToList();
+            //Word w = new Word();
+            ViewBag.GroupId = id;
+            PagedList<WordsDisplay> list = new PagedList<WordsDisplay>();
+            list.CurrentPage = page;
+            list.PageSize = pageSize;
+            list.TotalRecords = query.Count();
+            list.Content = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            
             return View(list);
         }
 
+        public int EditWord(int id, bool check) {
+            string value = "";
+            value += "1";
+            return id;
+        }
+
     }
 
-    public static class Extensions
+    public class PagedList<T>
     {
-        public static ExpandoObject ToExpando(this object anonymousObject)
+        public List<T> Content { get; set; }
+        public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
+        public int TotalRecords { get; set; }
+
+        public int TotalPages
         {
-            IDictionary<string, object> anonymousDictionary = HtmlHelper.AnonymousObjectToHtmlAttributes(anonymousObject);
-            IDictionary<string, object> expando = new ExpandoObject();
-            foreach (var item in anonymousDictionary)
-                expando.Add(item);
-            return (ExpandoObject)expando;
+            get { return (int)Math.Ceiling((decimal)TotalRecords / PageSize); }
         }
     }
+
+    public class WordsDisplay
+    {
+        public int wordId;
+        public string word;
+        public string translate;
+        public bool inLearning;
+    }
+
 }
