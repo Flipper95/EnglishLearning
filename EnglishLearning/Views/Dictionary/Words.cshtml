@@ -12,17 +12,6 @@
 <h2>Words</h2>
 
 @*@Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })*@
-@*<select id="RowsPerPage" name="RowsPerPage" class="btn btn-secondary text-light">
-    <option>
-        @Html.RouteLink("10", new { controller="Dictionary", action="Words", area="", pageSize = 10, id = ViewBag.GroupId })
-        </option>
-    <option>
-        @Html.ActionLink("25", "Words", new { area = "", pageSize = 25, id = ViewBag.GroupId })
-        </option>
-    <option>
-        @Html.ActionLink("50", "Words", new { area = "", pageSize = 50 })
-    </option>
-</select>*@
 <div class="d-flex flex-row">
     @*@using (Html.BeginForm("SearchAndRows", "Dictionary", FormMethod.Post)) {*@
     @*<input id="GroupId" type="hidden" name="GroupId" value="@ViewBag.GroupId" />*@
@@ -46,7 +35,6 @@
     @*}*@
 </div>
 
-@*//TO DO:ajax - on begin change badge class not use respond from server*@
 <div id="gridChange">
 <div id="gridContent">
 @grid.GetHtml(
@@ -54,43 +42,23 @@
     mode: WebGridPagerModes.All, numericLinksCount: 5,
     columns: grid.Columns(
         grid.Column(header: "Відмітити", format:
-        //<input type="checkbox" id="cb_@item.Value.wordId" checked="@item.Value.inLearning">
-        @*@<input type = 'checkbox' id = cb_" + (@item.Value.wordId as int?) + " checked= '" + (@item.Value.inLearning as bool?) + "' >*@
-        @:@Ajax.RawActionLink( @item.Value.inLearning == false ? "<div id = cb_" + (@item.Value.wordId as int?) + " class='badge badge-secondary'>Додати слово</div>" : "<div id = cb_" + (@item.Value.wordId as int?) + " class='badge badge-success'>На вивченні</div>", "EditWord", "Dictionary", new{ area = "", id = @item.Value.wordId, check = @item.Value.inLearning },
-       new AjaxOptions {
-           OnBegin = "WordInLearningChange(" + @item.Value.wordId + ")",
-           OnSuccess = "MessageShow"
-       }, null)
+        @:@Ajax.RawActionLink( 
+         @item.Value.inLearning == false 
+         ? "<div id = cb_" + (@item.Value.wordId as int?) + " class='badge badge-secondary'>Додати слово</div>" 
+         : "<div id = cb_" + (@item.Value.wordId as int?) + " class='badge badge-success'>На вивченні</div>",
+         "EditWord", "Dictionary", new{ area = "", id = @item.Value.wordId, check = @item.Value.inLearning },
+         new AjaxOptions {
+            OnBegin = "WordInLearningChange(" + @item.Value.wordId + ")",
+            OnSuccess = "MessageShow"
+         }, null)
 ),
-                                grid.Column("word", header: "Слово", format: @<div>@item.Value.word</div>),
-                                                        grid.Column("translate", header: "Значення", format:@<div>@item.Value.translate</div>)), @*@item[1].Translate*@
-                                                        previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText: "Остання",
-                        footerStyle: "tfoot", htmlAttributes: new { id = "grid" })
+         grid.Column("word", header: "Слово", format: @<div>@item.Value.word</div>),
+         grid.Column("translate", header: "Значення", format:@<div>@item.Value.translate</div>)),
+    previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText: "Остання",
+    footerStyle: "tfoot", htmlAttributes: new { id = "grid" })
 </div>
 </div>
-@*<nav aria-label="...">
-        <ul class="pagination">
-            <li @(Model.CurrentPage>1 ? "page-item disabled" : "page-item")>
-                @Html.ActionLink("Попередня", "Words", new { area = "", id = ViewBag.GroupId, page = Model.CurrentPage - 1, size = Model.PageSize }, new { @class = "page-link" })
-            </li>
-            @for(int i=0; i<)
-            @if (Model.CurrentPage > 1) {
-                <li class="page-item">
-                    @Html.ActionLink((Model.CurrentPage-1).ToString(), "Words", new { area = "", id = ViewBag.GroupId, page = Model.CurrentPage - 1, size = Model.PageSize }, new { @class = "page-link" })
-                </li>
-            }
 
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>*@
-@*OnSuccess = "MessageShow(data)",*@
 <div id="messages"></div>
 
 @section Scripts{
@@ -125,6 +93,7 @@
                 $("#cb_" + data).text("Додати слово");
             }
         }
+
         var MessageShow = function () {
             $("#messages").html("<div class='alert alert-warning alert-dismissible fade show' role='alert'>"
                 + "Ваш словник було успішно змінено"
@@ -187,31 +156,4 @@
 
     @Scripts.Render("~/bundles/ajax")
 }
-@*@Ajax.RawActionLink("<input type='checkbox' id=cb_" + @item.Value.wordId+" checked="+@item.Value.inLearning+">", "EditWord","Dictionary",
-    new { area = "", id = @item.Value.wordId, @*check = @<script>$("#cb" +@item.Value.wordId).prop("checked")</script>
-            },
-            new AjaxOptions
-            {
-                UpdateTargetId = "grid"
-            }, null)*@
 
-
-@*<table class="table table-hover">
-        <thead>
-            <tr>
-                <th>На вивченні</th>
-                <th>Слово</th>
-                <th>Переклад</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (dynamic el in Model)
-            {
-                <tr>
-                    <td>@el.InLearning</td>
-                    <td>@el.word.Word1</td>
-                    <td>@el.word.Translate</td>
-                </tr>
-            }
-        </tbody>
-    </table>*@

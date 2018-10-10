@@ -21,15 +21,9 @@ namespace EnglishLearning
         public Task SendAsync(IdentityMessage message)
         {
             // Подключите здесь службу электронной почты для отправки сообщения электронной почты.
-            //List<string> file = new List<string>();
             var lines = File.ReadLines(HttpContext.Current.Server.MapPath("~/App_Data/pass.txt"));
             var from = lines.ElementAt(0);
             var password = lines.ElementAt(1);
-            //foreach (var el in lines){
-            //    file.Add(el);
-            //}
-            //var from = file[0];
-            //var password = file[1];
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;

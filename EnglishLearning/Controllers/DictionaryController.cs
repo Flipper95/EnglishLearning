@@ -47,13 +47,7 @@ namespace EnglishLearning.Controllers
         //}
 
         public ActionResult Words(int id, int page = 1, int pageSize = 25, string search="")
-        {//int? prevPageSize,
-            //if (prevPageSize != null) {
-            //    if (prevPageSize != pageSize)
-            //    {
-            //        page = (int)Math.Ceiling(page * (double)((int)prevPageSize/pageSize);
-            //    }
-            //}
+        {
             string userIdentity = User.Identity.GetUserId();
             var user = (from users in db.User where users.IdentityId == userIdentity select users).First();
 
@@ -64,7 +58,6 @@ namespace EnglishLearning.Controllers
                           orderby word.WordId
                           select new WordsDisplay { inLearning = item == null ? false : true, word = word.Word1, translate = word.Translate, wordId = word.WordId });//.Select(c=>c.ToExpando());//left outer join
             //var list = query2.AsEnumerable().Select(x => x.ToExpando()).ToList();// { dynamic d = new ExpandoObject(); d.InLearning = x.InLearning; d.word = x.word; d.translate = x.translate; return d; }).ToList();
-            //Word w = new Word();
             if (!string.IsNullOrWhiteSpace(search)) {
                 ViewBag.SearchData = search;
                 query = query.Where(x => x.word.Contains(search) || x.translate.Contains(search));
