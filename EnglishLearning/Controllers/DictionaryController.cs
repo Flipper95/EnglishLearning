@@ -41,6 +41,11 @@ namespace EnglishLearning.Controllers
             return RedirectToAction("Words", new { id, page, pageSize,search });
         }
 
+        //[HttpPost]
+        //public ActionResult SearchAndRows(int GroupId, int rowsperpage, string searchData, int page = 1) {
+        //    return RedirectToAction("Words", new { id = GroupId, page, pageSize = rowsperpage, search = searchData });
+        //}
+
         public ActionResult Words(int id, int page = 1, int pageSize = 25, string search="")
         {//int? prevPageSize,
             //if (prevPageSize != null) {

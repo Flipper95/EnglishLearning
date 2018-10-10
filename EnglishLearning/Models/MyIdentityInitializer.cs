@@ -51,8 +51,12 @@ namespace EnglishLearning.Models
                 roleManager.Create(role3);
                 roleManager.Create(role4);
 
-                var admin = new ApplicationUser { Email = "grim2009@ukr.net", UserName = "grim2009@ukr.net", EmailConfirmed=true };
-                string password = "f0dF9_2nfH0";
+                var adminFile = System.IO.File.ReadLines(HttpContext.Current.Server.MapPath("~/App_Data/admin.txt"));
+                var adminEmail = adminFile.ElementAt(0);
+                var adminPassword = adminFile.ElementAt(1);
+
+                var admin = new ApplicationUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed=true };
+                string password = adminPassword;
                 var result = userManager.Create(admin, password);
                 //somehow admin confirm email
                 //var code = userManager.GenerateEmailConfirmationToken(admin.Id);

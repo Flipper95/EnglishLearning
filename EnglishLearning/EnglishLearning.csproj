@@ -259,6 +259,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\admin.txt" />
     <Content Include="App_Data\EnglishLearning.mdf" />
     <Content Include="App_Data\EnglishLearning_log.ldf">
       <DependentUpon>EnglishLearning.mdf</DependentUpon>
