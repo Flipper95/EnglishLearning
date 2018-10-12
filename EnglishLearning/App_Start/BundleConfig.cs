@@ -29,7 +29,7 @@ namespace EnglishLearning
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/MyBootstrap.css",
                       "~/Content/site.css"));
         }
     }
