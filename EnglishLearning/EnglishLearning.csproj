@@ -200,6 +200,7 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
+    <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
@@ -225,6 +226,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnglishModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExerciseModel.cs" />
     <Compile Include="Models\Group.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
@@ -268,6 +270,13 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ExerciseStyle.css" />
+    <Content Include="Content\Images\constructor.png" />
+    <Content Include="Content\Images\equivalent.png" />
+    <Content Include="Content\Images\listen.png" />
+    <Content Include="Content\Images\listening.png" />
+    <Content Include="Content\Images\similar.png" />
+    <Content Include="Content\Images\translator.png" />
     <Content Include="Content\MyBootstrap.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -354,6 +363,8 @@
     <Content Include="Views\Dictionary\Index.cshtml" />
     <Content Include="Views\Shared\_AdminPartial.cshtml" />
     <Content Include="Views\Dictionary\Words.cshtml" />
+    <Content Include="Views\Exercise\Index.cshtml" />
+    <Content Include="Views\Exercise\TranslateExercise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

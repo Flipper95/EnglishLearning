@@ -8,7 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-
+    @RenderSection("styles", required: false)
 </head>
 <body>
 
@@ -20,8 +20,11 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("Index", "Dictionary", new { area = "" })">Словник<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Dictionary", new { area = "" })">Словник</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Exercise", new { area = "" })">Вправи</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("About", "Home", new { area = "" })">Домашня сторінка</a>

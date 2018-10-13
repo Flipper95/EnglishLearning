@@ -52,12 +52,12 @@ namespace EnglishLearning.Controllers
             var user = (from users in db.User where users.IdentityId == userIdentity select users).First();
 
             var query = (from word in db.Word
-                          join learning in db.LearningWord on word.WordId equals learning.WordId into WordGroup
-                          from item in WordGroup.DefaultIfEmpty()
-                          where word.GroupId == id && (item.UserId == user.UserId || item == null)
+                         where word.GroupId == id
+                          let learn = ((from learning in db.LearningWord
+                                       where learning.WordId == word.WordId && learning.UserId == user.UserId
+                                       select true).FirstOrDefault())
                           orderby word.WordId
-                          select new WordsDisplay { inLearning = item == null ? false : true, word = word.Word1, translate = word.Translate, wordId = word.WordId });//.Select(c=>c.ToExpando());//left outer join
-            //var list = query2.AsEnumerable().Select(x => x.ToExpando()).ToList();// { dynamic d = new ExpandoObject(); d.InLearning = x.InLearning; d.word = x.word; d.translate = x.translate; return d; }).ToList();
+                          select new WordsDisplay { inLearning = learn == true ? true : false, word = word.Word1, translate = word.Translate, wordId = word.WordId });
             if (!string.IsNullOrWhiteSpace(search)) {
                 ViewBag.SearchData = search;
                 query = query.Where(x => x.word.Contains(search) || x.translate.Contains(search));
@@ -73,9 +73,31 @@ namespace EnglishLearning.Controllers
         }
 
         public int EditWord(int id, bool check) {
-            string value = "";
-            value += "1";
-            return id;
+            LearningWord lw = new LearningWord();
+            if (check) {
+                int userId = GetUser().UserId;
+                lw = (from learningWord in db.LearningWord
+                      where learningWord.UserId == userId && learningWord.WordId == id
+                      select learningWord).First();
+                db.LearningWord.Remove(lw);
+                db.SaveChanges();
+            }
+            else
+            {
+                lw.AddedDate = DateTime.Now;
+                lw.WordId = id;
+                lw.LearnPercent = 0;
+                lw.UserId = GetUser().UserId;
+                db.LearningWord.Add(lw);
+                db.SaveChanges();
+            }
+            return lw.LearningWordId;
+        }
+
+        private User GetUser() {
+            string userIdentity = User.Identity.GetUserId();
+            var user = (from users in db.User where users.IdentityId == userIdentity select users).First();
+            return user;
         }
 
     }

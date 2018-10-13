@@ -1,0 +1,29 @@
+﻿@model List<EnglishLearning.Models.ExerciseModel>
+@{
+    ViewBag.Title = "TranslateExercise";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
+}
+
+<h2>TranslateExercise</h2>
+
+<div class="d-flexflex-row">
+    <div class="d-flex flex-column col-4">
+        <h4>@Model[ViewBag.Index].word.Translate</h4>
+        <img src="@Url.Content("~/Content/listen.png")">
+        <p>@Model[ViewBag.Index].word.Transcription</p>
+    </div>
+    <div class="d-flex flex-column col-6">
+        @for (int i = ViewBag.StartIndex; i < ViewBag.StartIndex + 5; i++)
+        {
+            <a class="btn btn-purple text-light mb-2">@Model[i].word.Word1</a>
+        }
+    </div>
+    <div class="col-12">
+        <div>@Model[ViewBag.Index].word.PartOfSpeech</div>
+        <a class="btn btn-primary"></a>
+    </div>
+</div>
+
