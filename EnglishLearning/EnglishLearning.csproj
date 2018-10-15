@@ -276,6 +276,7 @@
     <Content Include="Content\Images\listen.png" />
     <Content Include="Content\Images\listening.png" />
     <Content Include="Content\Images\similar.png" />
+    <Content Include="Content\Images\stats.png" />
     <Content Include="Content\Images\translator.png" />
     <Content Include="Content\MyBootstrap.css" />
     <Content Include="favicon.ico" />
@@ -365,6 +366,7 @@
     <Content Include="Views\Dictionary\Words.cshtml" />
     <Content Include="Views\Exercise\Index.cshtml" />
     <Content Include="Views\Exercise\TranslateExercise.cshtml" />
+    <Content Include="Views\Exercise\ShowResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

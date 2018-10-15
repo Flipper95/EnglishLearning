@@ -1,8 +1,8 @@
 ﻿body {
     background: linear-gradient(to bottom,#B6D2EE, #E8BFFF 100%);
+    background-attachment: fixed;
 }
 
-footer {
-    background: #343a40;
-    color: #f8f9fa;
+.img-disabled:hover {
+    opacity: 0.3;
 }

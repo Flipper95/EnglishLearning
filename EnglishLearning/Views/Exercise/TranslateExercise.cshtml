@@ -1,4 +1,6 @@
-﻿@model List<EnglishLearning.Models.ExerciseModel>
+﻿@*@model List<EnglishLearning.Models.ExerciseModel>*@
+@model List<EnglishLearning.Models.Word>
+@using EnglishLearning.ExtendClasses;
 @{
     ViewBag.Title = "TranslateExercise";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,21 +11,47 @@
 
 <h2>TranslateExercise</h2>
 
-<div class="d-flexflex-row">
-    <div class="d-flex flex-column col-4">
-        <h4>@Model[ViewBag.Index].word.Translate</h4>
-        <img src="@Url.Content("~/Content/listen.png")">
-        <p>@Model[ViewBag.Index].word.Transcription</p>
+<div class="d-flex flex-row flex-wrap justify-content-around align-items-center">
+    <div class="d-flex flex-column col-8 col-md-3 mb-2">
+        <h4 style="font-size:6vw;">@Model[ViewBag.Index].Translate</h4>
+        <img class="img-fluid rounded img-disabled" src="@Url.Content("~/Content/Images/listen.png")">
+        @*<p style="font-size:3vw;">@Model[ViewBag.Index].Transcription</p>
+            <p style="font-size:3vw;">@Model[ViewBag.Index].PartOfSpeech</p>*@
     </div>
-    <div class="d-flex flex-column col-6">
+    <div class="d-flex flex-column col-12 col-md-6 px-5">
         @for (int i = ViewBag.StartIndex; i < ViewBag.StartIndex + 5; i++)
         {
-            <a class="btn btn-purple text-light mb-2">@Model[i].word.Word1</a>
+            //onclick = 'ShowNext()'
+            //"<div class='btn btn-purple text-light mb-3'>" + @Model[i].Word1 + "</div>"
+            @Ajax.RawActionLink(@Model[i].Word1, "CheckResult", "Exercise", new { area="", id = @Model[i].WordId, value = @Model[i].Word1 },
+            new AjaxOptions { OnSuccess="AjaxResult(data)" }, new { id="link_"+ @Model[i].WordId, @class= "btn btn-purple text-light mb-3" })//result
         }
-    </div>
-    <div class="col-12">
-        <div>@Model[ViewBag.Index].word.PartOfSpeech</div>
-        <a class="btn btn-primary"></a>
+        <a id="NextBtn" name="NextBtn" class="btn btn-teal mt-5 text-light" href="@Url.Action("TranslateExercise", "Exercise", new { area="", StartIndex=(ViewBag.StartIndex+5) })" hidden>Наступне</a>
     </div>
 </div>
+@section Scripts{
+    <script type="text/javascript">
+        $("div a").on("click", function () {
+            $("div a").addClass("disabled");
+            $(this).addClass("active");
+            $("#NextBtn").removeAttr("hidden").removeClass("disabled").off("click");//.prop("disabled", false).off("click");
+        });
 
+        //var ShowNext = function () {
+        //    //$(this).addClass("active");
+        //    $("#NextBtn").removeAttr("hidden");
+        //}
+
+        var AjaxResult = function (result) {
+            var el = $(".active");
+            el.removeClass("btn-purple");
+            if (result.toLowerCase() == "true") {
+                el.addClass("btn-success");
+            }
+            else {
+                el.addClass("btn-danger");
+            }
+        }
+    </script>
+    @Scripts.Render("~/bundles/ajax")
+}
