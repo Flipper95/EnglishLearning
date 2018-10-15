@@ -1,15 +1,14 @@
-﻿@*@model List<EnglishLearning.Models.ExerciseModel>*@
-@model List<EnglishLearning.Models.Word>
+﻿@model List<EnglishLearning.Models.Word>
 @using EnglishLearning.ExtendClasses;
 @{
-    ViewBag.Title = "TranslateExercise";
+    ViewBag.Title = "SynonymsExercise";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
 }
 
-<h2>TranslateExercise</h2>
+<h2>SynonymsExercise</h2>
 
 <div class="d-flex flex-row flex-wrap justify-content-around align-items-center">
     <div class="d-flex flex-column col-8 col-md-3 mb-2">
@@ -26,7 +25,8 @@
             @Ajax.RawActionLink(@Model[i].Word1, "CheckResult", "Translate", new { area="", id = @Model[i].WordId, value = @Model[i].Word1 },
             new AjaxOptions { OnSuccess="AjaxResult(data)" }, new { id="link_"+ @Model[i].WordId, @class= "btn btn-purple text-light mb-3 question" })//result
         }
-        @using (Html.BeginForm("TranslateExercise", "Translate", new { area = "" }, FormMethod.Post)) {
+        @using (Html.BeginForm("TranslateExercise", "Translate", new { area = "" }, FormMethod.Post))
+        {
             @:<input type="hidden" name="StartIndex" value="@(ViewBag.StartIndex + 5)">
             @:<input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal mt-5 text-light col-12" hidden value="Наступне">
         }

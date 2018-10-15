@@ -200,9 +200,14 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
-    <Compile Include="Controllers\ExerciseController.cs" />
+    <Compile Include="Controllers\Exercise\ConstructorController.cs" />
+    <Compile Include="Controllers\Exercise\EquivalentController.cs" />
+    <Compile Include="Controllers\Exercise\ExerciseController.cs" />
+    <Compile Include="Controllers\Exercise\ListeningController.cs" />
+    <Compile Include="Controllers\Exercise\SynonymsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Exercise\TranslateController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -367,6 +372,11 @@
     <Content Include="Views\Exercise\Index.cshtml" />
     <Content Include="Views\Exercise\TranslateExercise.cshtml" />
     <Content Include="Views\Exercise\ShowResult.cshtml" />
+    <Content Include="Views\Translate\TranslateExercise.cshtml" />
+    <Content Include="Views\Equivalent\EquivalentExercise.cshtml" />
+    <Content Include="Views\Listening\ListeningExercise.cshtml" />
+    <Content Include="Views\Constructor\ConstructorExercise.cshtml" />
+    <Content Include="Views\Synonyms\SynonymsExercise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -1,5 +1,4 @@
-﻿@*@model List<EnglishLearning.Models.ExerciseModel>*@
-@model List<EnglishLearning.Models.Word>
+﻿@model List<EnglishLearning.Models.Word>
 @using EnglishLearning.ExtendClasses;
 @{
     ViewBag.Title = "TranslateExercise";
@@ -26,7 +25,8 @@
             @Ajax.RawActionLink(@Model[i].Word1, "CheckResult", "Translate", new { area="", id = @Model[i].WordId, value = @Model[i].Word1 },
             new AjaxOptions { OnSuccess="AjaxResult(data)" }, new { id="link_"+ @Model[i].WordId, @class= "btn btn-purple text-light mb-3 question" })//result
         }
-        @using (Html.BeginForm("TranslateExercise", "Translate", new { area = "" }, FormMethod.Post)) {
+        @using (Html.BeginForm("TranslateExercise", "Translate", new { area = "" }, FormMethod.Post))
+        {
             @:<input type="hidden" name="StartIndex" value="@(ViewBag.StartIndex + 5)">
             @:<input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal mt-5 text-light col-12" hidden value="Наступне">
         }

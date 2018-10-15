@@ -1,32 +1,37 @@
-﻿@*@model List<EnglishLearning.Models.ExerciseModel>*@
-@model List<EnglishLearning.Models.Word>
+﻿@model List<EnglishLearning.Models.Word>
 @using EnglishLearning.ExtendClasses;
 @{
-    ViewBag.Title = "TranslateExercise";
+    ViewBag.Title = "EquivalentExercise";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
 }
 
-<h2>TranslateExercise</h2>
+<h2>EquivalentExercise</h2>
+
+<audio id="audio">
+    <source src="@Url.Action("LoadAudio", new { value = @Model[ViewBag.Index].Word1 })")  />
+</audio>
 
 <div class="d-flex flex-row flex-wrap justify-content-around align-items-center">
     <div class="d-flex flex-column col-8 col-md-3 mb-2">
-        <h4 style="font-size:6vw;">@Model[ViewBag.Index].Translate</h4>
-        <img class="img-fluid rounded img-disabled" src="@Url.Content("~/Content/Images/listen.png")">
-        @*<p style="font-size:3vw;">@Model[ViewBag.Index].Transcription</p>
-            <p style="font-size:3vw;">@Model[ViewBag.Index].PartOfSpeech</p>*@
+        <h4 style="font-size:6vw;">@Model[ViewBag.Index].Word1</h4>
+        <img id="audioImg" class="img-fluid rounded" src="@Url.Content("~/Content/Images/listen.png")"
+             onclick="document.getElementById('audio').play()">
+        <p style="font-size:3vw;">@Model[ViewBag.Index].Transcription</p>
+        <p style="font-size:3vw;">@Model[ViewBag.Index].PartOfSpeech</p>
     </div>
     <div class="d-flex flex-column col-12 col-md-6 px-5">
         @for (int i = ViewBag.StartIndex; i < ViewBag.StartIndex + 5; i++)
         {
             //onclick = 'ShowNext()'
             //"<div class='btn btn-purple text-light mb-3'>" + @Model[i].Word1 + "</div>"
-            @Ajax.RawActionLink(@Model[i].Word1, "CheckResult", "Translate", new { area="", id = @Model[i].WordId, value = @Model[i].Word1 },
+            @Ajax.RawActionLink(@Model[i].Translate, "CheckResult", "Exercise", new { area="", id = @Model[i].WordId, value = @Model[i].Translate },
             new AjaxOptions { OnSuccess="AjaxResult(data)" }, new { id="link_"+ @Model[i].WordId, @class= "btn btn-purple text-light mb-3 question" })//result
         }
-        @using (Html.BeginForm("TranslateExercise", "Translate", new { area = "" }, FormMethod.Post)) {
+        @using (Html.BeginForm("EquivalentExercise", "Equivalent", new { area = "" }, FormMethod.Post))
+        {
             @:<input type="hidden" name="StartIndex" value="@(ViewBag.StartIndex + 5)">
             @:<input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal mt-5 text-light col-12" hidden value="Наступне">
         }
@@ -40,6 +45,8 @@
             $(this).addClass("active");
             $("#NextBtn").removeAttr("hidden")//.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
         });
+
+        //$("#audioImg").on("click", function () { $("#audio").play(); });
 
         //var ShowNext = function () {
         //    //$(this).addClass("active");

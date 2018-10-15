@@ -3,22 +3,26 @@
     ViewBag.Title = "ShowResult";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
+}
 <hr>
 <h2>ShowResult</h2>
 <div class="d-flex flex-column align-items-center">
-<img class="img-fluid col-6 col-lg-4" src="@Url.Content("~/Content/Images/stats.png")">
-<div style="font-size: 3vw">
-    Вправу перекладу виконано!<br>
-    Кількість правильних відповідей @ViewBag.AnswerCount з @ViewBag.MaxCount
-</div>
-<div class="d-flex flex-row flex-wrap justify-content-around col-12">
-    <div class="progress col-12 col-md-11 my-4 p-0">
-        @{
-            var val = (double)@ViewBag.AnswerCount * 100 / (double)@ViewBag.MaxCount;
-        }
-        <div class="progress-bar progress-bar-striped progress-bar-animated bg-purple" role="progressbar" aria-valuenow="+@Convert.ToInt32(@ViewBag.AnswerCount)+" aria-valuemin="0" aria-valuemax="+@Convert.ToInt32(@ViewBag.MaxCount)+" style='width:"+@val+"%;'></div>
+    <img class="img-fluid col-6 col-lg-4" src="@Url.Content("~/Content/Images/stats.png")">
+    <div style="font-size: 3vw">
+        Вправу перекладу виконано!<br>
+        Кількість правильних відповідей @ViewBag.AnswerCount з @ViewBag.MaxCount
     </div>
-    <a class="btn btn-purple col-12 col-md-5 my-4" href="@Url.Action("Index","Home", new { area=""})">На головну</a>
-    <a class="btn btn-purple col-12 col-md-5 my-4" href="@Url.Action("Index","Exercise", new { area=""})">До вправ</a>
-</div>
+    <div class="d-flex flex-row flex-wrap justify-content-around col-12">
+        <div class="progress col-12 col-md-11 my-4 p-0">
+            @{
+                var val = (double)@ViewBag.AnswerCount * 100 / (double)@ViewBag.MaxCount;
+            }
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-purple" role="progressbar" aria-valuenow="@Convert.ToInt32(@ViewBag.AnswerCount)" aria-valuemin="0" aria-valuemax="@Convert.ToInt32(@ViewBag.MaxCount)" style="width:@val%;"></div>
+        </div>
+        <a class="btn btn-purple col-12 col-md-5 my-4" href="@Url.Action("Index","Home", new { area=""})">На головну</a>
+        <a class="btn btn-purple col-12 col-md-5 my-4" href="@Url.Action("Index","Exercise", new { area=""})">До вправ</a>
+    </div>
+    </div>
 

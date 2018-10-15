@@ -6,36 +6,42 @@
 
 <h2>Index</h2>
 @* style="background: linear-gradient(to bottom,#B6D2EE, #E8BFFF 100%);" *@
+@* dark style body class="text-light" style="background: radial-gradient(#6c757d, #343a40);"
+    first and last card = bg-secondary text-light*@
 @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
 {
-    <div class="alert alert-warning alert-dismissible show" role="alert">
+    <div class="col-12 alert alert-warning alert-dismissible show" role="alert">
         <strong>Помилка!</strong> @ViewBag.ErrorMessage
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 }
-@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-{
-    <div class="alert alert-warning alert-dismissible show" role="alert">
-        @(new HtmlString(@ViewBag.SuccessMessage))
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
+
 <div>
     <div class="row">
-
+        @*@if (!string.IsNullOrEmpty(@ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success alert-dismissible show col-12" role="alert">
+                @Html.Raw(@ViewBag.SuccessMessage)
+                <br>
+                <div class="progress col-12 my-2 p-0">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-teal" role="progressbar" style="width:@ViewBag.SuccessPercent%"></div>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }*@
         <div class="card col-12 text-center bg-dark text-light">
             <img class="card-img-top" src="@Url.Content("~/Content/Images/translator.png")" alt="translate exercise image" style="max-height:250px;">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">Вправа перекладу.</h5>
+                <p class="card-text">Надається слово на іноземній мові та п’ять варіантів слова на рідній мові, один з варіантів є перекладеним іноземнимм словом, необхідно знайти його.</p>
                 @*@Ajax.RawActionLink("<div class='btn btn - purple text - light' href='"+ @Url.Action("TranslateExercise", "Exercise", new { area = "" }) + "'>Переклад</div>",
-                    "TranslateCount", "Exercise", new { area=""},
-                    new AjaxOptions { OnSuccess = "MessageShow('переклад')" }, null)*@
-                <a class="btn btn-purple text-light" href="@Url.Action("TranslateExercise", "Exercise", new { area = ""})">Переклад</a>
+                "TranslateCount", "Exercise", new { area=""},
+                new AjaxOptions { OnSuccess = "MessageShow('переклад')" }, null)*@
+                <a class="btn btn-purple text-light" href="@Url.Action("TranslateExercise", "Translate", new { area = ""})">Переклад</a>
             </div>
         </div>
 
@@ -43,27 +49,27 @@
             <div class="card col-md-3 my-3 col-sm-5 col-12 text-center bg-dark text-light">
                 <img class="card-img-top" src="@Url.Content("~/Content/Images/equivalent.png")" alt="equivalent exercise image" style="max-width:250px;">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <a class="btn btn-purple text-light">Еквівалент</a>
+                    <h5 class="card-title">Вправа еквівалент.</h5>
+                    <p class="card-text">Є слово на рідній мові та варіанти його перекладу на іноземну, знайдіть правильний.</p>
+                    <a class="btn btn-purple text-light" href="@Url.Action("EquivalentExercise", "Equivalent", new { area = ""})">Еквівалент</a>
                 </div>
             </div>
 
             <div class="card col-md-3 my-3 col-sm-5 col-12 text-center bg-dark text-light">
                 <img class="card-img-top" src="@Url.Content("~/Content/Images/listening.png")" alt="listening exercise image" style="max-width:250px;">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <a class="btn btn-purple text-light">Аудіювання</a>
+                    <h5 class="card-title">Вправа аудіювання.</h5>
+                    <p class="card-text">Тренування сприйняття на слух, є запис, після прослуховування якого необхідно ввести сказане</p>
+                    <a class="btn btn-purple text-light" href="@Url.Action("ListeningExercise", "Listening", new { area = ""})">Аудіювання</a>
                 </div>
             </div>
 
             <div class="card col-md-3 my-3 col-sm-5 col-12 text-center bg-dark text-light">
                 <img class="card-img-top" src="@Url.Content("~/Content/Images/constructor.png")" alt="constructor exercise image" style="max-width:250px;">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <a class="btn btn-purple text-light">Конструктор</a>
+                    <h5 class="card-title">Вправа конструктор.</h5>
+                    <p class="card-text">Є розбите на шматочки слово, вправа полягає в збиранні шматочків до купи.</p>
+                    <a class="btn btn-purple text-light" href="@Url.Action("ConstructorExercise", "Constructor", new { area = ""})">Конструктор</a>
                 </div>
             </div>
         </div>
@@ -71,9 +77,9 @@
         <div class="card col-12 text-center bg-dark text-light">
             <img class="card-img-top" src="@Url.Content("~/Content/Images/similar.png")" alt="similar exercise image" style="max-height:250px;">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <a class="btn btn-purple text-light">Синоніми</a>
+                <h5 class="card-title">Вправа синонімів</h5>
+                <p class="card-text">Є головне слово на іноземній мові, а також п’ять додаткових слів, серед цих п’яти необхідно знайти синонім головного слова</p>
+                <a class="btn btn-purple text-light" href="@Url.Action("SynonymExercise", "Synonym", new { area = ""})">Синоніми</a>
             </div>
         </div>
     </div>
