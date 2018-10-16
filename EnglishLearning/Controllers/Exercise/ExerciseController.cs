@@ -141,6 +141,7 @@ namespace EnglishLearning.Controllers
             {
                 case "translate": { return word.Word1 == value ? true : false; }
                 case "equivalent": { return word.Translate == value ? true : false; }
+                case "listening": { ViewBag.Answer = word.Word1; return word.Word1 == value ? true : false; }
             }
             return false;
         }
