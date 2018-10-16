@@ -137,11 +137,11 @@ namespace EnglishLearning.Controllers
         }
 
         private bool CompareResult(Word word, string value, string exercise) {
-            switch (exercise)
-            {
-                case "translate": { return word.Word1 == value ? true : false; }
-                case "equivalent": { return word.Translate == value ? true : false; }
-                case "listening": { ViewBag.Answer = word.Word1; return word.Word1 == value ? true : false; }
+            if (exercise == "translate" || exercise == "listening" || exercise == "constructor") {
+                return word.Word1 == value ? true : false;
+            }
+            if (exercise == "equivalent") {
+                return word.Translate == value ? true : false;
             }
             return false;
         }

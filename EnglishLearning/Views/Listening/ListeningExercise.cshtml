@@ -17,19 +17,19 @@
 <div class="d-flex flex-column flex-wrap justify-content-around align-items-center">
         <img class="img-fluid rounded col-6 col-md-4 my-2 img-active" src="@Url.Content("~/Content/Images/listen.png")" onclick="document.getElementById('audio').play()">
         
-        <div class="input-group col-8 col-md-4 my-4">
+        <div class="input-group col-8 col-md-6 col-lg-4 my-4 px-0">
             <input class="question form-control col-10" id="value" name="value" type="text">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary col-2 questionBtn" type="button">Далі</button>
+            <div class="input-group-append col-2 px-0">
+                <button class="btn btn-outline-secondary col-12 questionBtn" type="button">Далі</button>
             </div>
         </div>
         @*<input class="question form-control col-8 col-md-4 my-4" id="value" name="value" type="text">*@
 
-        <div class="alert alert-warning col-8 col-md-4 text-center py-1 mb-4" id="answer" role="alert" hidden></div>
-        @using (Html.BeginForm("ListeningExercise", "Listening", new { area = "" }, FormMethod.Post, new { @class="col-8 col-md-4 px-0 my-5"}))
+        <div class="alert alert-warning col-8 col-md-6 col-lg-4 text-center py-1 mb-4" id="answer" role="alert" hidden></div>
+        @using (Html.BeginForm("ListeningExercise", "Listening", new { area = "" }, FormMethod.Post, new { @class="col-8 col-md-6 col-lg-4 px-0 my-5"}))
         {
             @:<input type="hidden" name="StartIndex" value="@(ViewBag.StartIndex + 1)">
-            <input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal mt-5 text-light col-12" hidden value="Наступне">
+            <input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal text-light col-12" hidden value="Наступне">
         }
         @*<a id="NextBtn" name="NextBtn" class="btn btn-teal mt-5 text-light" href="@Url.Action("TranslateExercise", "Exercise", new { area="", StartIndex=(ViewBag.StartIndex+5) })" hidden>Наступне</a>*@
 </div>

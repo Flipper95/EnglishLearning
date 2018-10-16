@@ -10,35 +10,60 @@
 
 <h2>ConstructorExercise</h2>
 
-<div class="d-flex flex-row flex-wrap justify-content-around align-items-center">
+<div class="d-flex flex-column flex-wrap justify-content-around align-items-center">
+    @{
+        var word = Model[ViewBag.Index];
+    }
     <div class="d-flex flex-column col-8 col-md-3 mb-2">
-        <h4 style="font-size:6vw;">@Model[ViewBag.Index].Translate</h4>
-        <img class="img-fluid rounded img-disabled" src="@Url.Content("~/Content/Images/listen.png")">
-        @*<p style="font-size:3vw;">@Model[ViewBag.Index].Transcription</p>
-            <p style="font-size:3vw;">@Model[ViewBag.Index].PartOfSpeech</p>*@
+        <h4 style="font-size:6vw;">@word.Translate</h4>
     </div>
-    <div class="d-flex flex-column col-12 col-md-6 px-5">
-        @for (int i = ViewBag.StartIndex; i < ViewBag.StartIndex + 5; i++)
+    <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="value" ondrop="drop(event, this)" ondragover="allowDrop(event)"></div>
+    <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="question" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+        @*@{
+                char[] wordArray = word.Word1.ToCharArray();
+                {
+                    Random rand = new Random();
+                    for (int i = 0; i < wordArray.Length; i++)
+                    {
+                        int j = rand.Next(i, wordArray.Length);
+                        char temp = wordArray[i];
+                        wordArray[i] = wordArray[j];
+                        wordArray[j] = temp;
+                    }
+                }
+            }*@
+        @for (int i = 0; i < ViewBag.wordArray.Length; i++)
         {
-            //onclick = 'ShowNext()'
-            //"<div class='btn btn-purple text-light mb-3'>" + @Model[i].Word1 + "</div>"
-            @Ajax.RawActionLink(@Model[i].Word1, "CheckResult", "Translate", new { area="", id = @Model[i].WordId, value = @Model[i].Word1 },
-            new AjaxOptions { OnSuccess="AjaxResult(data)" }, new { id="link_"+ @Model[i].WordId, @class= "btn btn-purple text-light mb-3 question" })//result
+            <div class="btn btn-purple m-1 letter" id="block_@i" draggable="true" ondragstart="drag(event)">@ViewBag.wordArray[i]</div>
         }
-        @using (Html.BeginForm("TranslateExercise", "Translate", new { area = "" }, FormMethod.Post))
-        {
-            @:<input type="hidden" name="StartIndex" value="@(ViewBag.StartIndex + 5)">
-            @:<input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal mt-5 text-light col-12" hidden value="Наступне">
-        }
-        @*<a id="NextBtn" name="NextBtn" class="btn btn-teal mt-5 text-light" href="@Url.Action("TranslateExercise", "Exercise", new { area="", StartIndex=(ViewBag.StartIndex+5) })" hidden>Наступне</a>*@
     </div>
+    <button class="btn btn-purple col-8 col-md-6 col-lg-4 questionBtn" type="button">Далі</button>
+    <div class="alert alert-warning col-8 col-md-6 col-lg-4 text-center py-1 m-4" id="answer" role="alert" hidden></div>
+    @using (Html.BeginForm("ConstructorExercise", "Constructor", new { area = "" }, FormMethod.Post, new { @class="mt-4 col-8 col-md-6 col-lg-4 px-0"}))
+    {
+        @:<input type="hidden" name="StartIndex" value="@(ViewBag.StartIndex + 1)">
+        @:<input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal text-light col-12" hidden value="Наступне">
+    }
 </div>
 @section Scripts{
     <script type="text/javascript">
-        $("div a.question").on("click", function () {
-            $("div a.question").addClass("disabled");
-            $(this).addClass("active");
-            $("#NextBtn").removeAttr("hidden")//.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
+
+        $(".questionBtn").on("click", function () {
+            $(".questionBtn").prop("hidden", true);
+            $(".letter").off("click").addClass("disabled").addClass("active").prop("draggable", false);
+            //$("letter").addClass("active");
+            $("#NextBtn").removeAttr("hidden");
+
+            var text = $("#value").text();
+            $.ajax({
+                    type: "POST",
+                    url: "CheckResult",
+                    data: { id: @Model[ViewBag.Index].WordId, value: text },
+                    success: function (data) {
+                        AjaxResult(data);
+                    }
+            });
+            //.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
         });
 
         //var ShowNext = function () {
@@ -54,7 +79,35 @@
             }
             else {
                 el.addClass("btn-danger");
+                $.ajax({
+                    type: "GET",
+                    url: "GetAnswer",
+                    success: function (data) {
+                        $("#answer").removeAttr("hidden").text(String(data))
+                    }
+                });
             }
+        }
+
+        $(".letter").on("click", function () {
+            var id = $(this).parent().attr("id");
+            if (id === "value") $("#question").append($(this));
+            else $("#value").append($(this));
+        })
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev, el) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            el.appendChild(document.getElementById(data));
+            //ev.target.appendChild(document.getElementById(data));
         }
     </script>
     @Scripts.Render("~/bundles/ajax")
