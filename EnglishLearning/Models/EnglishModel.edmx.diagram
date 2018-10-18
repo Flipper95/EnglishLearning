@@ -10,7 +10,6 @@
         <EntityTypeShape EntityType="EnglishLearningModel.LearningWord" Width="1.5" PointX="7.5" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.Lection" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.Question" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnglishLearningModel.Synonym" Width="1.5" PointX="7.5" PointY="8" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.Test" Width="1.5" PointX="3" PointY="11.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.TestHistory" Width="1.5" PointX="5.25" PointY="14.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.User" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
@@ -22,7 +21,6 @@
         <AssociationConnector Association="EnglishLearningModel.LearningWord_Word" ManuallyRouted="false" />
         <AssociationConnector Association="EnglishLearningModel.Lection_User" ManuallyRouted="false" />
         <AssociationConnector Association="EnglishLearningModel.Question_Test" ManuallyRouted="false" />
-        <AssociationConnector Association="EnglishLearningModel.Synonym_Word" ManuallyRouted="false" />
         <AssociationConnector Association="EnglishLearningModel.Test_User" ManuallyRouted="false" />
         <AssociationConnector Association="EnglishLearningModel.TestHistory_Test" ManuallyRouted="false" />
         <AssociationConnector Association="EnglishLearningModel.TestHistory_User" ManuallyRouted="false" />

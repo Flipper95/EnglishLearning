@@ -113,7 +113,7 @@ namespace EnglishLearning.Controllers
 
         public bool CheckResult(int id, string value) {
             List<Word> words = Session["questions"] as List<Word>;
-            bool result = CompareResult(words[Convert.ToInt32(Session["Index"])], value, Session["Exercise"].ToString());
+            bool result = CompareResult(words[Convert.ToInt32(Session["Index"])], id, value, Session["Exercise"].ToString());
             if (result)
             {
                 Session["AnswerCount"] = Convert.ToInt32(Session["AnswerCount"]) + 1;
@@ -136,12 +136,15 @@ namespace EnglishLearning.Controllers
             return result;
         }
 
-        private bool CompareResult(Word word, string value, string exercise) {
+        private bool CompareResult(Word word, int id, string value, string exercise) {
             if (exercise == "translate" || exercise == "listening" || exercise == "constructor") {
                 return word.Word1 == value ? true : false;
             }
             if (exercise == "equivalent") {
                 return word.Translate == value ? true : false;
+            }
+            if (exercise == "synonyms") {
+                return word.WordId == id ? true : false;
             }
             return false;
         }

@@ -1,4 +1,4 @@
-﻿// Создание кода T4 для модели "E:\НАУ\Диплом магистра\ASP EF\EnglishLearning\EnglishLearning\Models\EnglishModel.edmx" включено. 
+﻿// Создание кода T4 для модели "E:\НАУ\Диплом магистра\Project ASP\EnglishLearning\EnglishLearning\Models\EnglishModel.edmx" включено. 
 // Чтобы включить формирование кода прежних версий, измените значение свойства "Стратегия создания кода" конструктора
 // на "Legacy ObjectContext". Это свойство доступно в окне "Свойства", если модель
 // открыта в конструкторе.

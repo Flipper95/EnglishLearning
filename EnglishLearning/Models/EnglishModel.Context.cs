@@ -30,7 +30,6 @@ namespace EnglishLearning.Models
         public virtual DbSet<LearningWord> LearningWord { get; set; }
         public virtual DbSet<Lection> Lection { get; set; }
         public virtual DbSet<Question> Question { get; set; }
-        public virtual DbSet<Synonym> Synonym { get; set; }
         public virtual DbSet<Test> Test { get; set; }
         public virtual DbSet<TestHistory> TestHistory { get; set; }
         public virtual DbSet<User> User { get; set; }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EnglishLearning.Models;
+using EnglishLearning.ExtendClasses;
 
 namespace EnglishLearning.Controllers.Exercise
 {
@@ -64,15 +65,7 @@ namespace EnglishLearning.Controllers.Exercise
 
         private char[] ShuffleWord(Word word)
         {
-            char[] wordArray = word.Word1.ToCharArray();
-            Random rand = new Random();
-            for (int i = 0; i < wordArray.Length; i++)
-            {
-                int j = rand.Next(i, wordArray.Length);
-                char temp = wordArray[i];
-                wordArray[i] = wordArray[j];
-                wordArray[j] = temp;
-            }
+            char[] wordArray = Shuffle.ShuffleList(word.Word1.ToList()).ToArray();
             return wordArray;
         }
 

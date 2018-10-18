@@ -104,6 +104,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="VoiceRSS_TTS_SDK">
+      <HintPath>..\..\VoiceRSS_TTS_SDK.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -209,6 +212,9 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Exercise\TranslateController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
+    <Compile Include="ExtendClasses\Shuffle.cs" />
+    <Compile Include="ExtendClasses\SynonymAPI.cs" />
+    <Compile Include="ExtendClasses\VoiceAPI.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -245,9 +251,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyIdentityInitializer.cs" />
     <Compile Include="Models\Question.cs">
-      <DependentUpon>EnglishModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Synonym.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Test.cs">

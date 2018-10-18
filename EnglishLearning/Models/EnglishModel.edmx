@@ -58,14 +58,6 @@
           <Property Name="TestId" Type="int" Nullable="false" />
           <Property Name="QuestText" Type="ntext" Nullable="false" />
         </EntityType>
-        <EntityType Name="Synonym">
-          <Key>
-            <PropertyRef Name="SynonymId" />
-          </Key>
-          <Property Name="SynonymId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstWordId" Type="int" Nullable="false" />
-          <Property Name="Synonyms" Type="nvarchar" MaxLength="200" Nullable="false" />
-        </EntityType>
         <EntityType Name="Test">
           <Key>
             <PropertyRef Name="TestId" />
@@ -112,6 +104,7 @@
           <Property Name="PartOfSpeech" Type="nvarchar" MaxLength="100" />
           <Property Name="Voice" Type="varbinary(max)" />
           <Property Name="Transcription" Type="nvarchar" MaxLength="100" />
+          <Property Name="Synonyms" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <Association Name="Answer_Question">
           <End Role="Question" Type="Self.Question" Multiplicity="1">
@@ -195,20 +188,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Synonym_Word">
-          <End Role="Word" Type="Self.Word" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Synonym" Type="Self.Synonym" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Word">
-              <PropertyRef Name="WordId" />
-            </Principal>
-            <Dependent Role="Synonym">
-              <PropertyRef Name="FirstWordId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Test_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -267,7 +246,6 @@
           <EntitySet Name="LearningWord" EntityType="Self.LearningWord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lection" EntityType="Self.Lection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Synonym" EntityType="Self.Synonym" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestHistory" EntityType="Self.TestHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -295,10 +273,6 @@
           <AssociationSet Name="Question_Test" Association="Self.Question_Test">
             <End Role="Test" EntitySet="Test" />
             <End Role="Question" EntitySet="Question" />
-          </AssociationSet>
-          <AssociationSet Name="Synonym_Word" Association="Self.Synonym_Word">
-            <End Role="Word" EntitySet="Word" />
-            <End Role="Synonym" EntitySet="Synonym" />
           </AssociationSet>
           <AssociationSet Name="Test_User" Association="Self.Test_User">
             <End Role="User" EntitySet="User" />
@@ -382,15 +356,6 @@
           <NavigationProperty Name="Answer" Relationship="Self.Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Test" Relationship="Self.Question_Test" FromRole="Question" ToRole="Test" />
         </EntityType>
-        <EntityType Name="Synonym">
-          <Key>
-            <PropertyRef Name="SynonymId" />
-          </Key>
-          <Property Name="SynonymId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstWordId" Type="Int32" Nullable="false" />
-          <Property Name="Synonyms" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Word" Relationship="Self.Synonym_Word" FromRole="Synonym" ToRole="Word" />
-        </EntityType>
         <EntityType Name="Test">
           <Key>
             <PropertyRef Name="TestId" />
@@ -449,7 +414,7 @@
           <Property Name="Transcription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Group" Relationship="Self.Word_Group" FromRole="Word" ToRole="Group" />
           <NavigationProperty Name="LearningWord" Relationship="Self.LearningWord_Word" FromRole="Word" ToRole="LearningWord" />
-          <NavigationProperty Name="Synonym" Relationship="Self.Synonym_Word" FromRole="Word" ToRole="Synonym" />
+          <Property Name="Synonyms" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="Answer_Question">
           <End Role="Question" Type="Self.Question" Multiplicity="1">
@@ -545,20 +510,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Synonym_Word">
-          <End Role="Word" Type="Self.Word" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Synonym" Type="Self.Synonym" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Word">
-              <PropertyRef Name="WordId" />
-            </Principal>
-            <Dependent Role="Synonym">
-              <PropertyRef Name="FirstWordId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Test_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -605,7 +556,6 @@
           <EntitySet Name="LearningWord" EntityType="Self.LearningWord" />
           <EntitySet Name="Lection" EntityType="Self.Lection" />
           <EntitySet Name="Question" EntityType="Self.Question" />
-          <EntitySet Name="Synonym" EntityType="Self.Synonym" />
           <EntitySet Name="Test" EntityType="Self.Test" />
           <EntitySet Name="TestHistory" EntityType="Self.TestHistory" />
           <EntitySet Name="User" EntityType="Self.User" />
@@ -637,10 +587,6 @@
           <AssociationSet Name="Question_Test" Association="Self.Question_Test">
             <End Role="Test" EntitySet="Test" />
             <End Role="Question" EntitySet="Question" />
-          </AssociationSet>
-          <AssociationSet Name="Synonym_Word" Association="Self.Synonym_Word">
-            <End Role="Word" EntitySet="Word" />
-            <End Role="Synonym" EntitySet="Synonym" />
           </AssociationSet>
           <AssociationSet Name="Test_User" Association="Self.Test_User">
             <End Role="User" EntitySet="User" />
@@ -719,15 +665,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Synonym">
-            <EntityTypeMapping TypeName="EnglishLearningModel.Synonym">
-              <MappingFragment StoreEntitySet="Synonym">
-                <ScalarProperty Name="SynonymId" ColumnName="SynonymId" />
-                <ScalarProperty Name="FirstWordId" ColumnName="FirstWordId" />
-                <ScalarProperty Name="Synonyms" ColumnName="Synonyms" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Test">
             <EntityTypeMapping TypeName="EnglishLearningModel.Test">
               <MappingFragment StoreEntitySet="Test">
@@ -769,6 +706,7 @@
           <EntitySetMapping Name="Word">
             <EntityTypeMapping TypeName="EnglishLearningModel.Word">
               <MappingFragment StoreEntitySet="Word">
+                <ScalarProperty Name="Synonyms" ColumnName="Synonyms" />
                 <ScalarProperty Name="WordId" ColumnName="WordId" />
                 <ScalarProperty Name="Word1" ColumnName="Word" />
                 <ScalarProperty Name="Translate" ColumnName="Translate" />

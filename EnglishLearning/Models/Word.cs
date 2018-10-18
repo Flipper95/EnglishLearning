@@ -18,7 +18,6 @@ namespace EnglishLearning.Models
         public Word()
         {
             this.LearningWord = new HashSet<LearningWord>();
-            this.Synonym = new HashSet<Synonym>();
         }
     
         public int WordId { get; set; }
@@ -28,11 +27,10 @@ namespace EnglishLearning.Models
         public string PartOfSpeech { get; set; }
         public byte[] Voice { get; set; }
         public string Transcription { get; set; }
+        public string Synonyms { get; set; }
     
         public virtual Group Group { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LearningWord> LearningWord { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Synonym> Synonym { get; set; }
     }
 }

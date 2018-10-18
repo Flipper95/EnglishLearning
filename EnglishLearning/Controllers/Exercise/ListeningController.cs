@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EnglishLearning.ExtendClasses;
 using EnglishLearning.Models;
 
 namespace EnglishLearning.Controllers.Exercise
@@ -47,9 +48,15 @@ namespace EnglishLearning.Controllers.Exercise
                 }
 
                 var query1 = (from word in db.Word
-                              where (query).OrderBy(x => Guid.NewGuid()).Take(5).Any(x => x.WordId == word.WordId)
+                              where (query).OrderBy(x => Guid.NewGuid()).Take(25).Any(x => x.WordId == word.WordId)
                               select word).OrderBy(x => Guid.NewGuid());
-                var result = query1.ToList();
+                //var result = query1.ToList();
+                var result = DownloadWords(query1, 5);
+                if (result.Count < 5) {
+                    SessionClear();
+                    ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
+                    return View("Index");
+                }
                 Session["questions"] = result;
                 return View(result);
             }
@@ -58,6 +65,39 @@ namespace EnglishLearning.Controllers.Exercise
                 var result = Session["questions"] as List<Word>;
                 return View(result);
             }
+        }
+
+        private List<Word> DownloadWords(IOrderedQueryable<Word> words, int totalCount) {
+            var query = words.Where(x => x.Voice != null);
+            int count = query.Count();
+            List<Word> result = query.ToList();
+            if (count < totalCount) {
+                var query2 = words.Where(x => x.Voice == null);//.Take(totalCount - count);
+                result = result.Concat(UploadVoice(query2.ToList(), totalCount - count)) as List<Word>;
+                db.SaveChanges();
+            }
+            return result;
+        }
+
+        private List<Word> UploadVoice(List<Word> list, int count)
+        {
+            VoiceAPI api = new VoiceAPI();
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if(list[i].Voice == null)
+                {
+                    if (count == 0) break;
+                    byte[] voice = api.UploadVoice(list[i].Word1);
+                    list[i].Voice = voice;
+                    if (list[i].Voice.Length <= 1)
+                    {
+                        list.Remove(list[i]);
+                    }
+                    else count--;
+                }
+            }
+            list.RemoveAll(x => x.Voice == null);
+            return list;
         }
 
         public ActionResult LoadAudio(string value)

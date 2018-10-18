@@ -62,9 +62,13 @@ namespace EnglishLearning.Controllers.Exercise
         public ActionResult LoadAudio(string value)
         {
             Word w = (Session["questions"] as List<Word>)[Convert.ToInt32(Session["Index"])];
-            if (w.Voice.Length > 1)
+            if (w.Voice != null)
             {
-                return base.File(w.Voice, "audio/wav");
+                if (w.Voice.Length > 1)
+                {
+                    return base.File(w.Voice, "audio/wav");
+                }
+                return base.File(new byte[1], "audio/wav");
             }
             else return base.File(new byte[1], "audio/wav");
         }
