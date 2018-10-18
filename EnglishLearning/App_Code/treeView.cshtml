@@ -1,0 +1,52 @@
+﻿@using System.Web.Mvc;
+@using System.Web.Mvc.Routing;
+@using System.Web.Mvc.Razor;
+@functions {
+    private static WebViewPage page { get { return PageContext.Page as WebViewPage; } }
+    //private static System.Web.Mvc.HtmlHelper<dynamic> html { get { return page.Html; } }
+    private static UrlHelper url { get { return page.Url; } }
+    //private static dynamic viewBag { get { return page.ViewBag; } }
+}
+
+@helper buildTree(List<EnglishLearning.Models.LectionGroup> tree, int parentId, IQueryable<EnglishLearning.Models.Lection> lections){
+foreach (var el in tree.Where(x => x.ParentId.Equals(parentId)))
+{
+    <li>
+    @{
+        var count = tree.Where(x => x.ParentId.Equals(el.LectionGroupId)).Count();
+        if (count > 0)
+        {
+            <a class="btn btn-secondary m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>
+        }
+        else
+        {
+            var query = lections.Where(x => x.LectionType.Equals(el.LectionGroupId)).ToList();
+            if (query.Count() > 0)
+            {
+            <a class="btn btn-purple m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>
+            <div class="collapse multi-collapse" id="Collapse_@el.LectionGroupId">
+                <ol type="I">
+                    @foreach (var leaf in query)
+                    {
+                        <li>
+                            <a class="btn btn-info my-1 treeNode" href="@url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId });">
+                                @leaf.Name
+                            </a>
+                        </li>
+                    }
+                </ol>
+            </div>
+            }
+            else {
+                <a class="btn btn-secondary disabled m-1 treeNode" disabled data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>
+            }
+        }
+        if (count > 0) {
+            <ul id="Collapse_@el.LectionGroupId">
+                @treeView.buildTree(tree, el.LectionGroupId, lections)
+            </ul>
+        }
+    }
+    </li>
+}
+}

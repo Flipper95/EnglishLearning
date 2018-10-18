@@ -12,18 +12,19 @@ namespace EnglishLearning.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Lection
+    public partial class LectionGroup
     {
-        public int LectionId { get; set; }
-        public string Name { get; set; }
-        public int OwnerId { get; set; }
-        public int LectionType { get; set; }
-        public string Description { get; set; }
-        public byte[] LectionText { get; set; }
-        public Nullable<bool> Editable { get; set; }
-        public string ExportOwner { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public LectionGroup()
+        {
+            this.Lection = new HashSet<Lection>();
+        }
     
-        public virtual User User { get; set; }
-        public virtual LectionGroup LectionGroup { get; set; }
+        public int LectionGroupId { get; set; }
+        public string Name { get; set; }
+        public int ParentId { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Lection> Lection { get; set; }
     }
 }

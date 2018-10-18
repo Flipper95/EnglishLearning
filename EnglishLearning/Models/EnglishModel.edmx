@@ -44,11 +44,19 @@
           <Property Name="LectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="OwnerId" Type="int" Nullable="false" />
-          <Property Name="LectionType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LectionType" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="LectionText" Type="varbinary(max)" />
           <Property Name="Editable" Type="bit" />
           <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="LectionGroup">
+          <Key>
+            <PropertyRef Name="LectionGroupId" />
+          </Key>
+          <Property Name="LectionGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -160,6 +168,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Lection_LectionGroup">
+          <End Role="LectionGroup" Type="Self.LectionGroup" Multiplicity="1" />
+          <End Role="Lection" Type="Self.Lection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LectionGroup">
+              <PropertyRef Name="LectionGroupId" />
+            </Principal>
+            <Dependent Role="Lection">
+              <PropertyRef Name="LectionType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Lection_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -245,6 +265,7 @@
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LearningWord" EntityType="Self.LearningWord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lection" EntityType="Self.Lection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LectionGroup" EntityType="Self.LectionGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestHistory" EntityType="Self.TestHistory" Schema="dbo" store:Type="Tables" />
@@ -265,6 +286,10 @@
           <AssociationSet Name="LearningWord_Word" Association="Self.LearningWord_Word">
             <End Role="Word" EntitySet="Word" />
             <End Role="LearningWord" EntitySet="LearningWord" />
+          </AssociationSet>
+          <AssociationSet Name="Lection_LectionGroup" Association="Self.Lection_LectionGroup">
+            <End Role="LectionGroup" EntitySet="LectionGroup" />
+            <End Role="Lection" EntitySet="Lection" />
           </AssociationSet>
           <AssociationSet Name="Lection_User" Association="Self.Lection_User">
             <End Role="User" EntitySet="User" />
@@ -339,12 +364,13 @@
           <Property Name="LectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="OwnerId" Type="Int32" Nullable="false" />
-          <Property Name="LectionType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LectionType" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="LectionText" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Editable" Type="Boolean" />
           <Property Name="ExportOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="Self.Lection_User" FromRole="Lection" ToRole="User" />
+          <NavigationProperty Name="LectionGroup" Relationship="EnglishLearningModel.Lection_LectionGroup" FromRole="Lection" ToRole="LectionGroup" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -600,7 +626,33 @@
             <End Role="User" EntitySet="User" />
             <End Role="TestHistory" EntitySet="TestHistory" />
           </AssociationSet>
+          <EntitySet Name="LectionGroup" EntityType="EnglishLearningModel.LectionGroup" />
+          <AssociationSet Name="Lection_LectionGroup" Association="EnglishLearningModel.Lection_LectionGroup">
+            <End Role="LectionGroup" EntitySet="LectionGroup" />
+            <End Role="Lection" EntitySet="Lection" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="LectionGroup">
+          <Key>
+            <PropertyRef Name="LectionGroupId" />
+          </Key>
+          <Property Name="LectionGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Lection" Relationship="EnglishLearningModel.Lection_LectionGroup" FromRole="LectionGroup" ToRole="Lection" />
+        </EntityType>
+        <Association Name="Lection_LectionGroup">
+          <End Type="EnglishLearningModel.LectionGroup" Role="LectionGroup" Multiplicity="1" />
+          <End Type="EnglishLearningModel.Lection" Role="Lection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LectionGroup">
+              <PropertyRef Name="LectionGroupId" />
+            </Principal>
+            <Dependent Role="Lection">
+              <PropertyRef Name="LectionType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -714,6 +766,15 @@
                 <ScalarProperty Name="PartOfSpeech" ColumnName="PartOfSpeech" />
                 <ScalarProperty Name="Voice" ColumnName="Voice" />
                 <ScalarProperty Name="Transcription" ColumnName="Transcription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LectionGroup">
+            <EntityTypeMapping TypeName="EnglishLearningModel.LectionGroup">
+              <MappingFragment StoreEntitySet="LectionGroup">
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LectionGroupId" ColumnName="LectionGroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -209,6 +209,7 @@
     <Compile Include="Controllers\Exercise\ListeningController.cs" />
     <Compile Include="Controllers\Exercise\SynonymsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LectionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Exercise\TranslateController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
@@ -246,6 +247,9 @@
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Lection.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LectionGroup.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
@@ -317,6 +321,7 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Content\MyBootstrap.css.map" />
+    <Content Include="App_Code\treeView.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -380,6 +385,7 @@
     <Content Include="Views\Listening\ListeningExercise.cshtml" />
     <Content Include="Views\Constructor\ConstructorExercise.cshtml" />
     <Content Include="Views\Synonyms\SynonymsExercise.cshtml" />
+    <Content Include="Views\Lection\ShowByGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

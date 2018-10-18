@@ -1,0 +1,28 @@
+﻿@model List<EnglishLearning.Models.LectionGroup>
+@{
+    ViewBag.Title = "ShowByGroup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    ul {
+        list-style: none;
+    }
+    .treeNode {
+        width:50%;
+    }
+</style>
+
+<h2>ShowByGroup</h2>
+
+@if (Model.Count() > 0)
+{
+    <a class="btn btn-secondary my-2" data-toggle="collapse" href="#Collapse_0" role="button" aria-expanded="false" aria-controls="#Collapse_0">Список по групам</a>
+    <div class="collapse multi-collapse" id="Collapse_0">
+    <ul>
+        @treeView.buildTree(Model, Model.FirstOrDefault().ParentId, ViewBag.Lections)
+    </ul>
+    </div>
+
+}
+
