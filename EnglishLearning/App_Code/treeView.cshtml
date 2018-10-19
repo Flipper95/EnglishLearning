@@ -20,7 +20,7 @@ foreach (var el in tree.Where(x => x.ParentId.Equals(parentId)))
         }
         else
         {
-            var query = lections.Where(x => x.LectionType.Equals(el.LectionGroupId)).ToList();
+            var query = lections.Where(x => x.LectionType.Equals(el.LectionGroupId)).Select(x => new EnglishLearning.Controllers.LectionChoice.SimpleLection { Name = x.Name, LectionId = x.LectionId}).ToList();
             if (query.Count() > 0)
             {
             <a class="btn btn-purple m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>

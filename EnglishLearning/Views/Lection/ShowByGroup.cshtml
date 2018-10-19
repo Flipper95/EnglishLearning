@@ -5,11 +5,13 @@
 }
 
 <style>
-    ul {
+    .listByGroup {
         list-style: none;
+        columns: 2;
     }
+
     .treeNode {
-        width:50%;
+        width: 50%;
     }
 </style>
 
@@ -19,9 +21,60 @@
 {
     <a class="btn btn-secondary my-2" data-toggle="collapse" href="#Collapse_0" role="button" aria-expanded="false" aria-controls="#Collapse_0">Список по групам</a>
     <div class="collapse multi-collapse" id="Collapse_0">
-    <ul>
-        @treeView.buildTree(Model, Model.FirstOrDefault().ParentId, ViewBag.Lections)
+        <ul class="listByGroup">
+            @treeView.buildTree(Model, Model.FirstOrDefault().ParentId, ViewBag.Lections)
+        </ul>
+    </div>
+
+    @*<nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-beginner-tab" data-toggle="tab" href="#nav-beginner" role="tab" aria-controls="nav-beginner" aria-selected="true">Beginner</a>
+            <a class="nav-item nav-link" id="nav-elementary-tab" data-toggle="tab" href="#nav-elemetary" role="tab" aria-controls="nav-elementary" aria-selected="false">Elementary</a>
+            <a class="nav-item nav-link" id="nav-intermediate-tab" data-toggle="tab" href="#nav-intermediate" role="tab" aria-controls="nav-intermediate" aria-selected="false">Intermediate</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-beginner" role="tabpanel" aria-labelledby="nav-beginner-tab">
+            @Html.Action("ShowByComplexity", new { area = "", complexity = "Beginner" })
+        </div>
+        <div class="tab-pane fade show active" id="nav-elementary" role="tabpanel" aria-labelledby="nav-elementary-tab">
+            @Html.Action("ShowByComplexity", new { area = "", complexity = "Elementary" })
+        </div>
+        <div class="tab-pane fade show active" id="nav-intermediate" role="tabpanel" aria-labelledby="nav-intermediate-tab">
+            @Html.Action("ShowByComplexity", new { area = "", complexity = "Intermediate" })
+        </div>
+
+    </div>*@
+
+
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link bg-secondary text-light active" id="beginner-tab" data-toggle="tab" href="#beginner" role="tab" aria-controls="beginner" aria-selected="true">Beginner</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link bg-secondary text-light" id="elementary-tab" data-toggle="tab" href="#elementary" role="tab" aria-controls="elementary" aria-selected="false">Elementary</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link bg-secondary text-light" id="intermediate-tab" data-toggle="tab" href="#intermediate" role="tab" aria-controls="intermediate" aria-selected="false">Intermediate</a>
+        </li>
     </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="beginner" role="tabpanel" aria-labelledby="beginner-tab">
+            <div class="card-columns">
+                @Html.Action("ShowByComplexity", new { area = "", complexity = "Beginner" })
+            </div>
+        </div>
+        <div class="tab-pane fade" id="elementary" role="tabpanel" aria-labelledby="elementary-tab">
+            <div class="card-columns">
+                @Html.Action("ShowByComplexity", new { area = "", complexity = "Elementary" })
+            </div>
+        </div>
+        <div class="tab-pane fade" id="intermediate" role="tabpanel" aria-labelledby="intermediate-tab">
+            <div class="card-columns">
+                @Html.Action("ShowByComplexity", new { area = "", complexity = "Intermediate" })
+            </div>
+        </div>
     </div>
 
 }

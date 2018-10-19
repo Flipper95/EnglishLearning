@@ -22,6 +22,8 @@ namespace EnglishLearning.Models
         public byte[] LectionText { get; set; }
         public Nullable<bool> Editable { get; set; }
         public string ExportOwner { get; set; }
+        public string Complexity { get; set; }
+        public int ComplexityOrder { get; set; }
     
         public virtual User User { get; set; }
         public virtual LectionGroup LectionGroup { get; set; }

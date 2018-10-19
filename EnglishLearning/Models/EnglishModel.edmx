@@ -49,6 +49,8 @@
           <Property Name="LectionText" Type="varbinary(max)" />
           <Property Name="Editable" Type="bit" />
           <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
+          <Property Name="Complexity" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ComplexityOrder" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LectionGroup">
           <Key>
@@ -371,6 +373,8 @@
           <Property Name="ExportOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="Self.Lection_User" FromRole="Lection" ToRole="User" />
           <NavigationProperty Name="LectionGroup" Relationship="EnglishLearningModel.Lection_LectionGroup" FromRole="Lection" ToRole="LectionGroup" />
+          <Property Name="Complexity" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ComplexityOrder" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -697,6 +701,8 @@
           <EntitySetMapping Name="Lection">
             <EntityTypeMapping TypeName="EnglishLearningModel.Lection">
               <MappingFragment StoreEntitySet="Lection">
+                <ScalarProperty Name="ComplexityOrder" ColumnName="ComplexityOrder" />
+                <ScalarProperty Name="Complexity" ColumnName="Complexity" />
                 <ScalarProperty Name="LectionId" ColumnName="LectionId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
