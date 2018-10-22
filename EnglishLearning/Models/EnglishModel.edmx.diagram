@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="875d5208cc444b5ea0cbd87ead086143" Name="Diagram1" ZoomLevel="86">
+      <Diagram DiagramId="875d5208cc444b5ea0cbd87ead086143" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="EnglishLearningModel.Answer" Width="1.5" PointX="7.5" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.Group" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EnglishLearningModel.LearningWord" Width="1.5" PointX="7.5" PointY="4" IsExpanded="true" />
@@ -26,6 +26,8 @@
         <AssociationConnector Association="EnglishLearningModel.TestHistory_User" ManuallyRouted="false" />
         <EntityTypeShape EntityType="EnglishLearningModel.LectionGroup" Width="1.5" PointX="0.75" PointY="0.75" />
         <AssociationConnector Association="EnglishLearningModel.Lection_LectionGroup" />
+        <EntityTypeShape EntityType="EnglishLearningModel.TestGroup" Width="1.5" PointX="3.375" PointY="0.875" />
+        <AssociationConnector Association="EnglishLearningModel.Test_TestGroup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

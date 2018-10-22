@@ -24,6 +24,7 @@ namespace EnglishLearning.Models
         public string ExportOwner { get; set; }
         public string Complexity { get; set; }
         public int ComplexityOrder { get; set; }
+        public string LectionPath { get; set; }
     
         public virtual User User { get; set; }
         public virtual LectionGroup LectionGroup { get; set; }

@@ -78,9 +78,17 @@
           <Property Name="OwnerId" Type="int" Nullable="false" />
           <Property Name="Difficult" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="TaskCount" Type="int" Nullable="false" />
-          <Property Name="TestType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TestType" Type="int" Nullable="false" />
           <Property Name="Editable" Type="bit" />
           <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TestGroup">
+          <Key>
+            <PropertyRef Name="TestGroupId" />
+          </Key>
+          <Property Name="TestGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TestHistory">
           <Key>
@@ -211,6 +219,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Test_TestGroup">
+          <End Role="TestGroup" Type="Self.TestGroup" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestGroup">
+              <PropertyRef Name="TestGroupId" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="TestType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Test_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -271,6 +291,7 @@
           <EntitySet Name="LectionGroup" EntityType="Self.LectionGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestGroup" EntityType="Self.TestGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestHistory" EntityType="Self.TestHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Word" EntityType="Self.Word" Schema="dbo" store:Type="Tables" />
@@ -301,6 +322,10 @@
           <AssociationSet Name="Question_Test" Association="Self.Question_Test">
             <End Role="Test" EntitySet="Test" />
             <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="Test_TestGroup" Association="Self.Test_TestGroup">
+            <End Role="TestGroup" EntitySet="TestGroup" />
+            <End Role="Test" EntitySet="Test" />
           </AssociationSet>
           <AssociationSet Name="Test_User" Association="Self.Test_User">
             <End Role="User" EntitySet="User" />
@@ -397,12 +422,13 @@
           <Property Name="OwnerId" Type="Int32" Nullable="false" />
           <Property Name="Difficult" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TaskCount" Type="Int32" Nullable="false" />
-          <Property Name="TestType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TestType" Type="Int32" Nullable="false" />
           <Property Name="Editable" Type="Boolean" />
           <Property Name="ExportOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Question" Relationship="Self.Question_Test" FromRole="Test" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Self.Test_User" FromRole="Test" ToRole="User" />
           <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_Test" FromRole="Test" ToRole="TestHistory" />
+          <NavigationProperty Name="TestGroup" Relationship="EnglishLearningModel.Test_TestGroup" FromRole="Test" ToRole="TestGroup" />
         </EntityType>
         <EntityType Name="TestHistory">
           <Key>
@@ -637,6 +663,11 @@
             <End Role="LectionGroup" EntitySet="LectionGroup" />
             <End Role="Lection" EntitySet="Lection" />
           </AssociationSet>
+          <EntitySet Name="TestGroup" EntityType="EnglishLearningModel.TestGroup" />
+          <AssociationSet Name="Test_TestGroup" Association="EnglishLearningModel.Test_TestGroup">
+            <End Role="TestGroup" EntitySet="TestGroup" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LectionGroup">
           <Key>
@@ -656,6 +687,27 @@
             </Principal>
             <Dependent Role="Lection">
               <PropertyRef Name="LectionType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TestGroup">
+          <Key>
+            <PropertyRef Name="TestGroupId" />
+          </Key>
+          <Property Name="TestGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Test" Relationship="EnglishLearningModel.Test_TestGroup" FromRole="TestGroup" ToRole="Test" />
+        </EntityType>
+        <Association Name="Test_TestGroup">
+          <End Type="EnglishLearningModel.TestGroup" Role="TestGroup" Multiplicity="1" />
+          <End Type="EnglishLearningModel.Test" Role="Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestGroup">
+              <PropertyRef Name="TestGroupId" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="TestType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -784,6 +836,15 @@
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="LectionGroupId" ColumnName="LectionGroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestGroup">
+            <EntityTypeMapping TypeName="EnglishLearningModel.TestGroup">
+              <MappingFragment StoreEntitySet="TestGroup">
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TestGroupId" ColumnName="TestGroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

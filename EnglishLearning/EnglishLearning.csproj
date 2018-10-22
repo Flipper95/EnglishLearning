@@ -260,6 +260,9 @@
     <Compile Include="Models\Test.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TestGroup.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TestHistory.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
