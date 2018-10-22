@@ -15,6 +15,9 @@ namespace EnglishLearning.Controllers
         // GET: Exercise
         public ActionResult Index() //int? SuccessPercent, string ErrorMessage = "", string SuccessMessage = ""
         {
+            if (TempData["ErrorMessage"] != null) {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
             //ViewBag.SuccessMessage = SuccessMessage;
             //ViewBag.SuccessPercent = SuccessPercent;
             return View();

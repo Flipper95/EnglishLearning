@@ -1,0 +1,44 @@
+﻿@model List<EnglishLearning.Models.Lection>
+@{
+    ViewBag.Title = "ShowLection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .body-content{
+        min-width: 100vw;
+    }
+    .main-content {
+        min-height: 85vh;
+    }
+    .document-content {
+        height: 85vh;
+    }
+    .document {
+        width: 100%;
+        height: 100%;
+    }
+    footer {
+        display: none;
+    }
+    hr {
+        display: none;
+    }
+</style>
+<h2>@Model[ViewBag.Index].Name</h2>
+
+@{
+    var path = HttpContext.Current.Server.MapPath(Model[ViewBag.Index].LectionPath);//"~/App_Data/Lections/Way.pdf"
+}
+<div class="d-flex flex-row flex-wrap main-content">
+    <div class="col-12 col-lg-2 align-self-start">
+        <p>Схожі лекції по темі:</p>
+        @foreach (var el in Model) {
+            <a class="mb-1 mr-1 btn @(el.LectionId == Model[ViewBag.Index].LectionId ? "btn-purple" : "btn-secondary")" href="@Url.RouteUrl("Lection", new{action = "ShowLection", controller = "Lection", area="", id = el.LectionId})">@el.Name</a>
+        }
+    </div>
+    <div class="col-12 col-lg-10 pr-2 align-self-stretch document-content">
+        <object class="document" data="@Url.Action("GetPDF", new { area="", filePath = path})" type="application/pdf" width="300" height="200">
+            <embed src="@path" type="application/pdf" />
+        </object>
+    </div>
+</div>

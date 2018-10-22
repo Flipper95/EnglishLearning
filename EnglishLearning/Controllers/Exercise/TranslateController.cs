@@ -41,8 +41,10 @@ namespace EnglishLearning.Controllers
                 if (total < 25)
                 {
                     SessionClear();
-                    ViewBag.ErrorMessage = "Кількість слів для вправи перекладу не достатньо, виберіть додаткових слів на вивчення";
-                    return View("Index");
+                    TempData["ErrorMessage"] = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
+                    return RedirectToAction("Index", "Exercise", new { area = "" });
+                    //ViewBag.ErrorMessage = "Кількість слів для вправи перекладу не достатньо, виберіть додаткових слів на вивчення";
+                    //return View("Index");
                 }
 
                 var query1 = (from word in db.Word

@@ -1,6 +1,7 @@
 ﻿using EnglishLearning.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -39,6 +40,24 @@ namespace EnglishLearning.Controllers
                            };
             return PartialView("LectionsByComplexity", lections.ToList());
         }
+
+        public ActionResult ShowLection(int id) {
+            var lection = (from lect in db.Lection
+                          where lect.LectionId == id
+                          select lect).FirstOrDefault();
+            var allLections = from lect in db.Lection
+                           where lect.LectionType == lection.LectionType
+                           select lect;
+            List<Lection> lections = allLections.ToList();
+            ViewBag.Index = lections.IndexOf(lection);
+            return View(lections);
+        }
+
+        public FileStreamResult GetPDF(string filePath) {
+            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(fs, "application/pdf");
+        }
+
     }
 
     public class LectionChoice {

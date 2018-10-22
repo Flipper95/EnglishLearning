@@ -13,6 +13,17 @@ namespace EnglishLearning
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(name: "Lection",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Lection", action = "ShowLection" },
+                constraints: new { id = @"\d" },
+                namespaces: new[] { "EnglishLearning.Controllers" });
+
+            //routes.MapRoute(name:"LectionChoice",
+            //    url: "{controller}/{action}/{complexity}",
+            //    defaults: new { controller = "Lection", action = "ShowByComplexity" },
+            //    namespaces: new[] { "EnglishLearning.Controllers" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

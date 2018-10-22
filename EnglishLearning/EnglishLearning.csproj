@@ -387,6 +387,7 @@
     <Content Include="Views\Synonyms\SynonymsExercise.cshtml" />
     <Content Include="Views\Lection\ShowByGroup.cshtml" />
     <Content Include="Views\Lection\LectionsByComplexity.cshtml" />
+    <Content Include="Views\Lection\ShowLection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

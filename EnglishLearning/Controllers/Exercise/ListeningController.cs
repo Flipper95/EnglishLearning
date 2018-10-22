@@ -43,8 +43,10 @@ namespace EnglishLearning.Controllers.Exercise
                 if (total < 5)
                 {
                     SessionClear();
-                    ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    return View("Index");
+                    TempData["ErrorMessage"] = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
+                    return RedirectToAction("Index", "Exercise", new { area = "" });
+                    //ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
+                    //return View("Index");
                 }
 
                 var query1 = (from word in db.Word
@@ -54,8 +56,10 @@ namespace EnglishLearning.Controllers.Exercise
                 var result = DownloadWords(query1, 5);
                 if (result.Count < 5) {
                     SessionClear();
-                    ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    return View("Index");
+                    TempData["ErrorMessage"] = " Не вдалося завантажити озвучування cлова для вправи, спробуйте пізніше";
+                    return RedirectToAction("Index", "Exercise", new { area = "" });
+                    //ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
+                    //return View("Index");
                 }
                 Session["questions"] = result;
                 return View(result);
