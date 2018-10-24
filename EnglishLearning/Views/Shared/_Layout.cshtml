@@ -30,6 +30,9 @@
                     <a class="nav-link" href="@Url.Action("ShowByGroup", "Lection", new { area = "" })">Лекції</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Test", new { area = "" })">Тести</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("About", "Home", new { area = "" })">Домашня сторінка</a>
                 </li>
                 <li class="nav-item">
@@ -54,9 +57,9 @@
         </footer>
     </div>
 
-    
-    @Scripts.Render("~/bundles/popperBootstrap")
+
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/popperBootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

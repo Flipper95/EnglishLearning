@@ -19,8 +19,8 @@ namespace EnglishLearning.Controllers
         }
 
         public ActionResult ShowByGroup() {
-            List<LectionGroup> allGroups = new List<LectionGroup>();
-            allGroups = db.LectionGroup.OrderBy(x => x.ParentId).ToList();
+            List<GroupModel> allGroups = new List<GroupModel>();
+            allGroups = db.LectionGroup.OrderBy(x => x.ParentId).Select(x => new GroupModel { Id=x.LectionGroupId, ParentId = x.ParentId, Name = x.Name}).ToList();
             var lections = from lection in db.Lection
                            where lection.OwnerId == 1
                            select lection;

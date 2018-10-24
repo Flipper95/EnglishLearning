@@ -212,6 +212,7 @@
     <Compile Include="Controllers\LectionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Exercise\TranslateController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
     <Compile Include="ExtendClasses\Shuffle.cs" />
     <Compile Include="ExtendClasses\SynonymAPI.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Models\Group.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LearningWord.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
@@ -391,6 +393,10 @@
     <Content Include="Views\Lection\ShowByGroup.cshtml" />
     <Content Include="Views\Lection\LectionsByComplexity.cshtml" />
     <Content Include="Views\Lection\ShowLection.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\Test.cshtml" />
+    <Content Include="Views\Test\ShowAnswers.cshtml" />
+    <Content Include="Views\Test\ShowResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

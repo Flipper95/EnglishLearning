@@ -1,0 +1,24 @@
+﻿@model List<EnglishLearning.Models.Answer>
+
+<h2 class="mb-5">
+    @ViewBag.Question
+</h2>
+@foreach (var el in Model)
+{
+    string check="";
+    if (ViewBag.Checked != null) {
+        check = ViewBag.Checked.Contains(el.AnswerId) == true ? "checked" : "";
+    }
+    <div class="custom-control custom-checkbox">
+        @*@(ViewBag.Checked.Contains(el.AnswerId) == true ? "active" : "")*@
+        <input type="checkbox" class="custom-control-input answer" id="@(el.AnswerId)Cb" @check>  @*@(ViewBag.Checked.Contains(el.AnswerId) == true ? "checked" : "")*@
+        <label class="custom-control-label h4" for="@(el.AnswerId)Cb">@el.AnswerText</label>
+    </div>
+}
+<div class="d-flex flex-wrap col-12 mt-5 p-0">
+    @if (ViewBag.NextId != null)
+    {
+        <a class="btn btn-purple next_link text-light col-12 col-md-5 col-lg-4 mb-3 mr-3" id="@ViewBag.NextId" data="@Url.Action("ShowAnswers", new { area = "" })">Далі</a>
+    }
+    <a class="btn btn-purple text-light col-12 col-md-5 col-lg-4 mb-3 mr-3" id="EndTest" data="@Url.Action("SaveAnswers","Test", new {area="" })">Завершити тест</a>
+</div>

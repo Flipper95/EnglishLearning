@@ -3,50 +3,113 @@
 @using System.Web.Mvc.Razor;
 @functions {
     private static WebViewPage page { get { return PageContext.Page as WebViewPage; } }
-    //private static System.Web.Mvc.HtmlHelper<dynamic> html { get { return page.Html; } }
+    private static System.Web.Mvc.HtmlHelper<dynamic> html { get { return page.Html; } }
     private static UrlHelper url { get { return page.Url; } }
     //private static dynamic viewBag { get { return page.ViewBag; } }
+    private static string TreeForLection(IQueryable<EnglishLearning.Models.Lection> lections, int groupdId)//, string name)
+    {
+        int id = groupdId;
+        List<EnglishLearning.Controllers.LectionChoice.SimpleLection> query = lections.Where(x => x.LectionType.Equals(id)).Select(x => new EnglishLearning.Controllers.LectionChoice.SimpleLection { Name = x.Name, LectionId = x.LectionId }).ToList();
+        string str = "";
+        //if (query.Count > 0) {
+        //str += "<a class='btn btn-purple m-1 treeNode' data-toggle='collapse' href='#Collapse_" + id + "' role='button' aria-expanded='false' aria-controls='#Collapse_" + id + "'>"+name+"</a>" +
+        //            "<div class='collapse multi-collapse' id='Collapse_" + id + "'><ol type='I'>";
+        foreach(var leaf in query)
+        {
+            str+= "<li><a class='btn btn-info my-1 treeNode' href='" + url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId }) + "'>" + leaf.Name + "<a></li>";
+        }
+        //str += "</ol></div>";
+        //}
+        //else {
+        //    str += "<a class='btn btn-secondary disabled m-1 treeNode' disabled data-toggle='collapse' href='#Collapse_" + id + "' role='button' aria-expanded='false' aria-controls='#Collapse_" + id + "'>" + name + "</a>";
+        //}
+        return str;
+    }
+
+    private static int LectionCount(IQueryable<EnglishLearning.Models.Lection> lections, int groupdId)
+    {
+        int id = groupdId;
+        return lections.Where(x => x.LectionType.Equals(id)).Count();
+    }
+
+    private static string TreeForTests(IQueryable<EnglishLearning.Models.Test> tests, int groupdId)//, string name)
+    {
+        int id = groupdId;
+        List<EnglishLearning.Models.Test> query = tests.Where(x => x.TestType.Equals(id)).ToList();
+        string str = "";
+        foreach (var leaf in query)
+        {
+            str += "<li><a class='btn btn-info my-1 treeNode' href='" + url.Action("Test", "Test", new { area = "", id = leaf.TestId }) + "'>" + leaf.Name + "<a></li>";
+        }
+        return str;
+    }
+
+    private static int TestCount(IQueryable<EnglishLearning.Models.Test> tests, int groupdId)
+    {
+        int id = groupdId;
+        return tests.Where(x => x.TestType.Equals(id)).Count();
+    }
 }
 
-@helper buildTree(List<EnglishLearning.Models.LectionGroup> tree, int parentId, IQueryable<EnglishLearning.Models.Lection> lections){
-foreach (var el in tree.Where(x => x.ParentId.Equals(parentId)))
+@helper buildTree(List<EnglishLearning.Models.GroupModel> tree, int parentId, object lections)
 {
-    <li>
-    @{
-        var count = tree.Where(x => x.ParentId.Equals(el.LectionGroupId)).Count();
-        if (count > 0)
-        {
-            <a class="btn btn-secondary m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>
-        }
-        else
-        {
-            var query = lections.Where(x => x.LectionType.Equals(el.LectionGroupId)).Select(x => new EnglishLearning.Controllers.LectionChoice.SimpleLection { Name = x.Name, LectionId = x.LectionId}).ToList();
-            if (query.Count() > 0)
-            {
-            <a class="btn btn-purple m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>
-            <div class="collapse multi-collapse" id="Collapse_@el.LectionGroupId">
-                <ol type="I">
-                    @foreach (var leaf in query)
-                    {
-                        <li>
-                            <a class="btn btn-info my-1 treeNode" href="@url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId });">
-                                @leaf.Name
-                            </a>
-                        </li>
+    foreach (var el in tree.Where(x => x.ParentId.Equals(parentId)))
+    {
+        <li>
+            @{
+                var count = tree.Where(x => x.ParentId.Equals(el.Id)).Count();
+                if (count > 0)
+                {
+                    <a class="btn btn-secondary m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.Id" role="button" aria-expanded="false" aria-controls="#Collapse_@el.Id">@el.Name</a>
+                }
+                else
+                {
+                    int nodeCount = 0;
+                    if (lections as IQueryable<EnglishLearning.Models.Lection> != null) {
+                        nodeCount = LectionCount(lections as IQueryable<EnglishLearning.Models.Lection>, el.Id);
                     }
-                </ol>
-            </div>
+                    else {
+                        nodeCount = TestCount(lections as IQueryable<EnglishLearning.Models.Test>, el.Id);
+                    }
+                    //var query = lections.Where(x => x.LectionType.Equals(el.LectionGroupId)).Select(x => new EnglishLearning.Controllers.LectionChoice.SimpleLection { Name = x.Name, LectionId = x.LectionId }).ToList();
+                    if (nodeCount > 0)//query.Count()
+                    {
+                        <a class="btn btn-purple m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.Id" role="button" aria-expanded="false" aria-controls="#Collapse_@el.Id">@el.Name</a>
+                        <div class="collapse multi-collapse" id="Collapse_@el.Id">
+                            <ol type="I">
+                                @*@foreach (var leaf in query)
+                                {
+                                    <li>
+                                        <a class="btn btn-info my-1 treeNode" href="@url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId })">
+                                            @leaf.Name
+                                        </a>
+                                    </li>
+                                }*@
+                                @if (lections as IQueryable<EnglishLearning.Models.Lection> != null)
+                                {
+                                    @:@html.Raw(TreeForLection(lections as IQueryable<EnglishLearning.Models.Lection>, el.Id))
+                                }
+                                else {
+                                    @:@html.Raw(TreeForTests(lections as IQueryable<EnglishLearning.Models.Test>, el.Id))
+                                }
+                            </ol>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-secondary disabled m-1 treeNode" disabled data-toggle="collapse" href="#Collapse_@el.Id" role="button" aria-expanded="false" aria-controls="#Collapse_@el.Id">@el.Name</a>
+                    }
+                    @*if(lections as IQueryable<EnglishLearning.Models.Lection> != null){
+                    @html.Raw(TreeForLection(lections as IQueryable<EnglishLearning.Models.Lection>, el.LectionGroupId, el.Name))
+                    }*@
+                }
+                if (count > 0)
+                {
+                    <ul class="subList" id="Collapse_@el.Id">
+                        @treeView.buildTree(tree, el.Id, lections)
+                    </ul>
+                }
             }
-            else {
-                <a class="btn btn-secondary disabled m-1 treeNode" disabled data-toggle="collapse" href="#Collapse_@el.LectionGroupId" role="button" aria-expanded="false" aria-controls="#Collapse_@el.LectionGroupId">@el.Name</a>
-            }
-        }
-        if (count > 0) {
-            <ul id="Collapse_@el.LectionGroupId">
-                @treeView.buildTree(tree, el.LectionGroupId, lections)
-            </ul>
-        }
+        </li>
     }
-    </li>
-}
 }

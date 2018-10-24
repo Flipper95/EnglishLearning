@@ -1,4 +1,4 @@
-﻿@model List<EnglishLearning.Models.LectionGroup>
+﻿@model List<EnglishLearning.Models.GroupModel>
 @{
     ViewBag.Title = "ShowByGroup";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,6 +8,10 @@
     .listByGroup {
         list-style: none;
         columns: 2;
+    }
+
+    .subList {
+        list-style: none;
     }
 
     .treeNode {
