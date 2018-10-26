@@ -79,7 +79,7 @@
     <div class="alert @(ViewBag.Success == true ? "alert-success" : "alert-danger") col-12 col-lg-10" role="alert">
         @ViewBag.TextResult
     </div>
-    <a class="btn btn-purple text-light col-12 col-sm-6 col-lg-4">На головну</a>
+    <a class="btn btn-purple text-light col-12 col-sm-6 col-lg-4" href="@Url.Action("Index","Home", new { area=""})">На головну</a>
 </div>
 
 <script type="text/javascript">

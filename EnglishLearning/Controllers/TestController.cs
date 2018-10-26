@@ -5,12 +5,29 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EnglishLearning.ExtendClasses;
+using Microsoft.AspNet.Identity;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class TestController : Controller
     {
         EnglishLearningEntities db = new EnglishLearningEntities();
+
+        private int userId = 0;
+        int UserId {
+            get {
+                if (userId == 0) {
+                    string userIdentity = User.Identity.GetUserId();
+                    var temp = db.User.Where(x => x.IdentityId == userIdentity).
+                                         Select(x => x.UserId).First();
+                    userId = temp;
+                }
+                return userId;
+            }
+            set { userId = value; }
+        }
+
         // GET: Test
         public ActionResult Index()
         {
@@ -109,64 +126,90 @@ namespace EnglishLearning.Controllers
         }
 
         public ActionResult CheckResult(int testId) {
+            //if (Session["history"] == null) {
             double percent;
             string[] result = SaveResult(testId, out percent);
+            //string userIdentity = User.Identity.GetUserId();
+            //var userId = (from user in db.User
+            //              where user.IdentityId == userIdentity
+            //              select user.UserId).First();
             TestHistory history = new TestHistory();
             history.Answers = result[1];
             history.Questions = result[0];
             history.PassDate = DateTime.Now;
             history.SuccessPercent = percent;
             history.TestId = testId;
-            //history.UserId = 
-            if ((DateTime.Now - Convert.ToDateTime(Session["Time"])).TotalMinutes < 15)
+            history.UserId = UserId;//userId;
+                var time = (DateTime.Now - Convert.ToDateTime(Session["Time"])).TotalMinutes;
+            if (((DateTime.Now - Convert.ToDateTime(Session["Time"])).TotalMinutes < 15) && percent>=50)
             {
                 //save (before send user)
-                //db.TestHistory.Add(history);
-                //db.SaveChanges();
+                db.TestHistory.Add(history);
+                db.SaveChanges();
             }
-            else {
-                //dont save, only show
-            }
+            //Session["history"] = history;
             //Dictionary<int, List<int>> diction = ParseResult(result[0], result[1]);
-            return Result(history);
+            //return Result(history);
+            //}
+            //else {
+            //    return Result(Session["history"] as TestHistory);
+            //}
+            TempData["history"] = history;
+            return RedirectToAction("Result");//, history);
             //rename to check result and create+call show result
         }
 
-        public ActionResult ShowResult(int historyId) {
+        public ActionResult ShowResult(int id) {
+            //string userIdentity = User.Identity.GetUserId();
+            //var userId = (from user in db.User
+            //              where user.IdentityId == userIdentity
+            //              select user.UserId).First();
             var history = (from hist in db.TestHistory
-                          where hist.TestHistoryId == historyId //&& hist.UserId == 
+                          where hist.TestHistoryId == id && hist.UserId == UserId
                           select hist).First();
-            return Result(history);
+            TempData["history"] = history;
+            return Result();//history);
         }
 
-        private ActionResult Result(TestHistory history) {
-            var test = (from t in db.Test
-                       where t.TestId == history.TestId
-                       select t).First();
-            ViewBag.Name = test.Name;
-            Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
-            if (Session["answers"] as Dictionary<int, List<int>> != null) {
-                dict = Session["answers"] as Dictionary<int, List<int>>;
+        //[NonAction]
+        //[HttpPost]
+        public ActionResult Result(){//TestHistory history) {
+            if (TempData["history"] != null)
+            {
+                TestHistory history = TempData["history"] as TestHistory;
+                var test = (from t in db.Test
+                            where t.TestId == history.TestId
+                            select t).First();
+                ViewBag.Name = test.Name;
+                Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
+                if (Session["answers"] as Dictionary<int, List<int>> != null)
+                {
+                    dict = Session["answers"] as Dictionary<int, List<int>>;
+                }
+                else
+                {
+                    dict = ParseResult(history.Questions, history.Answers);
+                }
+                var questions = from q in db.Question.Include("Answer")
+                                where q.TestId == test.TestId && dict.Keys.Any(x => x == q.QuestionId)
+                                select q;
+                ViewBag.Answers = dict;
+
+                string textResult = "Тест не пройдено(" + history.SuccessPercent + "%)";
+                bool success = false;
+                if (history.SuccessPercent >= 50)
+                {
+                    textResult = "Тест успішно пройдено(" + history.SuccessPercent + "%)";
+                    success = true;
+                }
+                ViewBag.TextResult = textResult;
+                ViewBag.Success = success;
+
+                return View("ShowResult", questions.ToList());
             }
             else {
-                dict = ParseResult(history.Questions, history.Answers);
+                return RedirectToAction("Index", "Home", new { area = "" });
             }
-            var questions = from q in db.Question.Include("Answer")
-                            where q.TestId == test.TestId && dict.Keys.Any(x => x == q.QuestionId)
-                            select q;
-            ViewBag.Answers = dict;
-
-            string textResult = "Тест не пройдено(" + history.SuccessPercent + "%)";
-            bool success = false;
-            if (history.SuccessPercent > 50)
-            {
-                textResult = "Тест успішно пройдено(" + history.SuccessPercent + "%)";
-                success = true;
-            }
-            ViewBag.TextResult = textResult;
-            ViewBag.Success = success;
-
-            return View("ShowResult", questions.ToList());
         }
 
         private Dictionary<int, List<int>> ParseResult(string questions, string answers) {

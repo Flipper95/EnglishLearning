@@ -1,0 +1,101 @@
+﻿@model List<EnglishLearning.Models.TestHistory>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(canPage: true, rowsPerPage: 15, ajaxUpdateContainerId: "gridContent");
+    grid.Bind(source: Model);
+}
+@section styles{
+<style>
+    .clickable {
+        cursor: pointer;
+    }
+</style>
+}
+
+<h2>Index</h2>
+
+
+@*<script type="text/javascript">
+        google.charts.load('current', {
+            //callback: function () {
+            //    drawChart();
+            //    $(window).resize(drawChart);
+            //},
+            'packages': ['bar'] });
+          google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var jsonObject = {
+                "xName": "Дата",
+                "colName": "Кількість тестів"
+            }
+
+            var jsonData = $.ajax({
+                url: '@Url.Action("ChartByCount", "Statistics", new { area=""})',
+                data: jsonObject,
+                dataType: "json",
+                async: false
+            }).responseText;
+
+            var data = new google.visualization.DataTable(jsonData);//arrayToDataTable(gData);
+
+            //chartArea: {
+            //    width: '50%'
+            //},
+            //width: '50%',
+            var options = {
+                title: 'Кількість пройдених тестів',
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+          }
+    </script>*@
+
+@*<div id="columnchart_material" style="width:70%; height:70%"></div>*@
+<a id="ChartCountLink" href="@Url.Action("ChartByCount", "Statistics", new { area=""})" hidden></a>
+<a id="ChartTestLink" href="@Url.Action("ChartByTestSuccess", "Statistics", new { area=""})" hidden></a>
+
+<div class="d-flex flex-row mb-3 flex-wrap">
+    <input id="fromDate" name="fromDate" type="date" min="2018-10-01" class="form-control col-12 col-sm-4 col-lg-3 m-2"
+           data-toggle="tooltip" data-placement="bottom" title="Початкова дата">
+
+    <input id="toDate" name="toDate" type="date" min="2018-10-01" class="form-control col-12 col-sm-4 col-lg-3 m-2"
+           data-toggle="tooltip" data-placement="bottom" title="Кінцева дата">
+
+    <input type="submit" class="btn btn-outline-purple col-12 col-sm-2 m-2" value="Знайти" onclick="drawStuff()">
+</div>
+
+<div id="columnchart2_material" style="width:70%; height:70%"></div>
+
+<div id="histogramchart_material" style="width:70%; height:70%"></div>
+
+<div id="gridContent">
+    @grid.GetHtml(
+    tableStyle: "table table-hover", headerStyle: "thead-dark", caption: "Історія тестів",
+    mode: WebGridPagerModes.All, numericLinksCount: 5,
+    columns: grid.Columns(
+        grid.Column(header: "Дата проходження", format:@<div id="l_@item.Value.TestHistoryId" data="@Url.Action("ShowResult", "Test", new { area="", id = item.Value.TestHistoryId})">@item.Value.PassDate</div>),
+        grid.Column("Test.Name", header: "Назва тесту", format: @<div>@item.Value.Test.Name</div>),
+        grid.Column("SuccessPercent", header: "Відсоток правильних відповідей", format:@<div>@item.Value.SuccessPercent</div>)),
+        previousText: "Попередня", nextText: "Наступна", firstText: "Перша", lastText: "Остання",
+        footerStyle: "tfoot", htmlAttributes: new { id = "grid" })
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/GoogleCharts.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ToolTip.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('tbody tr').hover(function () {
+                $(this).toggleClass('clickable');
+            }).on('click', function () {
+                location.href = $(this).find('td:first div').attr("data");
+            });
+        });
+    </script>
+}

@@ -409,6 +409,12 @@ namespace EnglishLearning.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        //using (EnglishLearningEntities db = new EnglishLearningEntities())
+                        //{
+                        //    string userIdentity = User.Identity.GetUserId();
+                        //    Session["userId"] = db.User.Where(x => x.IdentityId == userIdentity)
+                        //                  .Select(x => x.UserId).First();
+                        //}
                         return RedirectToLocal(returnUrl);
                     }
                 }

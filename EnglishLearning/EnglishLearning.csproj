@@ -212,6 +212,7 @@
     <Compile Include="Controllers\LectionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Exercise\TranslateController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
     <Compile Include="ExtendClasses\Shuffle.cs" />
@@ -330,6 +331,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\GoogleCharts.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -342,6 +344,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\ToolTip.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -397,6 +400,7 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\ShowAnswers.cshtml" />
     <Content Include="Views\Test\ShowResult.cshtml" />
+    <Content Include="Views\Statistics\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
