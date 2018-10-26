@@ -250,8 +250,9 @@ namespace EnglishLearning.Controllers
                 {
                     List<int> userAnswers = dict[el.QuestionId];
 
-                    int wrongCount = rightAnswers.Except(userAnswers).Count();
-                    int rightCount = userAnswers.Count() - userAnswers.Except(rightAnswers).Count();
+                    //var tempArr = rightAnswers.Except(userAnswers);
+                    int wrongCount = userAnswers.Except(rightAnswers).Count();
+                    int rightCount = userAnswers.Count() - wrongCount;//userAnswers.Except(rightAnswers).Count();
                     int count = rightCount - wrongCount > 0 ? rightCount - wrongCount : 0;
 
                     percent += (count * 100) / answerCount;

@@ -82,11 +82,7 @@
     <a class="btn btn-purple text-light col-12 col-sm-6 col-lg-4" href="@Url.Action("Index","Home", new { area=""})">На головну</a>
 </div>
 
-<script type="text/javascript">
-    window.onload =
-        $(document).ready(
-            function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            });
-</script>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ToolTip.js")"></script>
+}
 
