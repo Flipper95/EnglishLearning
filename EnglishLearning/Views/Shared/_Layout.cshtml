@@ -45,6 +45,15 @@
                 {
                     @Html.Partial("_AdminPartial")
                 }
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "ManageQuestions", new { area = "Moderator" })">Редагування записів</a>
+                        </li>
+                    }
+                }
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

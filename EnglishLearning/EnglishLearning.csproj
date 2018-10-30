@@ -201,6 +201,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageAnswersController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageLectionsController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageQuestionsController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageTestsController.cs" />
+    <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\Exercise\ConstructorController.cs" />
@@ -328,6 +333,27 @@
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Content\MyBootstrap.css.map" />
     <Content Include="App_Code\treeView.cshtml" />
+    <Content Include="Areas\Moderator\Views\web.config" />
+    <Content Include="Areas\Moderator\Views\ManageLections\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageLections\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageLections\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageLections\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageLections\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageTests\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageTests\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageTests\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageTests\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageTests\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageQuestions\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageQuestions\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageQuestions\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageQuestions\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageQuestions\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageAnswers\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageAnswers\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageAnswers\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageAnswers\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageAnswers\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -422,6 +448,8 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Moderator\Models\" />
+    <Folder Include="Areas\Moderator\Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

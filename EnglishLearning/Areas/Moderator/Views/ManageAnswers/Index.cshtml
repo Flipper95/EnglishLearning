@@ -1,0 +1,54 @@
+﻿@model IEnumerable<EnglishLearning.Models.Answer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @if (ViewBag.QuestId != 0 && ViewBag.QuestId != null)
+    {
+        @Html.ActionLink("Create New", "Create", new { area = "Moderator", id = ViewBag.QuestId })
+    }
+    else
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+    @Html.ActionLink("Повернутися до всіх питань","ClearQuestId")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AnswerText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rightness)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Question.QuestText)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rightness)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.QuestText)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AnswerId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AnswerId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AnswerId })
+        </td>
+    </tr>
+}
+
+</table>

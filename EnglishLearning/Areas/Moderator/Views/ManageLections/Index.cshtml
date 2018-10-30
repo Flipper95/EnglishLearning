@@ -1,0 +1,88 @@
+﻿@model IEnumerable<EnglishLearning.Models.Lection>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.LectionText)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.Editable)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.ExportOwner)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Complexity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ComplexityOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LectionPath)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.User.Level)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.LectionGroup.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.LectionText)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Editable)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.ExportOwner)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Complexity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ComplexityOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LectionPath)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.User.Level)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.LectionGroup.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LectionId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LectionId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LectionId })
+        </td>
+    </tr>
+}
+
+</table>

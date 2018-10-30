@@ -1,0 +1,75 @@
+﻿@model EnglishLearning.Models.Test
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Test</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.LabelFor(model => model.Name, "Назва тесту")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.Difficult, "Складність")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Difficult)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.TaskCount, "Кількість питань")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskCount)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.Editable, " Можливість редагування")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Editable)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.ExportOwner, "Автор тесту")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExportOwner)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.User.UserId, "Поточний власник")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserId)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.TestGroup.Name, "Група тесту")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TestGroup.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TestId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
