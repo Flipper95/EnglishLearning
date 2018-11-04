@@ -81,7 +81,7 @@ namespace EnglishLearning.Controllers
                         switch (result)
                         {
                             case SignInStatus.Success:
-                                return RedirectToLocal(returnUrl);
+                                return RedirectToLocal(returnUrl, user.Id);
                             case SignInStatus.LockedOut:
                                 return View("Lockout");
                             case SignInStatus.RequiresVerification:
@@ -483,8 +483,27 @@ namespace EnglishLearning.Controllers
             }
         }
 
-        private ActionResult RedirectToLocal(string returnUrl)
+        private ActionResult RedirectToLocal(string returnUrl, string userId = "")
         {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var db = new EnglishLearningEntities();
+                //string temp = User.Identity.GetUserId();
+                bool tested;
+                if (db.User.Where(x => x.IdentityId == userId).Count() > 0)
+                {
+                    tested = db.User.Where(x => x.IdentityId == userId).Select(x => x.Tested).First();
+                }
+                else
+                {
+                    tested = true;
+                }
+
+                if (!tested)
+                {
+                    return RedirectToAction("Test", "Test", new { id = db.Test.Where(x => x.Name == "Загальний рівень знань").Select(x => x.TestId).First() });
+                }
+            }
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using EnglishLearning.ExtendClasses;
 using Microsoft.AspNet.Identity;
+using EnglishLearning.ExtendClasses;
 
 namespace EnglishLearning.Controllers
 {
@@ -94,17 +95,7 @@ namespace EnglishLearning.Controllers
 
         [HttpPost]
         public PartialViewResult ShowAnswers(int? nextId, int prevId, int choosenId, object[] answers) {
-            //if (answers != null && answers.Length > 0)
-            //{
-            //    List<int> intanswers = Array.ConvertAll(answers, item => Convert.ToInt32(item)).ToList();//answers.OfType<int>().ToList();
-            //    Dictionary<int, List<int>> dict = Session["answers"] as Dictionary<int, List<int>>;
-            //    if (dict != null)
-            //    {
-            //        if (dict.ContainsKey(prevId))
-            //            dict[prevId] = intanswers;
-            //        else dict.Add(prevId, intanswers);
-            //    }
-            //}
+            //there was code of SaveAnswers[HttpPost] method
             SaveAnswers(answers, prevId);
             //save answer in session dictionary? question id: int[] answers
             return ShowAnswers(choosenId, nextId);
@@ -125,35 +116,90 @@ namespace EnglishLearning.Controllers
             }
         }
 
-        public ActionResult CheckResult(int testId) {
-            //if (Session["history"] == null) {
-            double percent;
-            string[] result = SaveResult(testId, out percent);
-            //string userIdentity = User.Identity.GetUserId();
-            //var userId = (from user in db.User
-            //              where user.IdentityId == userIdentity
-            //              select user.UserId).First();
+        private TestHistory CreateHistory(int testId, double percent, string[] result) {
             TestHistory history = new TestHistory();
             history.Answers = result[1];
             history.Questions = result[0];
             history.PassDate = DateTime.Now;
             history.SuccessPercent = percent;
             history.TestId = testId;
-            history.UserId = UserId;//userId;
-                var time = (DateTime.Now - Convert.ToDateTime(Session["Time"])).TotalMinutes;
-            if (((DateTime.Now - Convert.ToDateTime(Session["Time"])).TotalMinutes < 15) && percent>=50)
+            history.UserId = UserId;
+            return history;
+        }
+
+        private void SaveHistory(int time, DateTime startTime, double percent, TestHistory history) {
+            var minutes = (DateTime.Now - startTime).TotalMinutes;
+            if (minutes < time && history.SuccessPercent >= percent)
             {
-                //save (before send user)
                 db.TestHistory.Add(history);
                 db.SaveChanges();
             }
-            //Session["history"] = history;
-            //Dictionary<int, List<int>> diction = ParseResult(result[0], result[1]);
-            //return Result(history);
-            //}
-            //else {
-            //    return Result(Session["history"] as TestHistory);
-            //}
+        }
+
+        private double GetMinSuccessPercent(string testName) {
+            double minPercent = 50;
+            if (testName == "Загальний рівень знань")
+            {
+                minPercent = 0;
+            }
+            return minPercent;
+        }
+
+        private void SaveUserLvl(Test test, double percent) {
+            var user = (from u in db.User
+                        where u.UserId == UserId
+                        select u).First();
+            string result = user.ObjectiveLevel;
+            if (test.Name == "Загальний рівень знань" && !user.Tested) {
+                if (percent <= 10) result = Enum.Format(typeof(Difficult), Difficult.Beginner, "G");
+                else if (percent > 10 && percent <= 28) result = Enum.Format(typeof(Difficult), Difficult.Elementary, "G"); //"Elementary";
+                else if (percent > 28 && percent <= 46) result = Enum.Format(typeof(Difficult), Difficult.Intermediate, "G");
+                else if (percent > 46 && percent <= 64) result = Enum.Format(typeof(Difficult), Difficult.Upper_Intermediate, "G");
+                else if (percent > 64 && percent <= 82) result = Enum.Format(typeof(Difficult), Difficult.Advanced, "G");
+                else if (percent > 82 && percent <= 100) result = Enum.Format(typeof(Difficult), Difficult.Proficient, "G");
+                user.Tested = true;
+            }
+            else {
+                if (percent >= GetMinSuccessPercent(test.Name))
+                {
+                    Difficult userLvl = (Difficult)Enum.Parse(typeof(Difficult), user.ObjectiveLevel.Replace('-', '_'));
+                    foreach (Difficult el in Enum.GetValues(typeof(Difficult))) {
+                        string name = Enum.Format(typeof(Difficult), el, "G");
+                        int value = (int)el;
+                        if (test.Name == "Рівень " + name) {
+                            if (value > (int)userLvl)
+                                result = name;
+                        }
+                    }
+                    //switch (test.Name)
+                    //{
+                    //    case ("Рівень Elementary"):
+                    //        {
+                    //            if (Difficult.Elementary > userLvl)
+                    //                result = Enum.Format(typeof(Difficult), Difficult.Elementary, "G");// "Elementary";
+                    //            break;
+                    //        }
+                    //}
+                }
+            }
+            result = result.Replace('_', '-');
+            TempData["LevelChanged"] = (result == user.ObjectiveLevel ? false : true);
+            user.ObjectiveLevel = result;
+            //db.SaveChanges();
+            TempData["UserLevel"] = result;
+        }
+
+        public ActionResult CheckResult(int testId) {
+            double percent;
+            string[] result = SaveResult(testId, out percent);
+            TestHistory history = CreateHistory(testId, percent, result);
+            var test = (from t in db.Test.Include("TestGroup")
+                       where t.TestId == testId
+                       select t).First();
+            //int time = test.TimeInMin;
+            if(test.TestGroup.Name == "Рівень знань")
+                SaveUserLvl(test, percent);
+            SaveHistory(15, Convert.ToDateTime(Session["Time"]), GetMinSuccessPercent(test.Name), history);//time
             TempData["history"] = history;
             return RedirectToAction("Result");//, history);
             //rename to check result and create+call show result
@@ -195,6 +241,15 @@ namespace EnglishLearning.Controllers
                                 select q;
                 ViewBag.Answers = dict;
 
+                string level = null;
+                if (TempData["UserLevel"] != null) {
+                    if (TempData["LevelChanged"] != null)
+                    {
+                        level = Convert.ToBoolean(TempData["LevelChanged"]) == true ? "Рівень успішно підвищено! " : "Рівень залишився тим самим. ";
+                    }
+                    level += "Ваш рівень знань: "+TempData["UserLevel"].ToString();
+                    ViewBag.Level = level;
+                }
                 string textResult = "Тест не пройдено(" + history.SuccessPercent + "%)";
                 bool success = false;
                 if (history.SuccessPercent >= 50)
@@ -204,6 +259,7 @@ namespace EnglishLearning.Controllers
                 }
                 ViewBag.TextResult = textResult;
                 ViewBag.Success = success;
+                //ViewBag.LevelChange, ViewBag.UserLevel
 
                 return View("ShowResult", questions.ToList());
             }

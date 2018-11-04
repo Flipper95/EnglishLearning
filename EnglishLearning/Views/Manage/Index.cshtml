@@ -28,6 +28,11 @@
             @Model.Logins.Count [
             @Html.ActionLink("Керування", "ManageLogins") ]
         </dd>
+        <dt>Рівень знань по граматиці:</dt>
+        <dd>@ViewBag.UserData.ObjectiveLevel
+        <br>
+        <a class="btn btn-purple" href="@Url.Action("TestUserGrammar", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
+        </dd>
         @*
             Номера телефонов можно использовать в качестве второго проверочного фактора для системы двухфакторной проверки подлинности.
              

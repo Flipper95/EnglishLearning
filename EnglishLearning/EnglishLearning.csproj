@@ -220,6 +220,7 @@
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
+    <Compile Include="ExtendClasses\DifficultyLvl.cs" />
     <Compile Include="ExtendClasses\Shuffle.cs" />
     <Compile Include="ExtendClasses\SynonymAPI.cs" />
     <Compile Include="ExtendClasses\VoiceAPI.cs" />
