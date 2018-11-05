@@ -12,30 +12,20 @@ namespace EnglishLearning.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Test
+    public partial class GrammarGroup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Test()
+        public GrammarGroup()
         {
-            this.Question = new HashSet<Question>();
-            this.TestHistory = new HashSet<TestHistory>();
+            this.Grammar = new HashSet<Grammar>();
         }
     
-        public int TestId { get; set; }
+        public int GroupId { get; set; }
         public string Name { get; set; }
-        public int OwnerId { get; set; }
         public string Difficult { get; set; }
-        public int TaskCount { get; set; }
-        public int TestType { get; set; }
-        public Nullable<bool> Editable { get; set; }
-        public string ExportOwner { get; set; }
-        public int Time { get; set; }
+        public int ParentId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Question> Question { get; set; }
-        public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TestHistory> TestHistory { get; set; }
-        public virtual TestGroup TestGroup { get; set; }
+        public virtual ICollection<Grammar> Grammar { get; set; }
     }
 }

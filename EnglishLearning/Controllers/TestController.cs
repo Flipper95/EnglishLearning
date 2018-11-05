@@ -51,9 +51,9 @@ namespace EnglishLearning.Controllers
         public ActionResult Test(int id) {
             //db.Question.Local
             Session["Time"] = DateTime.Now;
-            ViewBag.Time = 15;
             var test = db.Test.Where(x => x.TestId == id).First();
             ViewBag.Name = test.Name;
+            ViewBag.Time = test.Time;
 
             IQueryable<Question> questions = (from quest in db.Question
                             where quest.TestId == id
@@ -152,7 +152,7 @@ namespace EnglishLearning.Controllers
             string result = user.ObjectiveLevel;
             if (test.Name == "Загальний рівень знань" && !user.Tested) {
                 if (percent <= 10) result = Enum.Format(typeof(Difficult), Difficult.Beginner, "G");
-                else if (percent > 10 && percent <= 28) result = Enum.Format(typeof(Difficult), Difficult.Elementary, "G"); //"Elementary";
+                else if (percent > 10 && percent <= 28) result = Enum.Format(typeof(Difficult), Difficult.Elementary, "G"); //nameof(Difficult.Elementary)
                 else if (percent > 28 && percent <= 46) result = Enum.Format(typeof(Difficult), Difficult.Intermediate, "G");
                 else if (percent > 46 && percent <= 64) result = Enum.Format(typeof(Difficult), Difficult.Upper_Intermediate, "G");
                 else if (percent > 64 && percent <= 82) result = Enum.Format(typeof(Difficult), Difficult.Advanced, "G");
@@ -199,7 +199,7 @@ namespace EnglishLearning.Controllers
             //int time = test.TimeInMin;
             if(test.TestGroup.Name == "Рівень знань")
                 SaveUserLvl(test, percent);
-            SaveHistory(15, Convert.ToDateTime(Session["Time"]), GetMinSuccessPercent(test.Name), history);//time
+            SaveHistory(test.Time, Convert.ToDateTime(Session["Time"]), GetMinSuccessPercent(test.Name), history);//time
             TempData["history"] = history;
             return RedirectToAction("Result");//, history);
             //rename to check result and create+call show result
@@ -252,7 +252,7 @@ namespace EnglishLearning.Controllers
                 }
                 string textResult = "Тест не пройдено(" + history.SuccessPercent + "%)";
                 bool success = false;
-                if (history.SuccessPercent >= 50)
+                if (history.SuccessPercent >= GetMinSuccessPercent(test.Name))
                 {
                     textResult = "Тест успішно пройдено(" + history.SuccessPercent + "%)";
                     success = true;

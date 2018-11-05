@@ -1,0 +1,66 @@
+﻿@model IEnumerable<EnglishLearning.Models.Grammar>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Translate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Voice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GrammarGroup.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Translate)
+        </td>
+        <td>
+            @if (item.Voice.Length > 0)
+            {
+                <div>true</div>
+            }
+            else
+            {
+                <div>false</div>
+            }
+            @*@Html.DisplayFor(modelItem => item.Voice)*@
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GrammarGroup.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

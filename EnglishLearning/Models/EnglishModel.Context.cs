@@ -36,5 +36,7 @@ namespace EnglishLearning.Models
         public virtual DbSet<Word> Word { get; set; }
         public virtual DbSet<LectionGroup> LectionGroup { get; set; }
         public virtual DbSet<TestGroup> TestGroup { get; set; }
+        public virtual DbSet<Grammar> Grammar { get; set; }
+        public virtual DbSet<GrammarGroup> GrammarGroup { get; set; }
     }
 }

@@ -28,6 +28,10 @@
         <AssociationConnector Association="EnglishLearningModel.Lection_LectionGroup" />
         <EntityTypeShape EntityType="EnglishLearningModel.TestGroup" Width="1.5" PointX="3.375" PointY="0.875" />
         <AssociationConnector Association="EnglishLearningModel.Test_TestGroup" />
+        <EntityTypeShape EntityType="EnglishLearningModel.Grammar" Width="1.5" PointX="7.625" PointY="7.875" />
+        <EntityTypeShape EntityType="EnglishLearningModel.GrammarGroup" Width="1.5" PointX="5.375" PointY="8" />
+        <AssociationConnector Association="EnglishLearningModel.Grammar_GrammarGroup" />
+        <AssociationConnector Association="EnglishLearningModel.Grammar_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

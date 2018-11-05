@@ -14,6 +14,26 @@
           <Property Name="AnswerText" Type="ntext" Nullable="false" />
           <Property Name="Rightness" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Grammar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Translate" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="Voice" Type="varbinary(max)" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GrammarGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Difficult" Type="nvarchar" MaxLength="20" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Group">
           <Key>
             <PropertyRef Name="GroupId" />
@@ -81,6 +101,7 @@
           <Property Name="TestType" Type="int" Nullable="false" />
           <Property Name="Editable" Type="bit" />
           <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
+          <Property Name="Time" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TestGroup">
           <Key>
@@ -136,6 +157,30 @@
             </Principal>
             <Dependent Role="Answer">
               <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Grammar_GrammarGroup">
+          <End Role="GrammarGroup" Type="Self.GrammarGroup" Multiplicity="1" />
+          <End Role="Grammar" Type="Self.Grammar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrammarGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Grammar">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Grammar_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Grammar" Type="Self.Grammar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Grammar">
+              <PropertyRef Name="AuthorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -285,6 +330,8 @@
         </Association>
         <EntityContainer Name="Хранилище EnglishLearningModelContainer">
           <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grammar" EntityType="Self.Grammar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GrammarGroup" EntityType="Self.GrammarGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LearningWord" EntityType="Self.LearningWord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lection" EntityType="Self.Lection" Schema="dbo" store:Type="Tables" />
@@ -298,6 +345,14 @@
           <AssociationSet Name="Answer_Question" Association="Self.Answer_Question">
             <End Role="Question" EntitySet="Question" />
             <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="Grammar_GrammarGroup" Association="Self.Grammar_GrammarGroup">
+            <End Role="GrammarGroup" EntitySet="GrammarGroup" />
+            <End Role="Grammar" EntitySet="Grammar" />
+          </AssociationSet>
+          <AssociationSet Name="Grammar_User" Association="Self.Grammar_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Grammar" EntitySet="Grammar" />
           </AssociationSet>
           <AssociationSet Name="Group_User" Association="Self.Group_User">
             <End Role="User" EntitySet="User" />
@@ -429,6 +484,7 @@
           <NavigationProperty Name="User" Relationship="Self.Test_User" FromRole="Test" ToRole="User" />
           <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_Test" FromRole="Test" ToRole="TestHistory" />
           <NavigationProperty Name="TestGroup" Relationship="EnglishLearningModel.Test_TestGroup" FromRole="Test" ToRole="TestGroup" />
+          <Property Name="Time" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TestHistory">
           <Key>
@@ -458,6 +514,7 @@
           <NavigationProperty Name="Test" Relationship="Self.Test_User" FromRole="User" ToRole="Test" />
           <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_User" FromRole="User" ToRole="TestHistory" />
           <Property Name="IdentityId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Grammar" Relationship="EnglishLearningModel.Grammar_User" FromRole="User" ToRole="Grammar" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -668,6 +725,16 @@
             <End Role="TestGroup" EntitySet="TestGroup" />
             <End Role="Test" EntitySet="Test" />
           </AssociationSet>
+          <EntitySet Name="Grammar" EntityType="EnglishLearningModel.Grammar" />
+          <EntitySet Name="GrammarGroup" EntityType="EnglishLearningModel.GrammarGroup" />
+          <AssociationSet Name="Grammar_GrammarGroup" Association="EnglishLearningModel.Grammar_GrammarGroup">
+            <End Role="GrammarGroup" EntitySet="GrammarGroup" />
+            <End Role="Grammar" EntitySet="Grammar" />
+          </AssociationSet>
+          <AssociationSet Name="Grammar_User" Association="EnglishLearningModel.Grammar_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Grammar" EntitySet="Grammar" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LectionGroup">
           <Key>
@@ -708,6 +775,53 @@
             </Principal>
             <Dependent Role="Test">
               <PropertyRef Name="TestType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Grammar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Translate" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="Voice" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="GrammarGroup" Relationship="EnglishLearningModel.Grammar_GrammarGroup" FromRole="Grammar" ToRole="GrammarGroup" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="EnglishLearningModel.Grammar_User" FromRole="Grammar" ToRole="User" />
+        </EntityType>
+        <EntityType Name="GrammarGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Difficult" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grammar" Relationship="EnglishLearningModel.Grammar_GrammarGroup" FromRole="GrammarGroup" ToRole="Grammar" />
+        </EntityType>
+        <Association Name="Grammar_GrammarGroup">
+          <End Type="EnglishLearningModel.GrammarGroup" Role="GrammarGroup" Multiplicity="1" />
+          <End Type="EnglishLearningModel.Grammar" Role="Grammar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrammarGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Grammar">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Grammar_User">
+          <End Type="EnglishLearningModel.User" Role="User" Multiplicity="1" />
+          <End Type="EnglishLearningModel.Grammar" Role="Grammar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Grammar">
+              <PropertyRef Name="AuthorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -781,6 +895,7 @@
           <EntitySetMapping Name="Test">
             <EntityTypeMapping TypeName="EnglishLearningModel.Test">
               <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="TestId" ColumnName="TestId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
@@ -845,6 +960,28 @@
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="TestGroupId" ColumnName="TestGroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grammar">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Grammar">
+              <MappingFragment StoreEntitySet="Grammar">
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Voice" ColumnName="Voice" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Translate" ColumnName="Translate" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GrammarGroup">
+            <EntityTypeMapping TypeName="EnglishLearningModel.GrammarGroup">
+              <MappingFragment StoreEntitySet="GrammarGroup">
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Difficult" ColumnName="Difficult" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

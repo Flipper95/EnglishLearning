@@ -1,0 +1,65 @@
+﻿@model EnglishLearning.Models.Grammar
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Grammar</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.LabelFor(model => model.Text, "Текст речення на іноземній мові")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.Translate, "Переклад речення")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Translate)
+        </dd>
+
+        @*<dt>
+                @Html.LabelFor(model => model.Voice, "")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Voice)
+            </dd>*@
+
+        <dt>
+            @Html.LabelFor(model => model.GrammarGroup.Name, "Група")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GrammarGroup.Name)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.User.UserId, "Автор")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserId)
+        </dd>
+
+    </dl>
+</div>
+
+<audio id="audio">
+    <source src="@Url.Action("LoadAudio", new { id = Model.Id })" ) />
+</audio>
+<a class="img-fluid rounded col-6 col-md-4 my-2 img-active" onclick="document.getElementById('audio').play()">Play</a>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

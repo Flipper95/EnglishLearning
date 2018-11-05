@@ -49,9 +49,23 @@
                 {
                     if (User.IsInRole("admin"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "ManageQuestions", new { area = "Moderator" })">Редагування записів</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Редагування контенту
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="@Url.Action("Index", "ManageTests", new { area = "Moderator" })">Тести</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "ManageQuestions", new { area = "Moderator" })">Питання</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "ManageAnswers", new { area = "Moderator" })">Відповіді</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Index", "ManageLections", new { area = "Moderator" })">Лекції</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Index", "ManageGrammars", new { area = "Moderator" })">Речення з граматики</a>
+                            </div>
                         </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "ManageQuestions", new { area = "Moderator" })">Редагування записів</a>
+                        </li>*@
                     }
                 }
             </ul>

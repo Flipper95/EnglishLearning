@@ -22,6 +22,7 @@ namespace EnglishLearning.Models
             this.Lection = new HashSet<Lection>();
             this.Test = new HashSet<Test>();
             this.TestHistory = new HashSet<TestHistory>();
+            this.Grammar = new HashSet<Grammar>();
         }
     
         public int UserId { get; set; }
@@ -40,5 +41,7 @@ namespace EnglishLearning.Models
         public virtual ICollection<Test> Test { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TestHistory> TestHistory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grammar> Grammar { get; set; }
     }
 }

@@ -202,6 +202,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageAnswersController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageGrammarsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageLectionsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageQuestionsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageTestsController.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Controllers\Exercise\ExerciseController.cs" />
     <Compile Include="Controllers\Exercise\ListeningController.cs" />
     <Compile Include="Controllers\Exercise\SynonymsController.cs" />
+    <Compile Include="Controllers\GrammarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LectionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -247,6 +249,12 @@
       <DependentUpon>EnglishModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ExerciseModel.cs" />
+    <Compile Include="Models\Grammar.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GrammarGroup.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Group.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
@@ -355,6 +363,11 @@
     <Content Include="Areas\Moderator\Views\ManageAnswers\Details.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageAnswers\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageAnswers\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageGrammars\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageGrammars\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageGrammars\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageGrammars\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageGrammars\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -430,6 +443,7 @@
     <Content Include="Views\Test\ShowAnswers.cshtml" />
     <Content Include="Views\Test\ShowResult.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\Grammar\Listening.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
