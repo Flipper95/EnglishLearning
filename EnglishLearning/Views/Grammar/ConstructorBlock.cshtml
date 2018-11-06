@@ -1,0 +1,113 @@
+﻿@model List<string>
+@{
+    ViewBag.Title = "ConstructorBlock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
+}
+<h2>ConstructorBlock</h2>
+
+<div class="d-flex flex-column flex-wrap justify-content-around align-items-center">
+    <div class="d-flex flex-column col-8 mb-2">
+        <h4>@ViewBag.Translate</h4>
+    </div>
+    @if (ViewBag.Answer != null)
+    {
+    <div class="d-flex flex-column col-8 mb-2">
+        <h4>@ViewBag.Answer</h4>
+    </div>
+    }
+
+    <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="value" ondrop="drop(event, this)" ondragover="allowDrop(event)"></div>
+    <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="question" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="btn btn-purple m-1 letter" id="block_@i" draggable="true" ondragstart="drag(event)">@Model[i]</div>
+        }
+    </div>
+    @*<button class="btn btn-purple col-8 col-md-6 col-lg-4 questionBtn" type="button">Далі</button>*@
+    <div class="alert alert-warning col-8 col-md-6 col-lg-4 text-center py-1 m-4" id="answer" role="alert" hidden></div>
+
+    @using (Html.BeginForm("ConstructorBlock", "Grammar", new { area = "" }, FormMethod.Post, new { @class = "mt-4 col-8 col-md-6 col-lg-4 px-0" }))
+    {
+        @:<input type="hidden" name="result" id="result" value="">
+        @:<input type="hidden" name="wordIndex" value="@(ViewBag.Index + 1)">
+        @:<input id="NextBtn" name="NextBtn" type="submit" class="btn btn-teal text-light col-12" value="Наступне">
+    }
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#NextBtn").on("click", function () {
+            var text = $("#value").text();
+            document.getElementById("result").value = text;
+            //$("#result").val(text);
+        });
+        @*$(".questionBtn").on("click", function () {
+            $(".questionBtn").prop("hidden", true);
+            $(".letter").off("click").addClass("disabled").addClass("active").prop("draggable", false);
+            $("#NextBtn").removeAttr("hidden");
+
+            var text = $("#value").text();
+            $.ajax({
+                    type: "POST",
+                    url: "CheckResult",
+                    data: { id: @Model[ViewBag.Index].WordId, value: text },
+                    success: function (data) {
+                        AjaxResult(data);
+                    }
+            });
+        });
+
+        var AjaxResult = function (result) {
+            var el = $(".active");
+            el.removeClass("btn-purple");
+            if (result.toLowerCase() == "true") {
+                el.addClass("btn-success");
+            }
+            else {
+                el.addClass("btn-danger");
+                $.ajax({
+                    type: "GET",
+                    url: "GetAnswer",
+                    success: function (data) {
+                        $("#answer").removeAttr("hidden").text(String(data))
+                    }
+                });
+            }
+        }*@
+
+        $(".letter").on("click", function () {
+            var id = $(this).parent().attr("id");
+            var text = $(this).text();
+            if (id === "value") {
+                $("#question").append($(this));
+                //var newText = document.getElementById("result").value;
+                //newText = newText.replace(new RegExp(text + '$'), '');
+                //document.getElementById("result").value = newText;
+            }
+            else {
+                $("#value").append($(this));
+                //document.getElementById("result").value = text;
+            }
+        });
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev, el) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            el.appendChild(document.getElementById(data));
+        }
+    </script>
+    @Scripts.Render("~/bundles/ajax")
+}

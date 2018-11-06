@@ -132,6 +132,8 @@
           <Property Name="Level" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="ObjectiveLevel" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="IdentityId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ObjLvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -515,6 +517,8 @@
           <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_User" FromRole="User" ToRole="TestHistory" />
           <Property Name="IdentityId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Grammar" Relationship="EnglishLearningModel.Grammar_User" FromRole="User" ToRole="Grammar" />
+          <Property Name="ObjLvlListening" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LvlListening" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -923,6 +927,8 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="EnglishLearningModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LvlListening" ColumnName="LvlListening" />
+                <ScalarProperty Name="ObjLvlListening" ColumnName="ObjLvlListening" />
                 <ScalarProperty Name="IdentityId" ColumnName="IdentityId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Tested" ColumnName="Tested" />

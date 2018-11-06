@@ -97,6 +97,21 @@ namespace EnglishLearning.Controllers
             return RedirectToAction("Test", "Test", new { area = "", id = testId });
         }
 
+        public ActionResult TestUserListening(int id)
+        {
+            var userLvl = (from u in db.User
+                           where u.UserId == id
+                           select u.ObjLvlListening).First().Replace('-', '_');
+            Difficult current = (Difficult)Enum.Parse(typeof(Difficult), userLvl);
+            int index = (int)current + 1;
+            string nextLvl = "Рівень ";
+            if (Enum.IsDefined(typeof(Difficult), index))
+            {
+                nextLvl += ((Difficult)index).ToString();
+            }
+            return RedirectToAction("Listening", "Grammar", new { area = "", number = 10, name = nextLvl });
+        }
+
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

@@ -444,6 +444,7 @@
     <Content Include="Views\Test\ShowResult.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Grammar\Listening.cshtml" />
+    <Content Include="Views\Grammar\ConstructorBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

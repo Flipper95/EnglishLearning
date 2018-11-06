@@ -1,8 +1,83 @@
-﻿
+﻿@model EnglishLearning.Models.Grammar
 @{
+    /**/
+
     ViewBag.Title = "Listening";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
 }
 
 <h2>Listening</h2>
 
+<audio id="audio">
+    <source src="@Url.Action("LoadAudio", new { area="" })" />
+</audio>
+
+<div class="d-flex flex-column flex-wrap justify-content-around align-items-center">
+    <img class="img-fluid rounded col-6 col-md-4 col-lg-3 my-2 img-active" src="@Url.Content("~\\Content\\Images\\listen.png")" onclick="document.getElementById('audio').play()" />
+
+    <label class="col-8 col-md-6 col-lg-6 mt-2 h5" for="value" id="valueText"></label>
+    <div class="input-group col-8 col-md-6 col-lg-6 my-4 px-0">
+        <input class="question form-control col-10" id="value" name="value" type="text">
+        <div class="input-group-append col-2 px-0">
+            <button class="btn btn-outline-secondary col-12 questionBtn" type="button">Далі</button>
+        </div>
+    </div>
+    <div class="alert alert-warning col-8 col-md-6 col-lg-6 text-center py-1 mb-4" id="answer" role="alert" hidden></div>
+    <a id="NextBtn" name="NextBtn" class="btn btn-teal text-light col-6" href="@Url.Action("Listening", new { area="", startIndex = ViewBag.Index})" hidden>Наступне</a>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $("div .question").keypress(function (e) {
+            if (e.which == 13) {
+                CheckResult();
+            }
+        });
+
+        $("div .question").keyup(function () {
+            var text = $("#value").val();
+            $("#valueText").text(text);
+        });
+
+        $("div .questionBtn").on("click", function () { CheckResult(); });
+
+        var CheckResult = function () {
+            var text = $("#value").val();
+
+            $.ajax({
+                type: "GET",
+                url: "CheckResult",
+                data: { value: text },
+                success: function (data) {
+                    AjaxResult(data);
+                }
+            });
+
+            $("div .question, div .questionBtn").prop("disabled", true);
+            $("div .question").addClass("active");
+            $("#NextBtn").removeAttr("hidden");
+        }
+
+        var AjaxResult = function (result) {
+            var el = $(".active");
+            if (result.toLowerCase() == "true") {
+                el.addClass("bg-teal text-light");
+            }
+            else {
+                el.addClass("bg-danger text-light");
+                $.ajax({
+                    type: "GET",
+                    url: "GetAnswer",
+                    success: function (data) {
+                        $("#answer").removeAttr("hidden").text(String(data))
+                    }
+                });
+            }
+        }
+    </script>
+    @Scripts.Render("~/bundles/ajax")
+}
