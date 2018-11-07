@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -21,9 +22,14 @@ namespace EnglishLearning.Controllers
             return View();
         }
 
-        public ActionResult Constructor(int startIndex = 0, int number = 5, string name = "")
+        public ActionResult Constructor(int startIndex = 0, int number = 5, string name = "")/*, string result = "")*/
         {
-            ViewBag.Index = 1;
+            //if (!string.IsNullOrWhiteSpace(result))
+            //{
+            //    result = result.TrimEnd();
+            //    CheckResult(result);
+            //}
+                ViewBag.Index = 1;
             int index = 0;
             if (Session["index"] == null || startIndex == 0)
             {
@@ -31,12 +37,12 @@ namespace EnglishLearning.Controllers
                 var count = grammar.Count();
                 if (count >= number) grammar = grammar.Take(number);
                 else grammar = grammar.Take(count);
-                var result = grammar.ToList();
-                Session["questions"] = result;
+                //var result = grammar.ToList();
+                Session["questions"] = grammar.ToList();//result;
                 Session["index"] = 0;
                 Session["number"] = count >= number ? number : count;
                 Session["AnswerCount"] = 0;
-                Session["Answer"] = "";
+                //Session["Answer"] = "";
             }
             else {
                 index = Convert.ToInt32(Session["index"]) + 1;
@@ -47,35 +53,40 @@ namespace EnglishLearning.Controllers
                     return RedirectToAction("ShowResult", "Exercise", new { count = Session["AnswerCount"], max = endNumber });
                 }
             }
-            return ConstructorBlock(0);
+            //int sentenceIndex = Convert.ToInt32(Session["index"]);
+            var gr = (Session["questions"] as List<Grammar>)[index];
+            ViewBag.Translate = gr.Translate;
+            ViewBag.SentenceIndex = index;
+            return View();
         }
 
-        public ActionResult ConstructorBlock(int wordIndex, string result="") {
-            if (!string.IsNullOrWhiteSpace(result)) {
-                Session["Answer"] = Session["Answer"] + result+" ";
-                ViewBag.Answer = Session["Answer"];
-            }
-            int sentenceIndex = Convert.ToInt32(Session["index"]);
-            var grammar = (Session["questions"] as List<Grammar>)[sentenceIndex];
-            ViewBag.Translate = grammar.Translate;
-            ViewBag.Index = wordIndex;
-            int sentenceEnd = grammar.Text.Split(' ').Count();
-            if (wordIndex >= sentenceEnd)
-            {
-                var check = Convert.ToString(Session["Answer"]);
-                check = check.Remove(check.Length - 1, 1);
-                CheckResult(check);
-                Session["Answer"] = "";
-                return Constructor(1);
-            }
-            var model = GetNextConstructorWords(sentenceIndex, wordIndex);
-            //Session["Answer"] = result[0];
-            model = Shuffle.ShuffleList(model);
-            return View("ConstructorBlock", model);
-        }
-
-        private List<string> GetNextConstructorWords(int sentenceIndex, int wordIndex ) {
+        public ActionResult ConstructorBlock(int sentenceIndex, int wordIndex){//, string result="") {
+            //if (!string.IsNullOrWhiteSpace(result)) {
+            //    Session["Answer"] = Session["Answer"] + result+" ";
+            //    ViewBag.Answer = Session["Answer"];
+            //}
+            ViewBag.WordIndex = wordIndex;
+            //int sentenceEnd = grammar.Text.Split(' ').Count();
+            //if (wordIndex >= sentenceEnd)
+            //{
+            //    var check = Convert.ToString(Session["Answer"]);
+            //    check = check.Remove(check.Length - 1, 1);
+            //    CheckResult(check);
+            //    Session["Answer"] = "";
+            //    return Constructor(1);
+            //}
             var sentences = Session["questions"] as List<Grammar>;
+            List<string> model = new List<string>();
+            if (sentences[sentenceIndex].Text.Split(' ').Count() > wordIndex)
+            {
+                model = GetNextConstructorWords(sentences, sentenceIndex, wordIndex);
+                //Session["Answer"] = result[0];
+                model = Shuffle.ShuffleList(model);
+            }
+            return PartialView(model);
+        }
+
+        private List<string> GetNextConstructorWords(List<Grammar> sentences, int sentenceIndex, int wordIndex ) {
             var temp = ClearFromSymbols(sentences[sentenceIndex].Text).Split(' ');
             var answer = temp[wordIndex];//.ToCharArray();
             List<string> words = new List<string>();
@@ -196,6 +207,8 @@ namespace EnglishLearning.Controllers
             var text = grammar.Text.ToLower();
             text = ClearFromSymbols(text);
             value = ClearFromSymbols(value.ToLower());
+            value = WebUtility.HtmlDecode(value);
+            value = value.Replace("\u00A0", " ");
             bool result = text == value ? true : false;
             if (result)
             {

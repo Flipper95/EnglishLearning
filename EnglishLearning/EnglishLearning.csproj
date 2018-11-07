@@ -444,6 +444,7 @@
     <Content Include="Views\Test\ShowResult.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Grammar\Listening.cshtml" />
+    <Content Include="Views\Grammar\Constructor.cshtml" />
     <Content Include="Views\Grammar\ConstructorBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
