@@ -14,6 +14,19 @@
           <Property Name="AnswerText" Type="ntext" Nullable="false" />
           <Property Name="Rightness" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ELTask">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="Group" Type="nvarchar" MaxLength="20" />
+          <Property Name="DocumentPath" Type="nvarchar" MaxLength="100" />
+          <Property Name="Difficult" Type="nvarchar" MaxLength="20" />
+        </EntityType>
         <EntityType Name="Grammar">
           <Key>
             <PropertyRef Name="Id" />
@@ -134,6 +147,17 @@
           <Property Name="IdentityId" Type="nvarchar" MaxLength="128" />
           <Property Name="ObjLvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserELTask">
+          <Key>
+            <PropertyRef Name="UserTaskId" />
+          </Key>
+          <Property Name="UserTaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Done" Type="bit" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ResultDocPath" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -266,6 +290,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Task_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELTask" Type="Self.ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Test_TestGroup">
           <End Role="TestGroup" Type="Self.TestGroup" Multiplicity="1" />
           <End Role="Test" Type="Self.Test" Multiplicity="*" />
@@ -318,6 +356,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="UserTask_Task">
+          <End Role="ELTask" Type="Self.ELTask" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserELTask" Type="Self.UserELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELTask">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="UserELTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserTask_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserELTask" Type="Self.UserELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserELTask">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Word_Group">
           <End Role="Group" Type="Self.Group" Multiplicity="1" />
           <End Role="Word" Type="Self.Word" Multiplicity="*" />
@@ -332,6 +396,7 @@
         </Association>
         <EntityContainer Name="Хранилище EnglishLearningModelContainer">
           <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ELTask" EntityType="Self.ELTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grammar" EntityType="Self.Grammar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GrammarGroup" EntityType="Self.GrammarGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
@@ -343,6 +408,7 @@
           <EntitySet Name="TestGroup" EntityType="Self.TestGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestHistory" EntityType="Self.TestHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserELTask" EntityType="Self.UserELTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Word" EntityType="Self.Word" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="Answer_Question" Association="Self.Answer_Question">
             <End Role="Question" EntitySet="Question" />
@@ -380,6 +446,10 @@
             <End Role="Test" EntitySet="Test" />
             <End Role="Question" EntitySet="Question" />
           </AssociationSet>
+          <AssociationSet Name="Task_User" Association="Self.Task_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
           <AssociationSet Name="Test_TestGroup" Association="Self.Test_TestGroup">
             <End Role="TestGroup" EntitySet="TestGroup" />
             <End Role="Test" EntitySet="Test" />
@@ -395,6 +465,14 @@
           <AssociationSet Name="TestHistory_User" Association="Self.TestHistory_User">
             <End Role="User" EntitySet="User" />
             <End Role="TestHistory" EntitySet="TestHistory" />
+          </AssociationSet>
+          <AssociationSet Name="UserTask_Task" Association="Self.UserTask_Task">
+            <End Role="ELTask" EntitySet="ELTask" />
+            <End Role="UserELTask" EntitySet="UserELTask" />
+          </AssociationSet>
+          <AssociationSet Name="UserTask_User" Association="Self.UserTask_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserELTask" EntitySet="UserELTask" />
           </AssociationSet>
           <AssociationSet Name="Word_Group" Association="Self.Word_Group">
             <End Role="Group" EntitySet="Group" />
@@ -519,6 +597,8 @@
           <NavigationProperty Name="Grammar" Relationship="EnglishLearningModel.Grammar_User" FromRole="User" ToRole="Grammar" />
           <Property Name="ObjLvlListening" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LvlListening" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_User1" FromRole="User" ToRole="ELTask" />
+          <NavigationProperty Name="UserELTask" Relationship="EnglishLearningModel.UserTask_User1" FromRole="User" ToRole="UserELTask" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -739,6 +819,20 @@
             <End Role="User" EntitySet="User" />
             <End Role="Grammar" EntitySet="Grammar" />
           </AssociationSet>
+          <EntitySet Name="ELTask" EntityType="EnglishLearningModel.ELTask" />
+          <EntitySet Name="UserELTask" EntityType="EnglishLearningModel.UserELTask" />
+          <AssociationSet Name="Task_User1" Association="EnglishLearningModel.Task_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="UserTask_Task1" Association="EnglishLearningModel.UserTask_Task1">
+            <End Role="ELTask" EntitySet="ELTask" />
+            <End Role="UserELTask" EntitySet="UserELTask" />
+          </AssociationSet>
+          <AssociationSet Name="UserTask_User1" Association="EnglishLearningModel.UserTask_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserELTask" EntitySet="UserELTask" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LectionGroup">
           <Key>
@@ -826,6 +920,74 @@
             </Principal>
             <Dependent Role="Grammar">
               <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ELTask">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Group" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Difficult" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="EnglishLearningModel.Task_User1" FromRole="ELTask" ToRole="User" />
+          <NavigationProperty Name="UserELTask" Relationship="EnglishLearningModel.UserTask_Task1" FromRole="ELTask" ToRole="UserELTask" />
+        </EntityType>
+        <EntityType Name="UserELTask">
+          <Key>
+            <PropertyRef Name="UserTaskId" />
+          </Key>
+          <Property Name="UserTaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Done" Type="Boolean" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.UserTask_Task1" FromRole="UserELTask" ToRole="ELTask" />
+          <NavigationProperty Name="User" Relationship="EnglishLearningModel.UserTask_User1" FromRole="UserELTask" ToRole="User" />
+          <Property Name="ResultDocPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="Task_User1">
+          <End Type="EnglishLearningModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EnglishLearningModel.ELTask" Role="ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserTask_Task1">
+          <End Type="EnglishLearningModel.ELTask" Role="ELTask" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EnglishLearningModel.UserELTask" Role="UserELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELTask">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="UserELTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserTask_User1">
+          <End Type="EnglishLearningModel.User" Role="User" Multiplicity="1" />
+          <End Type="EnglishLearningModel.UserELTask" Role="UserELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserELTask">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -991,7 +1153,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="ELTask">
+            <EntityTypeMapping TypeName="EnglishLearningModel.ELTask">
+              <MappingFragment StoreEntitySet="ELTask">
+                <ScalarProperty Name="Difficult" ColumnName="Difficult" />
+                <ScalarProperty Name="DocumentPath" ColumnName="DocumentPath" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserELTask">
+            <EntityTypeMapping TypeName="EnglishLearningModel.UserELTask">
+              <MappingFragment StoreEntitySet="UserELTask">
+                <ScalarProperty Name="ResultDocPath" ColumnName="ResultDocPath" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Done" ColumnName="Done" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserTaskId" ColumnName="UserTaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

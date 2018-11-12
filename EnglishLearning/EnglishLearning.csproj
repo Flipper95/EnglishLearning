@@ -202,10 +202,12 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageAnswersController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageELTasksController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageGrammarsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageLectionsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageQuestionsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageTestsController.cs" />
+    <Compile Include="Areas\Moderator\Models\UserTasks.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
@@ -219,6 +221,7 @@
     <Compile Include="Controllers\LectionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Exercise\TranslateController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
@@ -231,6 +234,9 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ELTask.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnglishModel.Context.cs">
@@ -284,6 +290,9 @@
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserELTask.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Word.cs">
@@ -368,6 +377,11 @@
     <Content Include="Areas\Moderator\Views\ManageGrammars\Details.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageGrammars\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageGrammars\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -446,6 +460,9 @@
     <Content Include="Views\Grammar\Listening.cshtml" />
     <Content Include="Views\Grammar\Constructor.cshtml" />
     <Content Include="Views\Grammar\ConstructorBlock.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\ShowTasks.cshtml" />
+    <Content Include="Views\Profile\EditTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -465,7 +482,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Moderator\Models\" />
     <Folder Include="Areas\Moderator\Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>

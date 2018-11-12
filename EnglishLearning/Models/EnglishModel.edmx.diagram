@@ -32,6 +32,11 @@
         <EntityTypeShape EntityType="EnglishLearningModel.GrammarGroup" Width="1.5" PointX="5.375" PointY="8" />
         <AssociationConnector Association="EnglishLearningModel.Grammar_GrammarGroup" />
         <AssociationConnector Association="EnglishLearningModel.Grammar_User" />
+        <EntityTypeShape EntityType="EnglishLearningModel.ELTask" Width="1.5" PointX="3" PointY="16" />
+        <EntityTypeShape EntityType="EnglishLearningModel.UserELTask" Width="1.5" PointX="8.25" PointY="15" />
+        <AssociationConnector Association="EnglishLearningModel.Task_User1" />
+        <AssociationConnector Association="EnglishLearningModel.UserTask_Task1" />
+        <AssociationConnector Association="EnglishLearningModel.UserTask_User1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

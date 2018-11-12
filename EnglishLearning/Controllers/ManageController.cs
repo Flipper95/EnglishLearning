@@ -16,7 +16,7 @@ namespace EnglishLearning.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private EnglishLearningEntities db = new EnglishLearningEntities();
+        //private EnglishLearningEntities db = new EnglishLearningEntities();
 
         public ManageController()
         {
@@ -66,10 +66,10 @@ namespace EnglishLearning.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var user = (from u in db.User
-                       where u.IdentityId == userId
-                       select u).First();
-            ViewBag.UserData = user;
+            //var user = (from u in db.User
+            //           where u.IdentityId == userId
+            //           select u).First();
+            //ViewBag.UserData = user;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -79,37 +79,6 @@ namespace EnglishLearning.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             return View(model);
-        }
-
-        public ActionResult TestUserGrammar(int id) {
-            var userLvl = (from u in db.User
-                          where u.UserId == id
-                          select u.ObjectiveLevel).First().Replace('-', '_');
-            Difficult current = (Difficult)Enum.Parse(typeof(Difficult), userLvl);
-            int index = (int)current + 1;
-            string nextLvl = "Рівень ";
-            if (Enum.IsDefined(typeof(Difficult), index)) {
-                nextLvl += ((Difficult)index).ToString();
-            }
-            var testId = (from t in db.Test
-                          where t.Name == nextLvl
-                          select t.TestId).First();
-            return RedirectToAction("Test", "Test", new { area = "", id = testId });
-        }
-
-        public ActionResult TestUserListening(int id)
-        {
-            var userLvl = (from u in db.User
-                           where u.UserId == id
-                           select u.ObjLvlListening).First().Replace('-', '_');
-            Difficult current = (Difficult)Enum.Parse(typeof(Difficult), userLvl);
-            int index = (int)current + 1;
-            string nextLvl = "Рівень ";
-            if (Enum.IsDefined(typeof(Difficult), index))
-            {
-                nextLvl += ((Difficult)index).ToString();
-            }
-            return RedirectToAction("Listening", "Grammar", new { area = "", number = 10, name = nextLvl });
         }
 
         //

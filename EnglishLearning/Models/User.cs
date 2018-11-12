@@ -23,6 +23,8 @@ namespace EnglishLearning.Models
             this.Test = new HashSet<Test>();
             this.TestHistory = new HashSet<TestHistory>();
             this.Grammar = new HashSet<Grammar>();
+            this.ELTask = new HashSet<ELTask>();
+            this.UserELTask = new HashSet<UserELTask>();
         }
     
         public int UserId { get; set; }
@@ -45,5 +47,9 @@ namespace EnglishLearning.Models
         public virtual ICollection<TestHistory> TestHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grammar> Grammar { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELTask> ELTask { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserELTask> UserELTask { get; set; }
     }
 }

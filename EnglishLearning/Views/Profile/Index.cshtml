@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/regular.css" integrity="sha384-z3ccjLyn+akM2DtvRQCXJwvT5bGZsspS4uptQKNXNg778nyzvdMqiGcqHVGiAUyY" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css" integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT" crossorigin="anonymous">
+}
+<h2>Index</h2>
+
+<a class="btn btn-purple text-white" href="@Url.Action("Index", "Manage", new { area = ""})">Керувати паролем</a>
+
+<dl>
+
+<dt>Рівень знань по граматиці:</dt>
+<dd>
+    @ViewBag.UserData.ObjectiveLevel
+    <br>
+    <a class="btn btn-purple" href="@Url.Action("TestUserGrammar", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
+</dd>
+<dt>Рівень знань по прослуховуванні та написанню</dt>
+<dd>
+<dd>
+    @ViewBag.UserData.ObjLvlListening
+    <br>
+    <a class="btn btn-purple" href="@Url.Action("TestUserListening", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
+</dd>
+</dl>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link bg-secondary text-light active" id="standard-tab" data-toggle="tab" href="#standard" role="tab" aria-controls="standard" aria-selected="true">Стандартні завдання</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link bg-secondary text-light" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="false">Завдання користувача</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="standard" role="tabpanel" aria-labelledby="beginner-tab">
+        <div class="card-columns">        </div>
+            @Html.Action("ShowTasks", new { area = "", type = "Standard" })
+    </div>
+    <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="elementary-tab">
+        <div><a class="btn btn-purple" href="@Url.Action("Create", "ManageELTasks", new { area = "Moderator"})">Додати завдання</a></div>
+        <div class="card-columns"> </div>
+            @Html.Action("ShowTasks", new { area = "", type = "User" })
+    </div>
+</div>
+
+<div id="editBody"></div>
+
+<script>
+    $("#myTabContent").on("click", ".close-btn", function (e) {
+        e.stopPropagation();
+        var el = $(this);
+        var parent = $(this).parent(".alert");
+        var link = parent.attr("data");
+        var id = parent.attr("id");
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: { id: id },
+            beforeSend: function () {
+                return confirm("Ви точно хочете видалити завдання?");
+            },
+            success: function () {
+                //el.prop("data-dismiss", "alert");
+                //el.prop("aria-label", "Close");
+                //el.parent(".alert").alert('close');
+                parent.remove();
+                //parent.alert('close');
+            }
+        })
+    });
+
+    $("#myTabContent").on("click", ".fa-edit", function (e) {
+        e.stopPropagation();
+        var id = $(this).parent(".alert").attr("data-target");
+        var link = $(this).attr("data");
+        //$(id).modal('hide');
+        $.ajax({
+            type: "GET",
+            url: link,
+            //data: { id: id },
+            success: function (data) {
+                $("#editBody").html(data);
+                $("#editModal").modal('show');
+            }
+        })
+    });
+
+    $("#editBody").on("click", "#EditSubmit", function () {
+        $("#EditForm").submit();
+    });
+</script>
+    @Scripts.Render("~/bundles/ajax")
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ToolTip.js")"></script>
+
