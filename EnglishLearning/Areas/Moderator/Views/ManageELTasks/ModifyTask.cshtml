@@ -1,0 +1,51 @@
+﻿@model EnglishLearning.Models.ELTask
+
+<div class="form-group col-12 d-flex flex-column align-items-center">
+    @Html.LabelFor(model => model.Name, "Завдання", htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group col-12 d-flex flex-column align-items-center">
+    @Html.LabelFor(model => model.Description, "Опис завдання", htmlAttributes: new { @class = "control-label" })
+    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group col-12 d-flex flex-column align-items-center">
+    @Html.LabelFor(model => model.Text, "Текст", htmlAttributes: new { @class = "control-label" })
+    @Html.TextAreaFor(model => model.Text, new { @class = "form-control", rows = 4 })
+    @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group col-12 d-flex flex-column align-items-center">
+    <div>
+        @Html.LabelFor(model => model.Group, "Група завдання", htmlAttributes: new { @class = "control-label" })
+        <button type="button" class="alert alert-info align-self-start tooltip-test" data-toggle="tooltip"
+                data-placement="top" title="Lection, Word, Test, Grammar, Other"></button>
+    </div>
+    @Html.EditorFor(model => model.Group, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(model => model.Group, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group col-12" hidden>
+    @Html.LabelFor(model => model.DocumentPath, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.DocumentPath, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(model => model.DocumentPath, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group col-12 d-flex flex-column align-items-center">
+    <div>
+        @Html.LabelFor(model => model.Difficult, "Складність завдання", htmlAttributes: new { @class = "control-label" })
+        <button type="button" class="alert alert-info align-self-start tooltip-test" data-toggle="tooltip"
+                data-placement="top" title="Beginner, Elementary, Intermediate, Upper-Intermediate, Advanced, Proficient"></button>
+    </div>
+    @Html.DropDownList("Difficult", new SelectList(new[] { "Beginner", "Elementary", "Intermediate", "Upper-Intermediate", "Advanced", "Proficient" }, Model == null ? "Beginner" : (Model.Difficult ?? "Beginner")), new { @class="form-control"} )
+    @*@Html.EditorFor(model => model.Difficult, new { htmlAttributes = new { @class = "form-control" } })*@
+    @Html.ValidationMessageFor(model => model.Difficult, "", new { @class = "text-danger" })
+</div>
+
+<div class="custom-file col-12 mt-4">
+    <input type="file" name="file" class="custom-file-input btn btn-secondary" id="file" accept=".pdf, .doc, .docx">
+    <label class="custom-file-label" for="customFile">Файл завдання (pdf, doc, docx)</label>
+</div>

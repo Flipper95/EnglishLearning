@@ -11,6 +11,8 @@
         cursor: pointer;
     }
 </style>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/regular.css" integrity="sha384-z3ccjLyn+akM2DtvRQCXJwvT5bGZsspS4uptQKNXNg778nyzvdMqiGcqHVGiAUyY" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css" integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT" crossorigin="anonymous">
 }
 
 <h2>Index</h2>
@@ -69,9 +71,28 @@
     <input type="submit" class="btn btn-outline-purple col-12 col-sm-2 m-2" value="Знайти" onclick="drawStuff()">
 </div>
 
-<div id="columnchart2_material" style="width:70%; height:70%"></div>
+<div id="columnchart2_material" style="width:100%; height:80%"></div>
 
 <div id="histogramchart_material" style="width:70%; height:70%"></div>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link bg-secondary text-light active" id="standard-tab" data-toggle="tab" href="#standard" role="tab" aria-controls="standard" aria-selected="true">Стандартні завдання</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link bg-secondary text-light" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="false">Власні завдання</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="standard" role="tabpanel" aria-labelledby="beginner-tab">
+            @Html.Action("ShowTasks", "Profile", new { area = "", type = "Standard", done = true })
+    </div>
+    <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="elementary-tab">
+        <div id="userTasks">
+            @Html.Action("ShowTasks", "Profile", new { area = "", type = "User", done = true })
+        </div>
+    </div>
+</div>
 
 <div id="gridContent">
     @grid.GetHtml(

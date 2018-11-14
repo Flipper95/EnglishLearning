@@ -1,0 +1,49 @@
+﻿@model EnglishLearning.Models.UserELTask
+
+<div class="modal fade" id="editUTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Відмітити виконання завдання:<br />@Model.ELTask.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("EditUserTask", "ManageELTasks", new { area = "Moderator", enctype = "multipart/form-data" }, FormMethod.Post, new { id = "EditUTForm", enctype = "multipart/form-data", target = "dummyframe3" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.TaskId)
+                    @Html.HiddenFor(model => model.UserId)
+                    @Html.HiddenFor(model => model.UserTaskId)
+                    @Html.HiddenFor(model => model.ResultDocPath)
+                    <div class="form-group col-12 d-flex flex-column align-items-center">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(model => model.Done, new { @class= "custom-control-input answer" })
+                            @Html.LabelFor(model => model.Done, "Завдання виконано", new { @class= "custom-control-label" })
+                            @*<label class="custom-control-label" for="Done">Завдання виконано</label>*@
+                        </div>
+                    </div>
+
+                    <div class="form-group col-12 d-flex flex-column align-items-center">
+                        <input id="date" name="date" type="date" min="2018-11-10" class="form-control"
+                               data-toggle="tooltip" data-placement="bottom" title="Дата напоминання" value="@Model.Date.Value.Date.ToString("yyyy-MM-dd")">
+                    </div>
+
+                    <div class="custom-file col-12">
+                        <input type="file" name="result" class="custom-file-input btn btn-secondary" id="result" accept=".pdf, .doc, .docx">
+                        <label class="custom-file-label" for="customFile">Файл результату (pdf, doc, docx)</label>
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button id="EditUTCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <input id="EditUTSubmit" type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe width="0" height="0" border="0" name="dummyframe3" id="dummyframe3" hidden style="display: none"></iframe>

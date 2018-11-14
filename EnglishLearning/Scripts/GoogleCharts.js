@@ -23,7 +23,6 @@ function drawStuff() {
         async: false
     }).responseText;
 
-    var data = new google.visualization.DataTable(jsonData);
 
     var materialOptions = {
         chart: {
@@ -42,8 +41,16 @@ function drawStuff() {
         }
     };
 
-    var materialChart = new google.charts.Bar(chartDiv);
-    materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+    var json = jQuery.parseJSON(jsonData);
+    if (json["rows"].length > 0) {
+        chartDiv.removeAttribute("hidden");
+        var data = new google.visualization.DataTable(jsonData);
+        var materialChart = new google.charts.Bar(chartDiv);
+        materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+    }
+    else {
+        chartDiv.setAttribute("hidden", "true");
+    }
 
     jsonObject = {
         "xName": "Кількість тестів",
@@ -63,7 +70,14 @@ function drawStuff() {
     var options = {
         legend: { position: 'none' },
     };
-    data = new google.visualization.DataTable(jsonData);
-    var chart = new google.visualization.Histogram(document.getElementById('histogramchart_material'));
-    chart.draw(data, google.charts.Bar.convertOptions(options));
+    json = jQuery.parseJSON(jsonData);
+    if (json["rows"].length > 0) {//!jQuery.isEmptyObject(jsonData["rows"])) {
+        $("#histogramchart_material").removeProp("hidden");
+        data = new google.visualization.DataTable(jsonData);
+        var chart = new google.visualization.Histogram(document.getElementById('histogramchart_material'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+    else {
+        $("#histogramchart_material").prop("hidden", true);
+    }
 };

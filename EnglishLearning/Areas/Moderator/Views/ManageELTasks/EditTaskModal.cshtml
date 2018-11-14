@@ -1,0 +1,34 @@
+﻿@model EnglishLearning.Models.ELTask
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Редагувати завдання</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("EditTask", "ManageELTasks", new { area = "Moderator", enctype = "multipart/form-data" }, FormMethod.Post, new { id = "EditForm", enctype = "multipart/form-data", target = "dummyframe" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(model => model.TaskId)
+                    <div class="d-flex flex-column align-items-center">
+                        @Html.Partial("ModifyTask", Model)
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button id="EditCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input id="EditSubmit" type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" hidden style="display: none"></iframe>
+<script type="text/javascript" src="@Url.Content("~/Scripts/ToolTip.js")"></script>

@@ -83,13 +83,14 @@ namespace EnglishLearning.Controllers
             return RedirectToAction("Listening", "Grammar", new { area = "", number = 10, name = nextLvl });
         }
 
-        public ActionResult ShowTasks(string type) {
+        public ActionResult ShowTasks(string type, bool done = false) {
             //IQueryable<Task> result;
             var temp = User.Identity.GetUserId();
             var userId = db.User.Where(x => x.IdentityId == temp).Select(x => x.UserId).First();
             var result = (from ut in db.UserELTask.Include("ELTask")
-                          where ut.UserId == userId && ut.Done == false
+                          where ut.UserId == userId
                           select ut);
+            result = result.Where(x => x.Done == done);
             if (type == "Standard")
             {
                 result = result.Where(x => x.ELTask.AuthorId == 1);
@@ -97,6 +98,7 @@ namespace EnglishLearning.Controllers
             else {
                 result = result.Where(x => x.ELTask.AuthorId == userId);
             }
+            ViewBag.TaskGroup = new List<string> { "Word", "Lection", "Test", "Grammar" };
             return PartialView(result.ToList());
         }
 
@@ -119,88 +121,142 @@ namespace EnglishLearning.Controllers
             //               select ut
         }
 
-        public ActionResult Edit(int id) {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        public ActionResult RedirectToExecute(int id, string group, string name) {
+            name = name.ToLower();
+            switch (group) {
+                case("Word"): {
+                        switch (name) {
+                            case ("listening"): { TaskSaveDone(id); return RedirectToAction("ListeningExercise", "Listening", new { area = "" }); }
+                            case ("translate"): { TaskSaveDone(id); return RedirectToAction("TranslateExercise", "Translate", new { area = "" }); }
+                            case ("equivalent"): { TaskSaveDone(id); return RedirectToAction("EquivalentExercise", "Equivalent", new { area = "" }); }
+                            case ("constructor"): { TaskSaveDone(id); return RedirectToAction("ConstructorExercise", "Constructor", new { area = "" }); }
+                            case ("synonyms"): { TaskSaveDone(id); return RedirectToAction("SynonymsExercise", "Synonyms", new { area = "" }); }
+                        }
+                        break;
+                }
+                case ("Lection"): {
+                        var lection = db.Lection.Where(x => x.Name.ToLower() == name).First();
+                        if (lection != null) {
+                            TaskSaveDone(id);
+                            return RedirectToAction("ShowLection", "Lection", new { area="", id = lection.LectionId});
+                        }
+                        return RedirectToAction("ShowByGroup", "Lection", new { area = "" });
+                }
+                case ("Test"): {
+                        var test = db.Test.Where(x => x.Name.ToLower() == name).First();
+                        if (test != null) {
+                            TaskSaveDone(id);
+                            return RedirectToAction("Test", "Test", new { area="", id = test.TestId});
+                        }
+                        return RedirectToAction("Index", "Test", new { area = "" });
+                }
+                case ("Grammar"): {
+                        var grammar = db.GrammarGroup.Where(x => x.Name.ToLower() == name).First();
+                        if(grammar != null)
+                        {
+                            TaskSaveDone(id);
+                            return RedirectToAction("Listening", "Grammar", new { area = "", name = grammar.Name });
+                        }
+                        break;
+                }
             }
-            ELTask eLTask = db.ELTask.Find(id);
-            if (eLTask == null)
-            {
-                return HttpNotFound();
-            }
-            return PartialView("EditTask", eLTask);
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public void EditTask(ELTask eLTask, string date, bool? done, HttpPostedFileBase result, HttpPostedFileBase file)
-        {
-
-            if (ModelState.IsValid)
+        private bool TaskSaveDone(int id) {
+            var task = db.UserELTask.Where(x => x.UserTaskId == id).First();
+            if (task != null)
             {
-                var temp = User.Identity.GetUserId();
-                var userId = db.User.Where(x => x.IdentityId == temp).Select(x => x.UserId).First();
-                var path = SaveFile(file);
-                if (!string.IsNullOrWhiteSpace(path))
-                {
-                    if (!string.IsNullOrWhiteSpace(eLTask.DocumentPath))
-                    {
-                        if (System.IO.File.Exists(Server.MapPath(eLTask.DocumentPath)))
-                            System.IO.File.Delete(Server.MapPath(eLTask.DocumentPath));
-                    }
-                    eLTask.DocumentPath = path;
-                }
-                eLTask.AuthorId = userId;
-                db.Entry(eLTask).State = EntityState.Modified;
-                UserELTask userTask = (from ut in db.UserELTask
-                                       where ut.TaskId == eLTask.TaskId && ut.UserId == userId
-                                       select ut).First();
-                DateTime dateNotify;
-                try
-                {
-                    dateNotify = Convert.ToDateTime(date);
-                }
-                catch {
-                    dateNotify = DateTime.Now.AddDays(1);
-                }
-                userTask.Date = dateNotify;
-                userTask.Done = Convert.ToBoolean(done);
-                var resPath = SaveFile(result);
-                if (!string.IsNullOrWhiteSpace(resPath))
-                {
-                    if (!string.IsNullOrWhiteSpace(userTask.ResultDocPath))
-                    {
-                        if (System.IO.File.Exists(Server.MapPath(userTask.ResultDocPath)))
-                            System.IO.File.Delete(Server.MapPath(userTask.ResultDocPath));
-                    }
-                    userTask.ResultDocPath = resPath;
-                }
-                db.Entry(userTask).State = EntityState.Modified;
+                task.Done = true;
+                db.Entry(task).State = EntityState.Modified;
                 db.SaveChanges();
-                //return RedirectToAction("Index", "Profile", new { area = "" });
+                return true;
             }
-            //RedirectToAction("Edit", new { id = eLTask.TaskId });
-            //return View(eLTask);
+            return false;
         }
 
-        private string SaveFile(HttpPostedFileBase file)
-        {
-            var path = "";
-            if (file != null && file.ContentLength > 0)
-            {
-                var extension = Path.GetExtension(file.FileName);
-                if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
-                {
-                    var fileName = Path.GetFileName(file.FileName);
-                    fileName = Guid.NewGuid().ToString() + extension;
-                    path = "~/App_Data/TaskDocuments/";
-                    var tempPath = Path.Combine(Server.MapPath(path), fileName);
-                    path = path + fileName;
-                    file.SaveAs(tempPath);
-                }
-            }
-            return path;
-        }
+        //public ActionResult Edit(int id) {
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ELTask eLTask = db.ELTask.Find(id);
+        //    if (eLTask == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return PartialView("EditTask", eLTask);
+        //}
+
+        //[HttpPost]
+        //public void EditTask(ELTask eLTask, string date, bool? done, HttpPostedFileBase result, HttpPostedFileBase file)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        var temp = User.Identity.GetUserId();
+        //        var userId = db.User.Where(x => x.IdentityId == temp).Select(x => x.UserId).First();
+        //        var path = SaveFile(file);
+        //        if (!string.IsNullOrWhiteSpace(path))
+        //        {
+        //            if (!string.IsNullOrWhiteSpace(eLTask.DocumentPath))
+        //            {
+        //                if (System.IO.File.Exists(Server.MapPath(eLTask.DocumentPath)))
+        //                    System.IO.File.Delete(Server.MapPath(eLTask.DocumentPath));
+        //            }
+        //            eLTask.DocumentPath = path;
+        //        }
+        //        eLTask.AuthorId = userId;
+        //        db.Entry(eLTask).State = EntityState.Modified;
+        //        UserELTask userTask = (from ut in db.UserELTask
+        //                               where ut.TaskId == eLTask.TaskId && ut.UserId == userId
+        //                               select ut).First();
+        //        DateTime dateNotify;
+        //        try
+        //        {
+        //            dateNotify = Convert.ToDateTime(date);
+        //        }
+        //        catch {
+        //            dateNotify = DateTime.Now.AddDays(1);
+        //        }
+        //        userTask.Date = dateNotify;
+        //        userTask.Done = Convert.ToBoolean(done);
+        //        var resPath = SaveFile(result);
+        //        if (!string.IsNullOrWhiteSpace(resPath))
+        //        {
+        //            if (!string.IsNullOrWhiteSpace(userTask.ResultDocPath))
+        //            {
+        //                if (System.IO.File.Exists(Server.MapPath(userTask.ResultDocPath)))
+        //                    System.IO.File.Delete(Server.MapPath(userTask.ResultDocPath));
+        //            }
+        //            userTask.ResultDocPath = resPath;
+        //        }
+        //        db.Entry(userTask).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        //return RedirectToAction("Index", "Profile", new { area = "" });
+        //    }
+        //    //RedirectToAction("Edit", new { id = eLTask.TaskId });
+        //    //return View(eLTask);
+        //}
+
+        //private string SaveFile(HttpPostedFileBase file)
+        //{
+        //    var path = "";
+        //    if (file != null && file.ContentLength > 0)
+        //    {
+        //        var extension = Path.GetExtension(file.FileName);
+        //        if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
+        //        {
+        //            var fileName = Path.GetFileName(file.FileName);
+        //            fileName = Guid.NewGuid().ToString() + extension;
+        //            path = "~/App_Data/TaskDocuments/";
+        //            var tempPath = Path.Combine(Server.MapPath(path), fileName);
+        //            path = path + fileName;
+        //            file.SaveAs(tempPath);
+        //        }
+        //    }
+        //    return path;
+        //}
 
         //[HttpPost]
         public FileResult Download(string path)

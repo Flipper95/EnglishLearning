@@ -1,0 +1,38 @@
+﻿@model EnglishLearning.Models.ELTask
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Створити завдання</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            @using (Html.BeginForm("CreateTask", "ManageELTasks", new { area = "Moderator", enctype = "multipart/form-data" }, FormMethod.Post, new { id = "CreateForm", enctype = "multipart/form-data", target = "dummyframe2" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex flex-column align-items-center">
+                    @Html.Partial("ModifyTask", Model)
+                        
+                    <div class="form-group col-12">
+                        <input id="date" name="date" type="date" min="2018-11-10" class="form-control"
+                            data-toggle="tooltip" data-placement="bottom" title="Дата напоминання">
+                    </div>
+                </div>
+            }
+
+            </div>
+            <div class="modal-footer">
+                <button id="CreateCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <input id="CreateSubmit" type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe width="0" height="0" border="0" name="dummyframe2" id="dummyframe2" hidden style="display: none"></iframe>
+<script type="text/javascript" src="@Url.Content("~/Scripts/ToolTip.js")"></script>

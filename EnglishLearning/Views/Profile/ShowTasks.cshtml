@@ -1,24 +1,33 @@
 ﻿@model List<EnglishLearning.Models.UserELTask>
 
 @using EnglishLearning.ExtendClasses;
-
-@foreach (var el in Model)
+@if (Model.Count > 0)
+{
+foreach (var el in Model)
 {
     @*<div class="alert alert-info">
         @el.ELTask.Name
     </div>*@
 
-    <div id="@el.ELTask.TaskId" class="alert alert-info col-12 alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = ""})">
-        @if (el.ELTask.AuthorId == el.UserId)
+    <div id="@el.ELTask.TaskId" class="alert alert-info col-12 alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = "" })">
+        @if (el.Done == false)
         {
+        <i id="userTaskEdit" class="far fa-check-square btn" data="@Url.Action("EditUserTaskModal", "ManageELTasks", new { area = "Moderator", id = el.UserTaskId })"></i>
+            if (el.ELTask.AuthorId == el.UserId)
+            {
         @*<a href="@Url.Action("Edit", "ManageELTasks", new { area = "Moderator", id = el.ELTask.TaskId})">*@
-        <i class="far fa-edit btn" data="@Url.Action("Edit", new { area = "", id = el.ELTask.TaskId })"></i>
+        <i class="far fa-edit btn" data="@Url.Action("EditTaskModal", "ManageELTasks", new { area = "Moderator", id = el.ELTask.TaskId })"></i>
         @*</a>*@
-        }
+            }
         @el.ELTask.Name
           <button class="close-btn close" type="button">
             <span aria-hidden="true">&times;</span>
           </button>
+        }
+        else
+        {
+            @el.ELTask.Name
+        }
     </div>
 
     <!-- Modal -->
@@ -37,11 +46,13 @@
                         <div class="my-1"><b>Складність:</b>  @el.ELTask.Difficult</div>
                         <div class="my-1"><b>Група:</b>  @el.ELTask.Group</div>
                         <div class="my-1"><b>Дата напоминання:</b> @el.Date.Value.ToShortDateString()</div>
-                        @if (!string.IsNullOrWhiteSpace(el.ELTask.DocumentPath)) {
-                            <a class="btn btn-purple col-6 align-self-center" href="@Url.Action("Download", new { area="", path = el.ELTask.DocumentPath})">Завантажити файл завдання</a>
+                        @if (!string.IsNullOrWhiteSpace(el.ELTask.DocumentPath))
+                        {
+                            <a class="btn btn-purple col-8 align-self-center" href="@Url.Action("Download", new { area = "", path = el.ELTask.DocumentPath })"><i class="far fa-file-alt mr-2"></i>Завантажити файл завдання</a>
                         }
-                        @if (!string.IsNullOrWhiteSpace(el.ResultDocPath)) {
-                            <a class="btn btn-purple col-6 align-self-center" href="@Url.Content(el.ResultDocPath)">Завантажити власний результат</a>
+                        @if (!string.IsNullOrWhiteSpace(el.ResultDocPath))
+                        {
+                            <a class="btn btn-purple col-8 align-self-center mt-2" href="@Url.Action("Download", new { area = "", path = el.ResultDocPath })"><i class="far fa-file-alt mr-2"></i>Завантажити власний результат</a>
                         }
                         @*@using (Html.BeginForm("Download", "Profile", new { area = "" }, FormMethod.Post))
                         {
@@ -59,15 +70,26 @@
                         </div>
                     </div>
                 </div>
-                @*<div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>*@
+                @if (ViewBag.TaskGroup != null && el.Done == false)
+                {
+                    if ((ViewBag.TaskGroup as List<string>).Any(x => el.ELTask.Group.Contains(x)))
+                    {
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <a class="btn btn-primary" href="@Url.Action("RedirectToExecute", "Profile", new { area = "", id = el.UserTaskId, group = el.ELTask.Group, name = el.ELTask.Name })">Виконати</a>
+                </div>
+                    }
+                }
             </div>
         </div>
     </div>
 }
-
+}
+else {
+    <div class="alert alert-warning col-12">
+        Для вас поки що не має жодних завдань, але ви можете створити власні "Профіль"->"Власні завдання"
+    </div>
+}
     @*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

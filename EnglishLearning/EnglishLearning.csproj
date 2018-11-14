@@ -382,6 +382,10 @@
     <Content Include="Areas\Moderator\Views\ManageELTasks\Details.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageELTasks\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageELTasks\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\ModifyTask.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\EditTaskModal.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\CreateTaskModal.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageELTasks\EditUserTaskModal.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -462,7 +466,6 @@
     <Content Include="Views\Grammar\ConstructorBlock.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\ShowTasks.cshtml" />
-    <Content Include="Views\Profile\EditTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

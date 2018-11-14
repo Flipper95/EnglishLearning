@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using EnglishLearning.ExtendClasses;
 using Microsoft.AspNet.Identity;
-using EnglishLearning.ExtendClasses;
 
 namespace EnglishLearning.Controllers
 {
