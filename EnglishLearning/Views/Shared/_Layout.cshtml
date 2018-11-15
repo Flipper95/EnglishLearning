@@ -80,6 +80,26 @@
 
 
     <div class="container body-content">
+        @if (Request.IsAuthenticated)
+        {
+        if (Request.Cookies["Notification"] != null && !string.IsNullOrWhiteSpace(Request.Cookies["Notification"].Value))
+        {
+                string[] notification = Request.Cookies["Notification"].Value.Split(';');
+            <div class="alert alert-warning col-12">
+                Настав час виконання перелічених завдань:
+                <ul>
+                @foreach (var el in notification) {
+                   <li>@el</li> 
+                }
+                </ul>
+                @*@Request.Cookies["Notification"].Value*@
+                Перейдіть до <a href="@Url.Action("Index", "Profile", new { area = "" })">профілю</a> для перегляду деталей.
+                <button id="notification-close" class="close-btn close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        }
         @RenderBody()
         <hr />
         <footer>
@@ -91,6 +111,12 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/popperBootstrap")
+    <script type="text/javascript">
+        $("#notification-close").on("click", function () {
+            $(this).parent(".alert").remove();
+            document.cookie = 'Notification=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        });
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

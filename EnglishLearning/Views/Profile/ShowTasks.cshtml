@@ -8,8 +8,15 @@ foreach (var el in Model)
     @*<div class="alert alert-info">
         @el.ELTask.Name
     </div>*@
-
-    <div id="@el.ELTask.TaskId" class="alert alert-info col-12 alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = "" })">
+string color;
+switch (el.ELTask.Group.ToLower()) {
+    case ("word"): { color = "alert-teal"; break; }
+    case ("lection"): { color = "alert-dark"; break; }
+    case ("test"): { color = "alert-purple"; break; }
+    case ("grammar"): { color = "alert-warning"; break; }
+    default: { color = "alert-info"; break; }
+}
+    <div id="@el.ELTask.TaskId" class="alert @color col-12 alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = "" })">
         @if (el.Done == false)
         {
         <i id="userTaskEdit" class="far fa-check-square btn" data="@Url.Action("EditUserTaskModal", "ManageELTasks", new { area = "Moderator", id = el.UserTaskId })"></i>

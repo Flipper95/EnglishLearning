@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EnglishLearning.Models;
+using System.Data.Entity;
 
 namespace EnglishLearning.Controllers
 {
@@ -485,9 +486,9 @@ namespace EnglishLearning.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl, string userId = "")
         {
+            var db = new EnglishLearningEntities();
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                var db = new EnglishLearningEntities();
                 //string temp = User.Identity.GetUserId();
                 bool tested;
                 if (db.User.Where(x => x.IdentityId == userId).Count() > 0)
@@ -504,6 +505,15 @@ namespace EnglishLearning.Controllers
                     return RedirectToAction("Test", "Test", new { id = db.Test.Where(x => x.Name == "Загальний рівень знань").Select(x => x.TestId).First() });
                 }
             }
+
+            var tempDate = DateTime.Now.Date;
+            var id = db.User.Where(x => x.IdentityId == userId).Select(x => x.UserId).First();
+            var notification = (from t in db.UserELTask.Include("ELTask")
+                                where t.Done == false && tempDate >= DbFunctions.TruncateTime(t.Date.Value) && t.UserId == id
+                                select t.ELTask.Name).ToArray();
+            HttpCookie cookie = new HttpCookie("Notification", string.Join("; ", notification));
+            Response.AppendCookie(cookie);
+
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
