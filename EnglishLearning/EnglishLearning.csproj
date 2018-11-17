@@ -224,6 +224,7 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\TextTaskController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
     <Compile Include="ExtendClasses\DifficultyLvl.cs" />
     <Compile Include="ExtendClasses\Shuffle.cs" />
@@ -287,6 +288,9 @@
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TestHistory.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TextTask.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
@@ -466,6 +470,7 @@
     <Content Include="Views\Grammar\ConstructorBlock.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\ShowTasks.cshtml" />
+    <Content Include="Views\TextTask\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -140,7 +140,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin, moderator, user")]
-        public void EditTask(ELTask eLTask, HttpPostedFileBase file) {
+        public string EditTask(ELTask eLTask, HttpPostedFileBase file) {
 
             if (ModelState.IsValid)
             {
@@ -171,6 +171,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 catch { }
                 //return RedirectToAction("Index", "Profile", new { area = "" });
             }
+            return eLTask.Name;
             //return View(eLTask);
         }
 

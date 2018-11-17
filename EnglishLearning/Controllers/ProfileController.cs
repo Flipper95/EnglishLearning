@@ -35,6 +35,7 @@ namespace EnglishLearning.Controllers
             db.UserELTask.RemoveRange(toDelete);
             if ((tasks.Count() - count) < 7) {
                 var bannedTasks = tasks.Select(x => x.ELTask.TaskId);
+                //TODO: add tasks by complexity
                 var temp = from t in db.ELTask
                            where !bannedTasks.Contains(t.TaskId) && t.AuthorId == 1
                            select t.TaskId;

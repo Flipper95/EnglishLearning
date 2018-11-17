@@ -26,7 +26,9 @@ switch (el.ELTask.Group.ToLower()) {
         <i class="far fa-edit btn" data="@Url.Action("EditTaskModal", "ManageELTasks", new { area = "Moderator", id = el.ELTask.TaskId })"></i>
         @*</a>*@
             }
+            <div class="TaskName btn">
         @el.ELTask.Name
+            </div>
           <button class="close-btn close" type="button">
             <span aria-hidden="true">&times;</span>
           </button>

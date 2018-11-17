@@ -37,6 +37,8 @@
         <AssociationConnector Association="EnglishLearningModel.Task_User1" />
         <AssociationConnector Association="EnglishLearningModel.UserTask_Task1" />
         <AssociationConnector Association="EnglishLearningModel.UserTask_User1" />
+        <EntityTypeShape EntityType="EnglishLearningModel.TextTask" Width="1.5" PointX="3" PointY="20.25" />
+        <AssociationConnector Association="EnglishLearningModel.Text_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

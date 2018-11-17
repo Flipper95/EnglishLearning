@@ -136,6 +136,17 @@
           <Property Name="Questions" Type="ntext" Nullable="false" />
           <Property Name="Answers" Type="ntext" Nullable="false" />
         </EntityType>
+        <EntityType Name="TextTask">
+          <Key>
+            <PropertyRef Name="TextId" />
+          </Key>
+          <Property Name="TextId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Words" Type="nvarchar" MaxLength="200" />
+          <Property Name="Difficult" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -356,6 +367,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Text_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TextTask" Type="Self.TextTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TextTask">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="UserTask_Task">
           <End Role="ELTask" Type="Self.ELTask" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -407,6 +430,7 @@
           <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestGroup" EntityType="Self.TestGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestHistory" EntityType="Self.TestHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TextTask" EntityType="Self.TextTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserELTask" EntityType="Self.UserELTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Word" EntityType="Self.Word" Schema="dbo" store:Type="Tables" />
@@ -465,6 +489,10 @@
           <AssociationSet Name="TestHistory_User" Association="Self.TestHistory_User">
             <End Role="User" EntitySet="User" />
             <End Role="TestHistory" EntitySet="TestHistory" />
+          </AssociationSet>
+          <AssociationSet Name="Text_User" Association="Self.Text_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TextTask" EntitySet="TextTask" />
           </AssociationSet>
           <AssociationSet Name="UserTask_Task" Association="Self.UserTask_Task">
             <End Role="ELTask" EntitySet="ELTask" />
@@ -599,6 +627,7 @@
           <Property Name="LvlListening" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_User1" FromRole="User" ToRole="ELTask" />
           <NavigationProperty Name="UserELTask" Relationship="EnglishLearningModel.UserTask_User1" FromRole="User" ToRole="UserELTask" />
+          <NavigationProperty Name="TextTask" Relationship="EnglishLearningModel.Text_User" FromRole="User" ToRole="TextTask" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -833,6 +862,11 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserELTask" EntitySet="UserELTask" />
           </AssociationSet>
+          <EntitySet Name="TextTask" EntityType="EnglishLearningModel.TextTask" />
+          <AssociationSet Name="Text_User" Association="EnglishLearningModel.Text_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TextTask" EntitySet="TextTask" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LectionGroup">
           <Key>
@@ -988,6 +1022,30 @@
             </Principal>
             <Dependent Role="UserELTask">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TextTask">
+          <Key>
+            <PropertyRef Name="TextId" />
+          </Key>
+          <Property Name="TextId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Words" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Difficult" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="EnglishLearningModel.Text_User" FromRole="TextTask" ToRole="User" />
+        </EntityType>
+        <Association Name="Text_User">
+          <End Type="EnglishLearningModel.User" Role="User" Multiplicity="1" />
+          <End Type="EnglishLearningModel.TextTask" Role="TextTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TextTask">
+              <PropertyRef Name="AuthorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1176,6 +1234,18 @@
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="UserTaskId" ColumnName="UserTaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TextTask">
+            <EntityTypeMapping TypeName="EnglishLearningModel.TextTask">
+              <MappingFragment StoreEntitySet="TextTask">
+                <ScalarProperty Name="Difficult" ColumnName="Difficult" />
+                <ScalarProperty Name="Words" ColumnName="Words" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="TextId" ColumnName="TextId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

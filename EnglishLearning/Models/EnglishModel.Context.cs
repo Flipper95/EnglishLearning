@@ -40,5 +40,6 @@ namespace EnglishLearning.Models
         public virtual DbSet<GrammarGroup> GrammarGroup { get; set; }
         public virtual DbSet<ELTask> ELTask { get; set; }
         public virtual DbSet<UserELTask> UserELTask { get; set; }
+        public virtual DbSet<TextTask> TextTask { get; set; }
     }
 }

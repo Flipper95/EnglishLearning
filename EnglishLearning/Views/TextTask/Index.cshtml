@@ -1,0 +1,127 @@
+﻿@model EnglishLearning.Models.TextTask
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .wordPlaceholder {
+        display: inline-block;
+    }
+</style>
+<h2>@Model.Name</h2>
+
+<div id="text">
+    @Html.Raw(new HtmlString(Model.Text))
+</div>
+<div class="d-flex flex-row col-12 flex-wrap m-1" id="question" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+    @for (int i = 0; i < ViewBag.Answers.Count; i++) {
+        <div id="block_@i" class="btn btn-purple m-1 letter" draggable="true" ondragstart="drag(event)">@ViewBag.Answers[i]</div>
+    }
+</div>
+
+<button id="CheckBtn" name="CheckBtn" class="btn btn-purple col-8 col-md-6 col-lg-4" type="button">Перевірка результату</button>
+<a id="NextBtn" name="NextBtn" class="btn btn-teal text-white col-12" href="javascript:window.location.reload();" hidden>Наступний текст</a>
+
+<script type="text/javascript">
+    var index = 1;
+    var number = 1;
+    $(".wordPlaceholder").each(function () {
+        $(this).prop("id", number + "_answer").prop("tabindex", number);
+            //.attr("ondrop", "drop(event, this)").attr("ondragover", "allowDrop(event)");
+        number++;
+    });
+
+    $(".letter").on("click", function () {
+        var id = $(this).parent().attr("id");
+        if (id === "question") {
+            if (index >= number || $("#" + index + "_answer").children().length > 0) {
+                index = findEmptyIndex();
+            }
+            $("#" + index + "_answer").text("").append($(this));
+            index++;
+        }
+        else {
+            $("#question").append($(this));
+            $("#" + id).text("___");
+            index = findEmptyIndex();
+        }
+        if (index < number) {
+            index = findEmptyIndex();
+            $("#" + index + "_answer").focus();
+        }
+    });
+
+    $(".wordPlaceholder").on("click", function () {
+        var temp = $(this).prop("id");
+        $(this).focus();
+        index = parseInt(temp);
+    });
+
+    var findEmptyIndex = function () {
+        var el = $(".wordPlaceholder:not(:has(*))").first();
+        var id = el.prop("id");
+        return parseInt(id);
+    }
+
+        $("#CheckBtn").on("click", function () {
+            $("#CheckBtn").prop("hidden", true);
+            $(".letter").off("click").addClass("disabled").addClass("active");//.prop("draggable", false);
+            $("#NextBtn").removeAttr("hidden");
+
+            //var text = "";
+            var text = new Array();
+            $(".wordPlaceholder").each(function () {
+                text.push($(this).text());
+                //text += $(this).text();
+            });
+        $.ajax({
+                type: "POST",
+                url: "CheckResult",
+                data: { id: @Model.TextId, text: text },
+                success: function (data) {
+                    AjaxResult(data);
+                },
+            dataType: "json"
+        });
+    });
+
+
+    var AjaxResult = function (result) {
+        var el = $(".wordPlaceholder .active");
+        el.removeClass("btn-purple");
+        var i = 0;
+        var answer = result;
+        el.each(function () {
+            var text = $(this).html();
+            if (text === answer[i]) {
+                $(this).addClass("btn-success");
+            }
+            else {
+                $(this).addClass("btn-danger");
+            }
+            i++;
+        });
+        @*if (result.toLowerCase() == "true") {
+            el.addClass("btn-success");
+        }
+        else {
+            el.addClass("btn-danger");
+            var answer = @Model.Words.Split(';')
+        }*@
+    }
+
+    //function allowDrop(ev) {
+    //    ev.preventDefault();
+    //}
+
+    //function drag(ev) {
+    //    ev.dataTransfer.setData("text", ev.target.id);
+    //}
+
+    //function drop(ev, el) {
+    //    ev.preventDefault();
+    //    var data = ev.dataTransfer.getData("text");
+    //    el.appendChild(document.getElementById(data));
+    //}
+</script>
+

@@ -136,7 +136,34 @@
         //$("#editModal").remove();
         //$('.modal-backdrop').remove();
         ////$("#editModal").remove();
-        hideModal("#EditForm", "#editModal");
+        var id = $("#TaskId").prop("value");
+        var elem = document.getElementById("EditForm");
+        var data = new FormData(elem);
+        //data.append("file", $("#file")[0].files[0]);
+        //data.append("Name", $("#Name")[0].prop("text"));
+        //data.append("Description", $("#Description")[0].prop("text"));
+        //data.append("Text", $("#Text")[0].prop("text"));
+        //data.append("Group", $("#Group")[0].prop("text"));
+        //data.append("DocumentPath", $("#DocumentPath")[0].prop("text"));
+        //data.append("Difficult", $("#Difficult")[0].prop("value"));
+        $.ajax({
+            type: "POST",
+            url: $("#EditForm").prop("action"),
+            data: data,
+            success: function (data) {
+                $("#editModal").modal('hide');
+                $('body').removeClass('modal-open');
+                $("#editModal").remove();
+                $('.modal-backdrop').remove();
+                if (data) {
+                    $("#"+id).children(".TaskName").text(data);
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        })
+        //hideModal("#EditForm", "#editModal");
     });
 
     $("#myTabContent").on("click", "#create", function (e) {
