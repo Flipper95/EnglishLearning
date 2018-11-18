@@ -13,14 +13,22 @@ namespace EnglishLearning.Controllers
     {
         EnglishLearningEntities db = new EnglishLearningEntities();
         // GET: TextTask
-        public ActionResult Index()
+        public ActionResult Index(string taskName = "")
         {
             var identity = User.Identity.GetUserId();
             var user = db.User.Where(x => x.IdentityId == identity).First();
             //text.Difficult == user.ObjectiveLevel
-            var textTask = (from text in db.TextTask
+            var task = (from text in db.TextTask
                             where text.AuthorId == 1
-                            select text).First();
+                            select text);
+            if (!string.IsNullOrWhiteSpace(taskName))
+                task = task.Where(x => x.Name == taskName);
+            else
+                task = task.Where(x => x.Difficult == user.LvlReading);
+            task = task.OrderBy(x => Guid.NewGuid());
+            //TODO Change place to redirect if 0 text found
+            if (task.Count() == 0) return RedirectToAction("Index", "Home");
+            var textTask = task.First();
             var temp = textTask.Words.Split(';').ToList();//.Select(x => x.Trim()).ToList();
             ViewBag.Answers = Shuffle.ShuffleList(temp);
             return View(textTask);
@@ -50,9 +58,8 @@ namespace EnglishLearning.Controllers
             {
                 var identity = User.Identity.GetUserId();
                 var user = db.User.Where(x => x.IdentityId == identity).First();
-                //TODO:  USER reading objective level
-                string result = "";//user.ObjectiveLevel;
-                Difficult userLvl = (Difficult)Enum.Parse(typeof(Difficult), user.ObjectiveLevel.Replace('-', '_'));
+                string result = user.ObjLvlReading;
+                Difficult userLvl = (Difficult)Enum.Parse(typeof(Difficult), user.ObjLvlReading.Replace('-', '_'));
                 foreach (Difficult el in Enum.GetValues(typeof(Difficult)))
                 {
                     string name = Enum.Format(typeof(Difficult), el, "G");
@@ -66,8 +73,8 @@ namespace EnglishLearning.Controllers
                 result = result.Replace('_', '-');
                 //TempData["LevelChanged"] = (result == user.ObjectiveLevel ? false : true);
                 //TODO: USER reading objective level
-                //user.ObjectiveLevel = result;
-                //db.SaveChanges();
+                user.ObjLvlReading = result;
+                db.SaveChanges();
                 //TempData["UserLevel"] = result;
             }
         }

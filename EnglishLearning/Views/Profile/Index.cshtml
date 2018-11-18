@@ -26,6 +26,12 @@
     <br>
     <a class="btn btn-purple" href="@Url.Action("TestUserListening", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
 </dd>
+<dt>Рівень знань по читанню</dt>
+<dd>
+    @ViewBag.UserData.ObjLvlReading
+    <br>
+    <a class="btn btn-purple" href="@Url.Action("TestUserReading", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
+</dd>
 </dl>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">

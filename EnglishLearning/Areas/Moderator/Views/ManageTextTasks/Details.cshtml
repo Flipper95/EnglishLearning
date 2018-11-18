@@ -1,0 +1,52 @@
+﻿@model EnglishLearning.Models.TextTask
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TextTask</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Words)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Words)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Difficult)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Difficult)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TextId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

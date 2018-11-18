@@ -35,6 +35,8 @@ namespace EnglishLearning.Models
         public string IdentityId { get; set; }
         public string ObjLvlListening { get; set; }
         public string LvlListening { get; set; }
+        public string ObjLvlReading { get; set; }
+        public string LvlReading { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Group> Group { get; set; }

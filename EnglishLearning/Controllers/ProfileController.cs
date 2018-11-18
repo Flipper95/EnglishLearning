@@ -84,6 +84,21 @@ namespace EnglishLearning.Controllers
             return RedirectToAction("Listening", "Grammar", new { area = "", number = 10, name = nextLvl });
         }
 
+        public ActionResult TestUserReading(int id)
+        {
+            var userLvl = (from u in db.User
+                           where u.UserId == id
+                           select u.ObjLvlReading).First().Replace('-', '_');
+            Difficult current = (Difficult)Enum.Parse(typeof(Difficult), userLvl);
+            int index = (int)current + 1;
+            string nextLvl = "Текст на рівень знань: ";
+            if (Enum.IsDefined(typeof(Difficult), index))
+            {
+                nextLvl += ((Difficult)index).ToString();
+            }
+            return RedirectToAction("Index", "TextTask", new { area = "", taskName = nextLvl });
+        }
+
         public ActionResult ShowTasks(string type, bool done = false) {
             //IQueryable<Task> result;
             var temp = User.Identity.GetUserId();

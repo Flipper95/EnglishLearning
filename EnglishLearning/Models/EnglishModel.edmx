@@ -158,6 +158,8 @@
           <Property Name="IdentityId" Type="nvarchar" MaxLength="128" />
           <Property Name="ObjLvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ObjLvlReading" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LvlReading" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="UserELTask">
           <Key>
@@ -628,6 +630,8 @@
           <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_User1" FromRole="User" ToRole="ELTask" />
           <NavigationProperty Name="UserELTask" Relationship="EnglishLearningModel.UserTask_User1" FromRole="User" ToRole="UserELTask" />
           <NavigationProperty Name="TextTask" Relationship="EnglishLearningModel.Text_User" FromRole="User" ToRole="TextTask" />
+          <Property Name="ObjLvlReading" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LvlReading" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -1147,6 +1151,8 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="EnglishLearningModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LvlReading" ColumnName="LvlReading" />
+                <ScalarProperty Name="ObjLvlReading" ColumnName="ObjLvlReading" />
                 <ScalarProperty Name="LvlListening" ColumnName="LvlListening" />
                 <ScalarProperty Name="ObjLvlListening" ColumnName="ObjLvlListening" />
                 <ScalarProperty Name="IdentityId" ColumnName="IdentityId" />

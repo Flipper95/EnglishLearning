@@ -432,6 +432,9 @@ namespace EnglishLearning.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Response.Cookies["Notification"].Expires = DateTime.Now.AddDays(-1);
+            //Response.Cookies.Clear();
+            //Session.Clear();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
@@ -506,13 +509,16 @@ namespace EnglishLearning.Controllers
                 }
             }
 
-            var tempDate = DateTime.Now.Date;
-            var id = db.User.Where(x => x.IdentityId == userId).Select(x => x.UserId).First();
-            var notification = (from t in db.UserELTask.Include("ELTask")
-                                where t.Done == false && tempDate >= DbFunctions.TruncateTime(t.Date.Value) && t.UserId == id
-                                select t.ELTask.Name).ToArray();
-            HttpCookie cookie = new HttpCookie("Notification", string.Join("; ", notification));
-            Response.AppendCookie(cookie);
+            if (db.User.Where(x => x.IdentityId == userId).Count() > 0)
+            {
+                var tempDate = DateTime.Now.Date;
+                var id = db.User.Where(x => x.IdentityId == userId).Select(x => x.UserId).First();
+                var notification = (from t in db.UserELTask.Include("ELTask")
+                                    where t.Done == false && tempDate >= DbFunctions.TruncateTime(t.Date.Value) && t.UserId == id
+                                    select t.ELTask.Name).ToArray();
+                HttpCookie cookie = new HttpCookie("Notification", string.Join("; ", notification));
+                Response.AppendCookie(cookie);
+            }
 
             if (Url.IsLocalUrl(returnUrl))
             {
