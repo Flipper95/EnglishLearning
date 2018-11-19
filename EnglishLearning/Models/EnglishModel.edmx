@@ -115,6 +115,8 @@
           <Property Name="Editable" Type="bit" />
           <Property Name="ExportOwner" Type="nvarchar" MaxLength="100" />
           <Property Name="Time" Type="int" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="Voice" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="TestGroup">
           <Key>
@@ -595,6 +597,8 @@
           <NavigationProperty Name="TestHistory" Relationship="Self.TestHistory_Test" FromRole="Test" ToRole="TestHistory" />
           <NavigationProperty Name="TestGroup" Relationship="EnglishLearningModel.Test_TestGroup" FromRole="Test" ToRole="TestGroup" />
           <Property Name="Time" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Voice" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TestHistory">
           <Key>
@@ -1123,6 +1127,8 @@
           <EntitySetMapping Name="Test">
             <EntityTypeMapping TypeName="EnglishLearningModel.Test">
               <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="Voice" ColumnName="Voice" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="TestId" ColumnName="TestId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

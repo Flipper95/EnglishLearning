@@ -5,6 +5,15 @@
 }
 
 <h2>Test</h2>
+@if (ViewBag.Text != null) {
+    <div class="Text text-justify col-8 mr-auto ml-auto" style="white-space: pre-wrap;">
+        @ViewBag.Text
+    </div>
+}
+@if (ViewBag.VoicePath != null) {
+    <audio controls><source src="@Url.Action("GetAudioFile", "Test", new {id = this.ViewContext.RouteData.Values["id"]})" type="audio/mp3" /></audio>
+}
+
 <div class="d-flex flex-row flex-wrap">
     <div class="col-12 col-md-2 align-self-start d-md-flex flex-md-column flex-md-wrap">
         <p class="h4">Час: <div class="h4" id="timer" data="@ViewBag.Time"></div></p>

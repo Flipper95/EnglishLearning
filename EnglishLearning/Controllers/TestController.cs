@@ -53,6 +53,12 @@ namespace EnglishLearning.Controllers
             var test = db.Test.Where(x => x.TestId == id).First();
             ViewBag.Name = test.Name;
             ViewBag.Time = test.Time;
+            if (!string.IsNullOrWhiteSpace(test.Text)) {
+                ViewBag.Text = test.Text;
+            }
+            if (!string.IsNullOrWhiteSpace(test.Voice)) {
+                ViewBag.VoicePath = test.Voice;
+            }
 
             IQueryable<Question> questions = (from quest in db.Question
                             where quest.TestId == id
@@ -188,6 +194,28 @@ namespace EnglishLearning.Controllers
             TempData["UserLevel"] = result;
         }
 
+        private void SaveListeningLvl(Test test, double percent) {
+            if (test.Name.StartsWith("Рівень сприйняття на слух: ") && percent >= GetMinSuccessPercent(test.Name)) {
+                var user = (from u in db.User
+                            where u.UserId == UserId
+                            select u).First();
+                string result = user.ObjLvlListening;
+                Difficult userLvl = (Difficult)Enum.Parse(typeof(Difficult), user.ObjLvlListening.Replace('-', '_'));
+                foreach (Difficult el in Enum.GetValues(typeof(Difficult))) {
+                    string name = Enum.Format(typeof(Difficult), el, "G");
+                    int value = (int)el;
+                    if (test.Name == "Рівень сприйняття на слух: " + name) {
+                        if (value > (int)userLvl)
+                            result = name;
+                    }
+                }
+                result = result.Replace('_', '-');
+                TempData["LevelChanged"] = (result == user.ObjLvlListening ? false : true);
+                user.ObjLvlListening = result;
+                TempData["UserLevel"] = result;
+            }
+        }
+
         public ActionResult CheckResult(int testId) {
             double percent;
             string[] result = SaveResult(testId, out percent);
@@ -198,6 +226,8 @@ namespace EnglishLearning.Controllers
             //int time = test.TimeInMin;
             if(test.TestGroup.Name == "Рівень знань")
                 SaveUserLvl(test, percent);
+            if (test.TestGroup.Name == "Тести до озвучених історій")
+                SaveListeningLvl(test, percent);
             SaveHistory(test.Time, Convert.ToDateTime(Session["Time"]), GetMinSuccessPercent(test.Name), history);//time
             TempData["history"] = history;
             return RedirectToAction("Result");//, history);
@@ -321,6 +351,14 @@ namespace EnglishLearning.Controllers
             }
             percent = percent / questions.Count();
             return result;
+        }
+
+        public ActionResult GetAudioFile(int id) {
+            var voicePath = db.Test.Where(x => x.TestId == id).Select(x => x.Voice).First();
+            if (!string.IsNullOrWhiteSpace(voicePath)) {
+                return File(Server.MapPath(voicePath), "audio/mp3");
+            }
+            else return null;
         }
 
     }

@@ -75,6 +75,22 @@
             @Html.DisplayFor(model => model.Time)
         </dd>
 
+        <dt>
+            @Html.LabelFor(model => model.Text, "Текст до тесту")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.Voice, "Шлях до аудіо файлу зв'язаного з тестом")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Voice)
+        </dd>
+
     </dl>
 </div>
 <p>

@@ -30,6 +30,8 @@ namespace EnglishLearning.Models
         public Nullable<bool> Editable { get; set; }
         public string ExportOwner { get; set; }
         public int Time { get; set; }
+        public string Text { get; set; }
+        public string Voice { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Question> Question { get; set; }

@@ -7,7 +7,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "ManageTests", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -16,6 +16,7 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.TestId)
+    @Html.HiddenFor(model => model.Voice)
 
     <div class="form-group">
         @Html.LabelFor(model => model.Name, "Назва тесту", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -84,6 +85,17 @@
             @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Text, "Текст", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Text, new { @class = "form-control col-10", rows = 10, style = "white-space: pre-wrap;" })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    Завантажити озвучувану історію (в mp3):<br />
+    <input type="file" name="file" class="btn btn-secondary" accept=".mp3" />
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

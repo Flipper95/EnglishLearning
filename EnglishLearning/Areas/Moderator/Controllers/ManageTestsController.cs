@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -49,10 +50,11 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TestId,Name,OwnerId,Difficult,TaskCount,TestType,Editable,ExportOwner,Time")] Test test)
+        public ActionResult Create([Bind(Include = "TestId,Name,OwnerId,Difficult,TaskCount,TestType,Editable,ExportOwner,Time,Text")] Test test, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                test.Voice = SaveFile(file);
                 db.Test.Add(test);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -85,10 +87,20 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TestId,Name,OwnerId,Difficult,TaskCount,TestType,Editable,ExportOwner,Time")] Test test)
+        public ActionResult Edit([Bind(Include = "TestId,Voice,Name,OwnerId,Difficult,TaskCount,TestType,Editable,ExportOwner,Time,Text")] Test test, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                var path = SaveFile(file);
+                if (!string.IsNullOrWhiteSpace(path))
+                {
+                    if (!string.IsNullOrWhiteSpace(test.Voice))
+                    {
+                        if (System.IO.File.Exists(Server.MapPath(test.Voice)))
+                            System.IO.File.Delete(Server.MapPath(test.Voice));
+                    }
+                    test.Voice = path;
+                }
                 db.Entry(test).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -119,6 +131,11 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Test test = db.Test.Find(id);
+            if (!string.IsNullOrWhiteSpace(test.Voice))
+            {
+                if (System.IO.File.Exists(Server.MapPath(test.Voice)))
+                    System.IO.File.Delete(Server.MapPath(test.Voice));
+            }
             db.Test.Remove(test);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -131,6 +148,21 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private string SaveFile(HttpPostedFileBase file)
+        {
+            var path = "";
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                fileName = Guid.NewGuid().ToString() + ".mp3";
+                path = "~/App_Data/TestVoice/";
+                var tempPath = Path.Combine(Server.MapPath(path), fileName);
+                path = path + fileName;
+                file.SaveAs(tempPath);
+            }
+            return path;
         }
     }
 }
