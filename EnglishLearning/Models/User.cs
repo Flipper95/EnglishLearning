@@ -26,6 +26,7 @@ namespace EnglishLearning.Models
             this.ELTask = new HashSet<ELTask>();
             this.UserELTask = new HashSet<UserELTask>();
             this.TextTask = new HashSet<TextTask>();
+            this.Video = new HashSet<Video>();
         }
     
         public int UserId { get; set; }
@@ -37,6 +38,8 @@ namespace EnglishLearning.Models
         public string LvlListening { get; set; }
         public string ObjLvlReading { get; set; }
         public string LvlReading { get; set; }
+        public string ObjLvlWriting { get; set; }
+        public string LvlWriting { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Group> Group { get; set; }
@@ -56,5 +59,7 @@ namespace EnglishLearning.Models
         public virtual ICollection<UserELTask> UserELTask { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TextTask> TextTask { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Video> Video { get; set; }
     }
 }

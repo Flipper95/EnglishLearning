@@ -162,6 +162,8 @@
           <Property Name="LvlListening" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="ObjLvlReading" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LvlReading" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ObjLvlWriting" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LvlWriting" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="UserELTask">
           <Key>
@@ -173,6 +175,20 @@
           <Property Name="Done" Type="bit" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="ResultDocPath" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VideoHtml" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Genre" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="AuthorLink" Type="nvarchar" MaxLength="200" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Difficult" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Order" Type="int" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -409,6 +425,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Video_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Word_Group">
           <End Role="Group" Type="Self.Group" Multiplicity="1" />
           <End Role="Word" Type="Self.Word" Multiplicity="*" />
@@ -437,6 +465,7 @@
           <EntitySet Name="TextTask" EntityType="Self.TextTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserELTask" EntityType="Self.UserELTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Word" EntityType="Self.Word" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="Answer_Question" Association="Self.Answer_Question">
             <End Role="Question" EntitySet="Question" />
@@ -505,6 +534,10 @@
           <AssociationSet Name="UserTask_User" Association="Self.UserTask_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserELTask" EntitySet="UserELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Video_User" Association="Self.Video_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Video" EntitySet="Video" />
           </AssociationSet>
           <AssociationSet Name="Word_Group" Association="Self.Word_Group">
             <End Role="Group" EntitySet="Group" />
@@ -636,6 +669,9 @@
           <NavigationProperty Name="TextTask" Relationship="EnglishLearningModel.Text_User" FromRole="User" ToRole="TextTask" />
           <Property Name="ObjLvlReading" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LvlReading" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ObjLvlWriting" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LvlWriting" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Video" Relationship="EnglishLearningModel.Video_User" FromRole="User" ToRole="Video" />
         </EntityType>
         <EntityType Name="Word">
           <Key>
@@ -875,6 +911,11 @@
             <End Role="User" EntitySet="User" />
             <End Role="TextTask" EntitySet="TextTask" />
           </AssociationSet>
+          <EntitySet Name="Video" EntityType="EnglishLearningModel.Video" />
+          <AssociationSet Name="Video_User" Association="EnglishLearningModel.Video_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Video" EntitySet="Video" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LectionGroup">
           <Key>
@@ -1057,6 +1098,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VideoHtml" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Genre" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorLink" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Difficult" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="EnglishLearningModel.Video_User" FromRole="Video" ToRole="User" />
+        </EntityType>
+        <Association Name="Video_User">
+          <End Type="EnglishLearningModel.User" Role="User" Multiplicity="1" />
+          <End Type="EnglishLearningModel.Video" Role="Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1157,6 +1225,8 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="EnglishLearningModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LvlWriting" ColumnName="LvlWriting" />
+                <ScalarProperty Name="ObjLvlWriting" ColumnName="ObjLvlWriting" />
                 <ScalarProperty Name="LvlReading" ColumnName="LvlReading" />
                 <ScalarProperty Name="ObjLvlReading" ColumnName="ObjLvlReading" />
                 <ScalarProperty Name="LvlListening" ColumnName="LvlListening" />
@@ -1258,6 +1328,21 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
                 <ScalarProperty Name="TextId" ColumnName="TextId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Video">
+            <EntityTypeMapping TypeName="EnglishLearningModel.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Difficult" ColumnName="Difficult" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AuthorLink" ColumnName="AuthorLink" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="VideoHtml" ColumnName="VideoHtml" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

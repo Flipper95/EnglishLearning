@@ -1,0 +1,62 @@
+﻿@model Dictionary<string, List<EnglishLearning.Models.Video>>
+
+@using EnglishLearning.ExtendClasses
+<style>
+    .card-header {
+        overflow:hidden;
+    }
+</style>
+
+@foreach(var el in Model)
+{
+    <div class="accordion" id="accordionVideo">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#type_@el.Key" aria-expanded="false" aria-controls="type_@el.Key">
+                        @el.Key
+                    </button>
+                </h5>
+            </div>
+
+            <div id="type_@el.Key" class="collapse" aria-labelledby="headingOne" data-parent="#accordionVideo">
+                <div class="card-body video_select list-group p-0">
+                    @foreach (var video in el.Value)
+                    {
+                        Enum.TryParse(video.Difficult.Replace('-', '_'), out Difficult difficult);
+                        string color = difficult == ViewBag.UserLvl ? "success" : (difficult < ViewBag.UserLvl ? "purple" : "info");
+                        //if (difficult == ViewBag.UserLvl) { color = "success"; }
+                        //else {
+                        //    if ((int)difficult < (int)ViewBag.UserLvl) { color = "purple"; }
+                        //    else
+                        //    {
+                        //        if ((int)difficult > (int)ViewBag.UserLvl) { color = "info"; }
+                        //    }
+                        //}
+                        <div class="accordion video" id="watch_@video.Id" data="@Url.Action("GetVideo", "Video", new { area="", id = video.Id})">
+                            <div class="card">
+                                <div class="card-header list-group-item list-group-item list-group-item-action list-group-item-@color">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#video_@video.Id" aria-expanded="false" aria-controls="video_@video.Id">
+                                            @video.Name
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div id="video_@video.Id" class="collapse" aria-labelledby="headingOne" data-parent="#watch_@video.Id">
+                                    <div class="card-body">
+                                        <div class="alert alert-warning"><a style="color: #856404" href="@video.AuthorLink">Автор: @video.AuthorLink</a></div>
+                                        <div class="embed-responsive embed-responsive-16by9" id="@video.Id">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

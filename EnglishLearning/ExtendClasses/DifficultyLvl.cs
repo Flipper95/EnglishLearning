@@ -7,7 +7,7 @@ namespace EnglishLearning.ExtendClasses
 {
     //public class DifficultyLvl
     //{
-        enum Difficult {
+        public enum Difficult {
             Beginner,
             Elementary,
             Intermediate,

@@ -39,6 +39,8 @@
         <AssociationConnector Association="EnglishLearningModel.UserTask_User1" />
         <EntityTypeShape EntityType="EnglishLearningModel.TextTask" Width="1.5" PointX="3" PointY="20.25" />
         <AssociationConnector Association="EnglishLearningModel.Text_User" />
+        <EntityTypeShape EntityType="EnglishLearningModel.Video" Width="1.5" PointX="3" PointY="23.375" />
+        <AssociationConnector Association="EnglishLearningModel.Video_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

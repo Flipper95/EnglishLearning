@@ -69,11 +69,11 @@ namespace EnglishLearning.Controllers
             return RedirectToAction("Test", "Test", new { area = "", id = testId });
         }
 
-        public ActionResult TestUserListening(int id)
+        public ActionResult TestUserWriting(int id)
         {
             var userLvl = (from u in db.User
                            where u.UserId == id
-                           select u.ObjLvlListening).First().Replace('-', '_');
+                           select u.ObjLvlWriting).First().Replace('-', '_');
             Difficult current = (Difficult)Enum.Parse(typeof(Difficult), userLvl);
             int index = (int)current + 1;
             string nextLvl = "Рівень ";
@@ -82,6 +82,22 @@ namespace EnglishLearning.Controllers
                 nextLvl += ((Difficult)index).ToString();
             }
             return RedirectToAction("Listening", "Grammar", new { area = "", number = 10, name = nextLvl });
+        }
+
+        public ActionResult TestUserListening(int id)
+        {
+            var userLvl = (from u in db.User
+                           where u.UserId == id
+                           select u.ObjLvlListening).First().Replace('-', '_');
+            Difficult current = (Difficult)Enum.Parse(typeof(Difficult), userLvl);
+            int index = (int)current + 1;
+            string nextLvl = "Рівень сприйняття на слух: ";
+            if (Enum.IsDefined(typeof(Difficult), index))
+            {
+                nextLvl += ((Difficult)index).ToString();
+            }
+            int testId = db.Test.Where(x => x.Name == nextLvl).Select(x => x.TestId).First();
+            return RedirectToAction("Test", "Test", new { area = "", id = testId });
         }
 
         public ActionResult TestUserReading(int id)

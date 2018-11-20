@@ -41,5 +41,6 @@ namespace EnglishLearning.Models
         public virtual DbSet<ELTask> ELTask { get; set; }
         public virtual DbSet<UserELTask> UserELTask { get; set; }
         public virtual DbSet<TextTask> TextTask { get; set; }
+        public virtual DbSet<Video> Video { get; set; }
     }
 }

@@ -1,0 +1,44 @@
+﻿@model List<string>
+@*List<string>*@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    @foreach (var el in Model)
+    {
+        <li class="nav-item mr-1">
+            <a class="nav-link btn btn-outline-purple" id="pills-@el-tab" data-toggle="pill" href="#pills-@el" role="tab" aria-controls="pills-@el" aria-selected="false">@el</a>
+        </li>
+    }
+</ul>
+<div class="tab-content" id="pills-tabContent">
+    @foreach (var el in Model)
+    {
+        <div class="tab-pane fade" id="pills-@el" role="tabpanel" aria-labelledby="pills-@el-tab">@Html.Action("GetVideoByGenre", new { area = "", genre = el })</div>
+    }
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(".video_select").on("click", ".video", function () {
+            var child = $(this).find(".embed-responsive");
+            var id = child.prop("id");
+            if ($('#' + id).children().length == 0) {
+                //$("#" + id).empty();
+                //}
+                //else {
+                var link = $(this).attr("data");
+                $.ajax({
+                    type: "GET",
+                    url: link,
+                    success: function (data) {
+                        $("#" + id).html(data);
+                    }
+                });
+            }
+        });
+    </script>
+}

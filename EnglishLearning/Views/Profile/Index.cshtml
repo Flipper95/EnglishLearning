@@ -22,6 +22,13 @@
 <dt>Рівень знань по написання тексту зі слів:</dt>
 <dd>
 <dd>
+    @ViewBag.UserData.ObjLvlWriting
+    <br>
+    <a class="btn btn-purple" href="@Url.Action("TestUserWriting", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
+</dd>
+<dt>Рівень знань по сприйняттю на слух:</dt>
+<dd>
+<dd>
     @ViewBag.UserData.ObjLvlListening
     <br>
     <a class="btn btn-purple" href="@Url.Action("TestUserListening", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>

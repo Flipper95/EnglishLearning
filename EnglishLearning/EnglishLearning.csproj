@@ -226,6 +226,7 @@
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TextTaskController.cs" />
+    <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
     <Compile Include="ExtendClasses\DifficultyLvl.cs" />
     <Compile Include="ExtendClasses\Shuffle.cs" />
@@ -298,6 +299,9 @@
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserELTask.cs">
+      <DependentUpon>EnglishModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Video.cs">
       <DependentUpon>EnglishModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Word.cs">
@@ -477,6 +481,8 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\ShowTasks.cshtml" />
     <Content Include="Views\TextTask\Index.cshtml" />
+    <Content Include="Views\Video\Index.cshtml" />
+    <Content Include="Views\Video\VideoAccordion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
