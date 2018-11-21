@@ -1,4 +1,4 @@
-﻿
+﻿@model EnglishLearning.Models.User
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,40 +7,80 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/regular.css" integrity="sha384-z3ccjLyn+akM2DtvRQCXJwvT5bGZsspS4uptQKNXNg778nyzvdMqiGcqHVGiAUyY" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css" integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT" crossorigin="anonymous">
 }
+
+@helper DifficultDropDown(string name, string currentValue) {
+     @Html.DropDownList(name, new SelectList(new[] { "Beginner", "Elementary", "Intermediate", "Upper-Intermediate", "Advanced", "Proficient" }, currentValue), new { @class = "form-control" })
+}
 <h2>Index</h2>
 
 <a class="btn btn-purple text-white" href="@Url.Action("Index", "Manage", new { area = ""})">Керувати паролем</a>
+<hr>
+<div class="d-flex flex-row flex-wrap">
+    <dl class="col-6">
 
-<dl>
+        <dt>Рівень знань по граматиці:</dt>
+        <dd>
+            @Model.ObjectiveLevel
+            <br>
+            <a class="btn btn-purple" href="@Url.Action("TestUserGrammar", new { area = "", id = Model.UserId})">
+            Підвищити <i class="far fa-caret-square-up fa-lg ml-2"></i>
+            </a>
+        </dd>
+        <dt>Рівень знань по написання тексту зі слів:</dt>
+        <dd>
+        <dd>
+            @Model.ObjLvlWriting
+            <br>
+            <a class="btn btn-purple" href="@Url.Action("TestUserWriting", new { area = "", id = Model.UserId})">
+                Підвищити <i class="far fa-caret-square-up fa-lg ml-2"></i>
+            </a>
+        </dd>
+        <dt>Рівень знань по сприйняттю на слух:</dt>
+        <dd>
+        <dd>
+            @Model.ObjLvlListening
+            <br>
+            <a class="btn btn-purple" href="@Url.Action("TestUserListening", new { area = "", id = Model.UserId})">
+                Підвищити <i class="far fa-caret-square-up fa-lg ml-2"></i>
+            </a>
+        </dd>
+        <dt>Рівень знань по читанню</dt>
+        <dd>
+            @Model.ObjLvlReading
+            <br>
+            <a class="btn btn-purple" href="@Url.Action("TestUserReading", new { area = "", id = Model.UserId})">
+                Підвищити <i class="far fa-caret-square-up fa-lg ml-2"></i>
+            </a>
+        </dd>
+    </dl>
 
-<dt>Рівень знань по граматиці:</dt>
-<dd>
-    @ViewBag.UserData.ObjectiveLevel
-    <br>
-    <a class="btn btn-purple" href="@Url.Action("TestUserGrammar", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
-</dd>
-<dt>Рівень знань по написання тексту зі слів:</dt>
-<dd>
-<dd>
-    @ViewBag.UserData.ObjLvlWriting
-    <br>
-    <a class="btn btn-purple" href="@Url.Action("TestUserWriting", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
-</dd>
-<dt>Рівень знань по сприйняттю на слух:</dt>
-<dd>
-<dd>
-    @ViewBag.UserData.ObjLvlListening
-    <br>
-    <a class="btn btn-purple" href="@Url.Action("TestUserListening", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
-</dd>
-<dt>Рівень знань по читанню</dt>
-<dd>
-    @ViewBag.UserData.ObjLvlReading
-    <br>
-    <a class="btn btn-purple" href="@Url.Action("TestUserReading", new { area = "", id = ViewBag.UserData.UserId})">Пройти тест на підвищення рівня</a>
-</dd>
-</dl>
+    @using (Html.BeginForm("EditUserLvl", "Profile", FormMethod.Post, new { @class="col-6"}))
+    {
+        @Html.HiddenFor(x => x.UserId)
+        <dl>
 
+            <dt>Рівень знань по граматиці:</dt>
+            <dd>
+                @DifficultDropDown("Level", Model == null ? "Beginner" : (Model.Level ?? "Beginner"))
+            </dd>
+            <dt>Рівень знань по написання тексту зі слів:</dt>
+            <dd>
+            <dd>
+                @DifficultDropDown("LvlWriting", Model == null ? "Beginner" : (Model.LvlWriting ?? "Beginner"))
+            </dd>
+            <dt>Рівень знань по сприйняттю на слух:</dt>
+            <dd>
+            <dd>
+                @DifficultDropDown("LvlListening", Model == null ? "Beginner" : (Model.LvlListening ?? "Beginner"))
+            </dd>
+            <dt>Рівень знань по читанню:</dt>
+            <dd>
+                @DifficultDropDown("LvlReading", Model == null ? "Beginner" : (Model.LvlReading ?? "Beginner"))
+            </dd>
+        </dl>
+        <button type="submit" class="btn btn-purple">Зберегти</button>
+    }
+</div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link bg-secondary text-light active" id="standard-tab" data-toggle="tab" href="#standard" role="tab" aria-controls="standard" aria-selected="true">Стандартні завдання</a>

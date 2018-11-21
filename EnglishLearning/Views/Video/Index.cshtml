@@ -23,7 +23,8 @@
 
 @section scripts{
     <script type="text/javascript">
-        $(".video_select").on("click", ".video", function () {
+        $(".video_select").on("click", ".video", function (e) {
+            e.stopPropagation();
             var child = $(this).find(".embed-responsive");
             var id = child.prop("id");
             if ($('#' + id).children().length == 0) {
@@ -40,5 +41,11 @@
                 });
             }
         });
+
+        //$(".video_select").on("click", ".video-header", function (e) {
+        //    e.stopPropagation();
+        //    $(this).find(".video-collapse").triggerHandler("click");
+        //    e.preventDefault();
+        //});
     </script>
 }

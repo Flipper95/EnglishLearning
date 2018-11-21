@@ -48,7 +48,19 @@ namespace EnglishLearning.Controllers
                 }
             }
             db.SaveChanges();
-            return View();
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult EditUserLvl([Bind(Include = "UserId, Level, LvlWriting, LvlListening, LvlReading")] User user) {
+            var u = db.User.Find(user.UserId);
+            u.Level = user.Level;
+            u.LvlListening = user.LvlListening;
+            u.LvlReading = user.LvlReading;
+            u.LvlWriting = user.LvlWriting;
+            db.Entry(u).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult TestUserGrammar(int id)

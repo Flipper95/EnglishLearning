@@ -13,13 +13,13 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">
-                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#type_@el.Key" aria-expanded="false" aria-controls="type_@el.Key">
+                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#type_@el.Key.Replace(" ", string.Empty)" aria-expanded="false" aria-controls="type_@el.Key.Replace(" ", string.Empty)">
                         @el.Key
                     </button>
                 </h5>
             </div>
 
-            <div id="type_@el.Key" class="collapse" aria-labelledby="headingOne" data-parent="#accordionVideo">
+            <div id="type_@el.Key.Replace(" ", string.Empty)" class="collapse" aria-labelledby="headingOne" data-parent="#accordionVideo">
                 <div class="card-body video_select list-group p-0">
                     @foreach (var video in el.Value)
                     {
@@ -35,9 +35,9 @@
                         //}
                         <div class="accordion video" id="watch_@video.Id" data="@Url.Action("GetVideo", "Video", new { area="", id = video.Id})">
                             <div class="card">
-                                <div class="card-header list-group-item list-group-item list-group-item-action list-group-item-@color">
+                                <div class="card-header list-group-item list-group-item list-group-item-action list-group-item-@color video-header">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#video_@video.Id" aria-expanded="false" aria-controls="video_@video.Id">
+                                        <button class="btn btn-link text-dark video-collapse" type="button" data-toggle="collapse" data-target="#video_@video.Id" aria-expanded="false" aria-controls="video_@video.Id">
                                             @video.Name
                                         </button>
                                     </h5>

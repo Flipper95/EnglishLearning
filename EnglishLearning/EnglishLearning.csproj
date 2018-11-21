@@ -208,6 +208,7 @@
     <Compile Include="Areas\Moderator\Controllers\ManageQuestionsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageTestsController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageTextTasksController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\ManageVideosController.cs" />
     <Compile Include="Areas\Moderator\Models\UserTasks.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -400,6 +401,11 @@
     <Content Include="Areas\Moderator\Views\ManageTextTasks\Details.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageTextTasks\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageTextTasks\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageVideos\Create.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageVideos\Delete.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageVideos\Details.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageVideos\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\ManageVideos\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
