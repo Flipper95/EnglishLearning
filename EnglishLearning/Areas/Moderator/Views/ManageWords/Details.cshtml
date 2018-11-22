@@ -1,0 +1,80 @@
+﻿@model EnglishLearning.Models.Word
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Word</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Word1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Word1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Translate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Translate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PartOfSpeech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PartOfSpeech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Voice)
+        </dt>
+
+        <dd>
+            <audio id="audio" controls>
+                <source src="@Url.Action("LoadAudio", new { area="Moderator", id = Model.WordId})" />
+            </audio>
+            @*<audio id="audio">
+            <source src="@fcr" />
+        </audio>*@
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Transcription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Transcription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Synonyms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Synonyms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Group.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.WordId }) |
+    @Html.ActionLink("Back to List", "Index", new { GroupId = Model.GroupId })
+</p>

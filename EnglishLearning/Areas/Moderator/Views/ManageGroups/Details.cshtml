@@ -1,0 +1,59 @@
+﻿@model EnglishLearning.Models.Group
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Group</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Difficult)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Difficult)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WordsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WordsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            <img class="rounded-top mb-2" src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt="group image cap" style="max-width:200px">
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.GroupId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

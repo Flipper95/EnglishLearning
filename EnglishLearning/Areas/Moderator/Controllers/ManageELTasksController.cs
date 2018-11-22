@@ -304,7 +304,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             if (file != null && file.ContentLength > 0)
             {
                 var extension = Path.GetExtension(file.FileName);
-                if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
+                if (extension == ".pdf" || extension == ".doc" || extension == ".docx" || extension == ".png" || extension == ".jpg")
                 {
                     var fileName = Path.GetFileName(file.FileName);
                     fileName = Guid.NewGuid().ToString() + extension;

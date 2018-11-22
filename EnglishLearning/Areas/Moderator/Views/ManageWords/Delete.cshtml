@@ -1,0 +1,73 @@
+﻿@model EnglishLearning.Models.Word
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Word</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Word1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Word1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Translate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Translate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PartOfSpeech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PartOfSpeech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Transcription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Transcription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Synonyms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Synonyms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Group.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index", new { GroupId = Model.GroupId })
+        </div>
+    }
+</div>

@@ -26,6 +26,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("Index", "Exercise", new { area = "" })">Вправи</a>
                 </li>
+                @*<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Вправи з граматики
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Constructor", "Grammar", new { area = "" })">Конструктор речень</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Listening", "Grammar", new { area = "" })">Написання речень</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "TextTask", new { area = "" })">Вправа з читання</a>
+                </li>*@
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("ShowByGroup", "Lection", new { area = "" })">Лекції</a>
                 </li>
@@ -36,13 +49,7 @@
                     <a class="nav-link" href="@Url.Action("Index", "Statistics", new { area = "" })">Статистика</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("About", "Home", new { area = "" })">Домашня сторінка</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Contact", "Home", new { area = "" })">Контакти</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Constructor", "Grammar", new { area = "", startIndex = 0 })">Конcтруктор</a>
+                    <a class="nav-link" href="@Url.Action("Index", "Video", new { area = "" })">Навчальні відео</a>
                 </li>
                 @if (User.IsInRole("admin"))
                 {
@@ -60,6 +67,8 @@
                                 <a class="dropdown-item" href="@Url.Action("Index", "ManageTests", new { area = "Moderator" })">Тести</a>
                                 <a class="dropdown-item" href="@Url.Action("Index", "ManageQuestions", new { area = "Moderator" })">Питання</a>
                                 <a class="dropdown-item" href="@Url.Action("Index", "ManageAnswers", new { area = "Moderator" })">Відповіді</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Index", "ManageGroups", new { area = "Moderator" })">Групи слів</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="@Url.Action("Index", "ManageLections", new { area = "Moderator" })">Лекції</a>
                                 <div class="dropdown-divider"></div>
@@ -106,6 +115,7 @@
         <hr />
         <footer>
             <p>Icons made by <a href="http://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a>, <a href="http://www.freepik.com" title="Freepik">Freepik</a>, <a href="http://www.flaticon.com/authors/chanut-is-industries" title="Chanut is Industries">Chanut is Industries</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></p>
+            <a class="nav-link" href="@Url.Action("Contact", "Home", new { area = "" })">Контакти</a>
             <p>&copy; @DateTime.Now.Year – застосування ASP.NET</p>
         </footer>
     </div>

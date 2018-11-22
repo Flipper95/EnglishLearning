@@ -1,0 +1,64 @@
+﻿@model IEnumerable<EnglishLearning.Models.Word>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { GroupId = ViewBag.Group })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Word1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Translate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PartOfSpeech)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transcription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Synonyms)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Group.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Word1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Translate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PartOfSpeech)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Transcription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Synonyms)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Group.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.WordId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.WordId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.WordId })
+        </td>
+    </tr>
+}
+
+</table>
