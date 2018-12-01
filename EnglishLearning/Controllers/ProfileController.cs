@@ -35,7 +35,7 @@ namespace EnglishLearning.Controllers
             db.UserELTask.RemoveRange(toDelete);
             if ((tasks.Count() - count) < 7) {
                 var bannedTasks = tasks.Select(x => x.ELTask.TaskId);
-                //TODO: add tasks by complexity
+                //TODO: add tasks by complexity and only number take to max 7 tasks
                 var temp = from t in db.ELTask
                            where !bannedTasks.Contains(t.TaskId) && t.AuthorId == 1
                            select t.TaskId;
@@ -142,7 +142,7 @@ namespace EnglishLearning.Controllers
             else {
                 result = result.Where(x => x.ELTask.AuthorId == userId);
             }
-            ViewBag.TaskGroup = new List<string> { "Word", "Lection", "Test", "Grammar" };
+            ViewBag.TaskGroup = new List<string> { "Word", "Lection", "Test", "Grammar", "TextTask" };
             return PartialView(result.ToList());
         }
 
@@ -165,9 +165,11 @@ namespace EnglishLearning.Controllers
             //               select ut
         }
 
-        public ActionResult RedirectToExecute(int id, string group, string name) {
+        public ActionResult RedirectToExecute(int id, int ELTaskId) { //string group, string name
+            var elTask = db.ELTask.Find(ELTaskId);
+            string name = elTask.Name;
             name = name.ToLower();
-            switch (group) {
+            switch (elTask.Group) {
                 case("Word"): {
                         switch (name) {
                             case ("listening"): { TaskSaveDone(id); return RedirectToAction("ListeningExercise", "Listening", new { area = "" }); }
@@ -179,27 +181,53 @@ namespace EnglishLearning.Controllers
                         break;
                 }
                 case ("Lection"): {
-                        var lection = db.Lection.Where(x => x.Name.ToLower() == name).First();
-                        if (lection != null) {
-                            TaskSaveDone(id);
-                            return RedirectToAction("ShowLection", "Lection", new { area="", id = lection.LectionId});
+                        if (elTask.LectionId != null)
+                        {
+                            var lection = db.Lection.Where(x => x.LectionId == elTask.LectionId);//x.Name.ToLower() == name).First();
+                            if (lection.Count() > 0)
+                            { //!= null) {
+                                TaskSaveDone(id);
+                                return RedirectToAction("ShowLection", "Lection", new { area = "", id = elTask.LectionId });
+                            }
+                            return RedirectToAction("ShowByGroup", "Lection", new { area = "" });
                         }
-                        return RedirectToAction("ShowByGroup", "Lection", new { area = "" });
+                        break;
                 }
                 case ("Test"): {
-                        var test = db.Test.Where(x => x.Name.ToLower() == name).First();
-                        if (test != null) {
-                            TaskSaveDone(id);
-                            return RedirectToAction("Test", "Test", new { area="", id = test.TestId});
+                        if (elTask.TestId != null)
+                        {
+                            var test = db.Test.Where(x => x.TestId == elTask.TestId);
+                            if (test.Count() > 0)
+                            {
+                                TaskSaveDone(id);
+                                return RedirectToAction("Test", "Test", new { area = "", id = elTask.TestId });
+                            }
+                            return RedirectToAction("Index", "Test", new { area = "" });
                         }
-                        return RedirectToAction("Index", "Test", new { area = "" });
+                        break;
                 }
                 case ("Grammar"): {
-                        var grammar = db.GrammarGroup.Where(x => x.Name.ToLower() == name).First();
-                        if(grammar != null)
+                        if (elTask.GrammarId != null)
                         {
-                            TaskSaveDone(id);
-                            return RedirectToAction("Listening", "Grammar", new { area = "", name = grammar.Name });
+                            var grammar = db.GrammarGroup.Where(x => x.GroupId == elTask.GrammarId);
+                            if (grammar.Count() > 0)
+                            {
+                                TaskSaveDone(id);
+                                return RedirectToAction("Listening", "Grammar", new { area = "", name = grammar.First().Name });
+                            }
+                        }
+                        break;
+                }
+                case ("TextTask"): {
+                        if (elTask.TextId != null)
+                        {
+                            var text = db.TextTask.Where(x => x.TextId == elTask.TextId);
+                            if (text.Count() > 0)
+                            {
+                                TaskSaveDone(id);
+                                return RedirectToAction("Index", "TextTask", new { area = "", taskName = text.First().Name });
+                            }
+                            return RedirectToAction("Index", "TextTask", new { area = "" });
                         }
                         break;
                 }

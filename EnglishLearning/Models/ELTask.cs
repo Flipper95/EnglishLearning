@@ -28,9 +28,17 @@ namespace EnglishLearning.Models
         public string Group { get; set; }
         public string DocumentPath { get; set; }
         public string Difficult { get; set; }
+        public Nullable<int> LectionId { get; set; }
+        public Nullable<int> TestId { get; set; }
+        public Nullable<int> GrammarId { get; set; }
+        public Nullable<int> TextId { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserELTask> UserELTask { get; set; }
+        public virtual GrammarGroup GrammarGroup { get; set; }
+        public virtual Lection Lection { get; set; }
+        public virtual Test Test { get; set; }
+        public virtual TextTask TextTask { get; set; }
     }
 }

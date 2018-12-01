@@ -62,6 +62,9 @@
         <li class="nav-item">
             <a class="nav-link bg-secondary text-light" id="intermediate-tab" data-toggle="tab" href="#intermediate" role="tab" aria-controls="intermediate" aria-selected="false">Intermediate</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link bg-secondary text-light" id="upper_intermediate-tab" data-toggle="tab" href="#upper_intermediate" role="tab" aria-controls="upper_intermediate" aria-selected="false">Intermediate</a>
+        </li>
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="beginner" role="tabpanel" aria-labelledby="beginner-tab">
@@ -77,6 +80,11 @@
         <div class="tab-pane fade" id="intermediate" role="tabpanel" aria-labelledby="intermediate-tab">
             <div class="card-columns">
                 @Html.Action("ShowByComplexity", new { area = "", complexity = "Intermediate" })
+            </div>
+        </div>
+        <div class="tab-pane fade" id="upper_intermediate" role="tabpanel" aria-labelledby="upper_intermediate-tab">
+            <div class="card-columns">
+                @Html.Action("ShowByComplexity", new { area = "", complexity = "Upper-Intermediate" })
             </div>
         </div>
     </div>

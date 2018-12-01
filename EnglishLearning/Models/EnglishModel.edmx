@@ -26,6 +26,10 @@
           <Property Name="Group" Type="nvarchar" MaxLength="20" />
           <Property Name="DocumentPath" Type="nvarchar" MaxLength="100" />
           <Property Name="Difficult" Type="nvarchar" MaxLength="20" />
+          <Property Name="LectionId" Type="int" />
+          <Property Name="TestId" Type="int" />
+          <Property Name="GrammarId" Type="int" />
+          <Property Name="TextId" Type="int" />
         </EntityType>
         <EntityType Name="Grammar">
           <Key>
@@ -321,6 +325,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Task_Grammar">
+          <End Role="GrammarGroup" Type="Self.GrammarGroup" Multiplicity="0..1" />
+          <End Role="ELTask" Type="Self.ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrammarGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="GrammarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_Lection">
+          <End Role="Lection" Type="Self.Lection" Multiplicity="0..1" />
+          <End Role="ELTask" Type="Self.ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lection">
+              <PropertyRef Name="LectionId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="LectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="ELTask" Type="Self.ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_TextTask">
+          <End Role="TextTask" Type="Self.TextTask" Multiplicity="0..1" />
+          <End Role="ELTask" Type="Self.ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TextTask">
+              <PropertyRef Name="TextId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="TextId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Task_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -503,6 +555,22 @@
             <End Role="Test" EntitySet="Test" />
             <End Role="Question" EntitySet="Question" />
           </AssociationSet>
+          <AssociationSet Name="Task_Grammar" Association="Self.Task_Grammar">
+            <End Role="GrammarGroup" EntitySet="GrammarGroup" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Task_Lection" Association="Self.Task_Lection">
+            <End Role="Lection" EntitySet="Lection" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Task_Test" Association="Self.Task_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Task_TextTask" Association="Self.Task_TextTask">
+            <End Role="TextTask" EntitySet="TextTask" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
           <AssociationSet Name="Task_User" Association="Self.Task_User">
             <End Role="User" EntitySet="User" />
             <End Role="ELTask" EntitySet="ELTask" />
@@ -602,6 +670,7 @@
           <Property Name="ComplexityOrder" Type="Int32" Nullable="false" />
           <Property Name="LectionPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LectionGroup" Relationship="EnglishLearningModel.Lection_LectionGroup" FromRole="Lection" ToRole="LectionGroup" />
+          <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_Lection" FromRole="Lection" ToRole="ELTask" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -632,6 +701,7 @@
           <Property Name="Time" Type="Int32" Nullable="false" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Voice" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_Test" FromRole="Test" ToRole="ELTask" />
         </EntityType>
         <EntityType Name="TestHistory">
           <Key>
@@ -916,6 +986,22 @@
             <End Role="User" EntitySet="User" />
             <End Role="Video" EntitySet="Video" />
           </AssociationSet>
+          <AssociationSet Name="Task_Grammar" Association="EnglishLearningModel.Task_Grammar">
+            <End Role="GrammarGroup" EntitySet="GrammarGroup" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Task_Lection" Association="EnglishLearningModel.Task_Lection">
+            <End Role="Lection" EntitySet="Lection" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Task_Test" Association="EnglishLearningModel.Task_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
+          <AssociationSet Name="Task_TextTask" Association="EnglishLearningModel.Task_TextTask">
+            <End Role="TextTask" EntitySet="TextTask" />
+            <End Role="ELTask" EntitySet="ELTask" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LectionGroup">
           <Key>
@@ -981,6 +1067,7 @@
           <Property Name="Difficult" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ParentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Grammar" Relationship="EnglishLearningModel.Grammar_GrammarGroup" FromRole="GrammarGroup" ToRole="Grammar" />
+          <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_Grammar" FromRole="GrammarGroup" ToRole="ELTask" />
         </EntityType>
         <Association Name="Grammar_GrammarGroup">
           <End Type="EnglishLearningModel.GrammarGroup" Role="GrammarGroup" Multiplicity="1" />
@@ -1020,6 +1107,14 @@
           <Property Name="Difficult" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="EnglishLearningModel.Task_User1" FromRole="ELTask" ToRole="User" />
           <NavigationProperty Name="UserELTask" Relationship="EnglishLearningModel.UserTask_Task1" FromRole="ELTask" ToRole="UserELTask" />
+          <Property Name="LectionId" Type="Int32" />
+          <Property Name="TestId" Type="Int32" />
+          <Property Name="GrammarId" Type="Int32" />
+          <Property Name="TextId" Type="Int32" />
+          <NavigationProperty Name="GrammarGroup" Relationship="EnglishLearningModel.Task_Grammar" FromRole="ELTask" ToRole="GrammarGroup" />
+          <NavigationProperty Name="Lection" Relationship="EnglishLearningModel.Task_Lection" FromRole="ELTask" ToRole="Lection" />
+          <NavigationProperty Name="Test" Relationship="EnglishLearningModel.Task_Test" FromRole="ELTask" ToRole="Test" />
+          <NavigationProperty Name="TextTask" Relationship="EnglishLearningModel.Task_TextTask" FromRole="ELTask" ToRole="TextTask" />
         </EntityType>
         <EntityType Name="UserELTask">
           <Key>
@@ -1085,6 +1180,7 @@
           <Property Name="Words" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Difficult" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="EnglishLearningModel.Text_User" FromRole="TextTask" ToRole="User" />
+          <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_TextTask" FromRole="TextTask" ToRole="ELTask" />
         </EntityType>
         <Association Name="Text_User">
           <End Type="EnglishLearningModel.User" Role="User" Multiplicity="1" />
@@ -1122,6 +1218,54 @@
             </Principal>
             <Dependent Role="Video">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_Grammar">
+          <End Type="EnglishLearningModel.GrammarGroup" Role="GrammarGroup" Multiplicity="0..1" />
+          <End Type="EnglishLearningModel.ELTask" Role="ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrammarGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="GrammarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_Lection">
+          <End Type="EnglishLearningModel.Lection" Role="Lection" Multiplicity="0..1" />
+          <End Type="EnglishLearningModel.ELTask" Role="ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lection">
+              <PropertyRef Name="LectionId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="LectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_Test">
+          <End Type="EnglishLearningModel.Test" Role="Test" Multiplicity="0..1" />
+          <End Type="EnglishLearningModel.ELTask" Role="ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Task_TextTask">
+          <End Type="EnglishLearningModel.TextTask" Role="TextTask" Multiplicity="0..1" />
+          <End Type="EnglishLearningModel.ELTask" Role="ELTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TextTask">
+              <PropertyRef Name="TextId" />
+            </Principal>
+            <Dependent Role="ELTask">
+              <PropertyRef Name="TextId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1296,6 +1440,10 @@
           <EntitySetMapping Name="ELTask">
             <EntityTypeMapping TypeName="EnglishLearningModel.ELTask">
               <MappingFragment StoreEntitySet="ELTask">
+                <ScalarProperty Name="TextId" ColumnName="TextId" />
+                <ScalarProperty Name="GrammarId" ColumnName="GrammarId" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="LectionId" ColumnName="LectionId" />
                 <ScalarProperty Name="Difficult" ColumnName="Difficult" />
                 <ScalarProperty Name="DocumentPath" ColumnName="DocumentPath" />
                 <ScalarProperty Name="Group" ColumnName="Group" />

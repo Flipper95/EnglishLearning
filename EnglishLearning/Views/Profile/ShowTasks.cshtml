@@ -14,6 +14,7 @@ switch (el.ELTask.Group.ToLower()) {
     case ("lection"): { color = "alert-dark"; break; }
     case ("test"): { color = "alert-purple"; break; }
     case ("grammar"): { color = "alert-warning"; break; }
+    case ("texttask"): { color = "alert-success"; break; }
     default: { color = "alert-info"; break; }
 }
     <div id="@el.ELTask.TaskId" class="alert @color col-12 alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = "" })">
@@ -85,7 +86,7 @@ switch (el.ELTask.Group.ToLower()) {
                     {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                    <a class="btn btn-primary" href="@Url.Action("RedirectToExecute", "Profile", new { area = "", id = el.UserTaskId, group = el.ELTask.Group, name = el.ELTask.Name })">Виконати</a>
+                    <a class="btn btn-primary" href="@Url.Action("RedirectToExecute", "Profile", new { area = "", id = el.UserTaskId, ELTaskId = el.ELTask.TaskId })">Виконати</a> @*group = el.ELTask.Group, name = el.ELTask.Name*@
                 </div>
                     }
                 }

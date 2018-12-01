@@ -55,6 +55,8 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             if (ModelState.IsValid)
             {
                 test.Voice = SaveFile(file);
+                ELTask task = new ELTask() { AuthorId = 1, Difficult = test.Difficult, Group = "Test", Test = test, Name = test.Name, Description = "Пройдіть заданий тест" };
+                db.ELTask.Add(task);
                 db.Test.Add(test);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -135,6 +137,11 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 if (System.IO.File.Exists(Server.MapPath(test.Voice)))
                     System.IO.File.Delete(Server.MapPath(test.Voice));
+            }
+            var task = db.ELTask.Where(x => x.TestId == test.TestId && x.AuthorId == 1);
+            if (task.Count() > 0)
+            {
+                db.ELTask.Remove(task.First());
             }
             db.Test.Remove(test);
             db.SaveChanges();

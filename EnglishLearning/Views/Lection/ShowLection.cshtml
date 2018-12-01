@@ -33,7 +33,7 @@
     <div class="col-12 col-lg-2 align-self-start">
         <p>Схожі лекції по темі:</p>
         @foreach (var el in Model) {
-            <a class="mb-1 mr-1 btn @(el.LectionId == Model[ViewBag.Index].LectionId ? "btn-purple" : "btn-secondary")" href="@Url.RouteUrl("Lection", new{action = "ShowLection", controller = "Lection", area="", id = el.LectionId})">@el.Name</a>
+            <a class="mb-1 mr-1 col-12 btn text-white @(el.LectionId == Model[ViewBag.Index].LectionId ? "btn-purple" : "btn-secondary")" href="@Url.Action("ShowLection", "Lection", new{ area="", id = el.LectionId})">@el.Name</a>
         }
     </div>
     <div class="col-12 col-lg-10 pr-2 align-self-stretch document-content">

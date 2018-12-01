@@ -18,6 +18,7 @@ namespace EnglishLearning.Models
         public GrammarGroup()
         {
             this.Grammar = new HashSet<Grammar>();
+            this.ELTask = new HashSet<ELTask>();
         }
     
         public int GroupId { get; set; }
@@ -27,5 +28,7 @@ namespace EnglishLearning.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grammar> Grammar { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELTask> ELTask { get; set; }
     }
 }

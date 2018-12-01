@@ -56,6 +56,8 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 lection.LectionPath = SaveFile(file);
                 lection.LectionText = new byte[] { };
+                ELTask task = new ELTask() { AuthorId = 1, Difficult = lection.Complexity, Group = "Lection", Lection = lection, Name = lection.Name, Description = "Прочитайте зазначену лекцію" };
+                db.ELTask.Add(task);
                 db.Lection.Add(lection);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -137,6 +139,11 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 if (System.IO.File.Exists(Server.MapPath(lection.LectionPath)))
                     System.IO.File.Delete(Server.MapPath(lection.LectionPath));
+            }
+            var task = db.ELTask.Where(x => x.LectionId == lection.LectionId && x.AuthorId == 1);
+            if (task.Count() > 0)
+            {
+                db.ELTask.Remove(task.First());
             }
             db.Lection.Remove(lection);
             db.SaveChanges();

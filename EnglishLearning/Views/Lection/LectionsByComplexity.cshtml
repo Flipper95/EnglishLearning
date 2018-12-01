@@ -23,7 +23,7 @@
         {
             <li>
                 <p class="h3">
-                    <a class="text-light" href="@Url.RouteUrl("Lection", new {action = "ShowLection", controller = "Lection", area="", id = leaf.LectionId})">@leaf.Name</a>
+                    <a class="text-light" href="@Url.Action("ShowLection", "Lection", new { area="", id = leaf.LectionId})">@leaf.Name</a>
                 </p>
                 <p class="card-text">@leaf.Description</p>
             </li>

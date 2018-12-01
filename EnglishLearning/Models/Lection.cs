@@ -14,6 +14,12 @@ namespace EnglishLearning.Models
     
     public partial class Lection
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Lection()
+        {
+            this.ELTask = new HashSet<ELTask>();
+        }
+    
         public int LectionId { get; set; }
         public string Name { get; set; }
         public int OwnerId { get; set; }
@@ -28,5 +34,7 @@ namespace EnglishLearning.Models
     
         public virtual User User { get; set; }
         public virtual LectionGroup LectionGroup { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELTask> ELTask { get; set; }
     }
 }
