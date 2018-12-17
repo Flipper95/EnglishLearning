@@ -233,6 +233,7 @@
     <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="ExtendClasses\AjaxLinkHelperMethod.cs" />
     <Compile Include="ExtendClasses\DifficultyLvl.cs" />
+    <Compile Include="ExtendClasses\FSOperations.cs" />
     <Compile Include="ExtendClasses\Shuffle.cs" />
     <Compile Include="ExtendClasses\SynonymAPI.cs" />
     <Compile Include="ExtendClasses\VoiceAPI.cs" />
@@ -325,6 +326,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ExerciseStyle.css" />
+    <Content Include="Content\Images\Background.jpg" />
     <Content Include="Content\Images\constructor.png" />
     <Content Include="Content\Images\equivalent.png" />
     <Content Include="Content\Images\listen.png" />
@@ -424,6 +426,9 @@
     <Content Include="Areas\Moderator\Views\ManageGrammarGroups\Details.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageGrammarGroups\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageGrammarGroups\Index.cshtml" />
+    <Content Include="..\..\..\отчет\ClassDiagram1.cd">
+      <Link>ClassDiagram1.cd</Link>
+    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

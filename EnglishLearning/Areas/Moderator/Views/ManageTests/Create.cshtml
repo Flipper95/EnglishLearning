@@ -86,13 +86,16 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Text, "Текст", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Text, new { @class = "form-control col-10", rows = 10, style= "white-space: pre-wrap;" })
+            @Html.TextAreaFor(model => model.Text, new { @class = "form-control col-10", rows = 10, style = "white-space: pre-wrap;" })
             @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
         </div>
     </div>
 
     Завантажити озвучувану історію (в mp3):<br />
     <input type="file" name="file" class="btn btn-secondary" accept=".mp3" />
+
+    Завантажити питання та відповіді з файлу:<br />
+    <input type="file" name="testText" class="btn btn-secondary" accept=".txt" />
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

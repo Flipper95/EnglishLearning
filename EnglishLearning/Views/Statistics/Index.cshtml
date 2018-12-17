@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css" integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT" crossorigin="anonymous">
 }
 
-<h2>Index</h2>
+<h2 class="mt-3">Статистика</h2>
 
 
 @*<script type="text/javascript">
@@ -73,8 +73,10 @@
 
 <div id="columnchart2_material" style="width:100%; height:80%"></div>
 
+<div class="mt-2 text-monospace font-weight-bold"></div>
 <div id="histogramchart_material" style="width:70%; height:70%"></div>
 
+<h3 class="mt-5">Виконані Завдання:</h3>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link bg-secondary text-light active" id="standard-tab" data-toggle="tab" href="#standard" role="tab" aria-controls="standard" aria-selected="true">Стандартні завдання</a>
@@ -94,9 +96,10 @@
     </div>
 </div>
 
+<h3 class="mt-5">Історія тестів:</h3>
 <div id="gridContent">
     @grid.GetHtml(
-    tableStyle: "table table-hover", headerStyle: "thead-dark", caption: "Історія тестів",
+    tableStyle: "table table-hover table-bordered text-center", headerStyle: "bg-light", caption: "Історія тестів",
     mode: WebGridPagerModes.All, numericLinksCount: 5,
     columns: grid.Columns(
         grid.Column(header: "Дата проходження", format:@<div id="l_@item.Value.TestHistoryId" data="@Url.Action("ShowResult", "Test", new { area="", id = item.Value.TestHistoryId})">@item.Value.PassDate</div>),

@@ -34,7 +34,7 @@
             </div>
         }*@
         <h2>Вправи словнику</h2>
-        <div class="card col-12 text-center bg-dark text-light">
+        <div class="card col-12 text-center bg-secondary text-light">
             <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/translator.png")" alt="translate exercise image" style="max-height:250px;">
             <div class="card-body">
                 <h5 class="card-title">Вправа перекладу.</h5>
@@ -60,7 +60,7 @@
                 <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/listening.png")" alt="listening exercise image" style="max-width:250px;">
                 <div class="card-body">
                     <h5 class="card-title">Вправа аудіювання.</h5>
-                    <p class="card-text">Є запис, після прослуховування якого необхідно ввести сказане</p>
+                    <p class="card-text">Надається запис слова, після прослуховування якого необхідно ввести сказане.</p>
                     <a class="btn btn-purple text-light" href="@Url.Action("ListeningExercise", "Listening", new { area = ""})">Аудіювання</a>
                 </div>
             </div>
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <div class="card col-12 text-center bg-dark text-light">
+        <div class="card col-12 text-center bg-secondary text-light">
             <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/similar.png")" alt="similar exercise image" style="max-height:250px;">
             <div class="card-body">
                 <h5 class="card-title">Вправа синонімів</h5>
@@ -91,7 +91,7 @@
                 <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/notes.png")" alt="grammar writing exercise image" style="max-width:250px;">
                 <div class="card-body">
                     <h5 class="card-title">Вправа написання речення.</h5>
-                    <p class="card-text">Тренування сприйняття на слух та написання почутого, є запис, після прослуховування якого необхідно ввести сказане</p>
+                    <p class="card-text">Тренування сприйняття на слух та написання почутого. Є запис, після прослуховування якого необхідно ввести сказане.</p>
                     <a class="btn btn-purple text-light" href="@Url.Action("Listening", "Grammar", new { area = ""})">Написання</a>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                 <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/touchscreen.png")" alt="grammar constructor exercise image" style="max-width:250px;">
                 <div class="card-body">
                     <h5 class="card-title">Вправа конструктор речень</h5>
-                    <p class="card-text">Є розбите на слова речення, вправа полягає в збиранні речення та відсіювання зайвих слів.</p>
+                    <p class="card-text">Тренування складання речень. Є розбите на слова речення, вправа полягає в збиранні речення та відсіюванні зайвих слів.</p>
                     <a class="btn btn-purple text-light" href="@Url.Action("Constructor", "Grammar", new { area = ""})">Конструктор</a>
                 </div>
             </div>
@@ -108,11 +108,11 @@
 
         <hr class="col-12">
         <h2> Вправа з текстом</h2>
-        <div class="card col-12 text-center bg-dark text-light">
+        <div class="card col-12 text-center bg-secondary text-light">
             <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/Text.png")" alt="similar exercise image" style="max-height:250px;">
             <div class="card-body">
                 <h5 class="card-title">Вправа розташування слів в тексті</h5>
-                <p class="card-text">Є текст з пробілами, а також декілька слів, необхідно розставити слова відповідно до тексту</p>
+                <p class="card-text">Є текст з пробілами, а також декілька слів, необхідно розставити слова відповідно до тексту.</p>
                 <a class="btn btn-purple text-light" href="@Url.Action("Index", "TextTask", new { area = ""})">Текст</a>
             </div>
         </div>

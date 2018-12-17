@@ -34,6 +34,7 @@ namespace EnglishLearning.Controllers
             return View(textTask);
         }
 
+        [HttpPost]
         public JsonResult CheckResult(int id, List<string> text) {
             bool result = true;
             var temp = db.TextTask.Where(x => x.TextId == id).First();

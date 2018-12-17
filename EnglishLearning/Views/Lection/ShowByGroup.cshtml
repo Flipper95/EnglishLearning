@@ -63,7 +63,13 @@
             <a class="nav-link bg-secondary text-light" id="intermediate-tab" data-toggle="tab" href="#intermediate" role="tab" aria-controls="intermediate" aria-selected="false">Intermediate</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link bg-secondary text-light" id="upper_intermediate-tab" data-toggle="tab" href="#upper_intermediate" role="tab" aria-controls="upper_intermediate" aria-selected="false">Intermediate</a>
+            <a class="nav-link bg-secondary text-light" id="upper_intermediate-tab" data-toggle="tab" href="#upper_intermediate" role="tab" aria-controls="upper_intermediate" aria-selected="false">Upper-Intermediate</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link bg-secondary text-light" id="advanced-tab" data-toggle="tab" href="#advanced" role="tab" aria-controls="advanced" aria-selected="false">Advanced</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link bg-secondary text-light" id="proficient-tab" data-toggle="tab" href="#proficient" role="tab" aria-controls="proficient" aria-selected="false">Proficient</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -85,6 +91,16 @@
         <div class="tab-pane fade" id="upper_intermediate" role="tabpanel" aria-labelledby="upper_intermediate-tab">
             <div class="card-columns">
                 @Html.Action("ShowByComplexity", new { area = "", complexity = "Upper-Intermediate" })
+            </div>
+        </div>
+        <div class="tab-pane fade" id="advanced" role="tabpanel" aria-labelledby="advanced-tab">
+            <div class="card-columns">
+                @Html.Action("ShowByComplexity", new { area = "", complexity = "Advanced" })
+            </div>
+        </div>
+        <div class="tab-pane fade" id="proficient" role="tabpanel" aria-labelledby="proficient-tab">
+            <div class="card-columns">
+                @Html.Action("ShowByComplexity", new { area = "", complexity = "Proficient" })
             </div>
         </div>
     </div>

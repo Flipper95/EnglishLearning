@@ -16,8 +16,8 @@
 @foreach (var el in Model)
 {
 <div class="card text-white bg-secondary mt-1" style="max-width: 18rem;">
-    <div class="card-header">Урок @el.ComplexityOrder</div>
-    <div class="card-body">
+    <div class="card-header" style="background-color:#2b5797">Урок @el.ComplexityOrder</div>
+    <div class="card-body bg-dark">
         <ul style="list-style-type:upper-roman;">
         @foreach (var leaf in el.lection)
         {
