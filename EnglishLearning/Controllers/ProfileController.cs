@@ -36,19 +36,84 @@ namespace EnglishLearning.Controllers
             if ((tasks.Count() - count) < 7) {
                 var bannedTasks = tasks.Select(x => x.ELTask.TaskId);
                 //TODO: add tasks by complexity and only number take to max 7 tasks
-                var temp = from t in db.ELTask
-                           where !bannedTasks.Contains(t.TaskId) && t.AuthorId == 1
-                           select t.TaskId;
-                foreach (var el in temp) {
-                    UserELTask task = new UserELTask();
-                    task.Date = now.AddDays(7);
-                    task.TaskId = el;
-                    task.UserId = user.UserId;
-                    db.UserELTask.Add(task);
-                }
+                //    var temp = from t in db.ELTask
+                //               where !bannedTasks.Contains(t.TaskId) && t.AuthorId == 1
+                //               select t.TaskId;
+                //    foreach (var el in temp) {
+                //        UserELTask task = new UserELTask();
+                //        task.Date = now.AddDays(7);
+                //        task.TaskId = el;
+                //        task.UserId = user.UserId;
+                //        db.UserELTask.Add(task);
+                //    }
+                UserELTask task;
+                task = AddNewTaskByGroup("Lection", bannedTasks, user.UserId, user.ObjectiveLevel);
+                if (task != null) db.UserELTask.Add(task);
+                task = AddNewTaskByGroup("Test", bannedTasks, user.UserId, user.ObjectiveLevel);
+                if (task != null) db.UserELTask.Add(task);
+                task = AddNewTaskByGroup("TextTask", bannedTasks, user.UserId, user.ObjLvlReading);
+                if (task != null) db.UserELTask.Add(task);
+                task = AddNewTaskByGroup("Grammar", bannedTasks, user.UserId, user.ObjLvlWriting);
+                if (task != null) db.UserELTask.Add(task);
+                task = AddNewTaskByGroup("Other", bannedTasks, user.UserId, user.ObjectiveLevel);
+                if(task != null) db.UserELTask.Add(task);
+                task = AddNewTaskByGroup("Word", bannedTasks, user.UserId, user.ObjectiveLevel);
+                if (task != null) db.UserELTask.Add(task);
             }
             db.SaveChanges();
             return View(user);
+        }
+
+        private UserELTask AddNewTaskByGroup(string groupName, IQueryable<int> bannedTasks, int userId, string userLvl) {
+
+            var ban = from ut in db.UserELTask.Include("ELTask")
+                      where 
+                      ut.UserId == userId && 
+                      ut.Done == true && 
+                      ut.ELTask.AuthorId == 1 &&
+                      ut.ELTask.Group == groupName
+                      select ut.ELTask.TaskId;
+            ban = bannedTasks.Concat(ban);
+
+            var tasks = from t in db.ELTask
+                       where !bannedTasks.Contains(t.TaskId) && 
+                       t.AuthorId == 1 &&
+                       t.Group == groupName
+                       select t;
+            var temp = tasks.Where(x => x.Difficult == userLvl);
+            if (temp.Count() < 1)
+            {
+                List<string> lvl = getLessUserLvl(userLvl);
+                temp = tasks.Where(x => lvl.Contains(x.Difficult));
+            }
+            temp = temp.OrderBy(x => Guid.NewGuid()).Take(1);
+                //foreach (var el in tasks)
+                //{
+            UserELTask task = new UserELTask();
+            task.Date = DateTime.Now.AddDays(7);
+            task.UserId = userId;
+            try
+            {
+                task.TaskId = temp.Select(x => x.TaskId).First();//el;
+            }
+            catch {
+                task = null;
+            }
+                //}
+            return task;
+        }
+
+        private List<string> getLessUserLvl(string user) {
+            List<string> difficulties = new List<string>();
+            Enum.TryParse(user.Replace('-', '_'), out Difficult userLvl);
+            foreach (Difficult el in (Difficult[])Enum.GetValues(typeof(Difficult)))
+            {
+                if (userLvl > el)
+                {
+                    difficulties.Add(el.ToString());
+                }
+            }
+            return difficulties;
         }
 
         [HttpPost]

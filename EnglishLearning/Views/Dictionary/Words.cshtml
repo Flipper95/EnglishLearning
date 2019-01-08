@@ -9,8 +9,7 @@
     @*@:<script>$("#RowsPerPage").text()</script>*@
 }
 
-<h2>Words</h2>
-
+<h1 class="mt-4"></h1>
 @*@Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })*@
 <div class="d-flex flex-row">
     @*@using (Html.BeginForm("SearchAndRows", "Dictionary", FormMethod.Post)) {*@
@@ -38,7 +37,7 @@
 <div id="gridChange">
 <div id="gridContent">
 @grid.GetHtml(
-    tableStyle: "table table-hover", headerStyle: "thead-dark", caption: "Вибір слів на вивчення",
+    tableStyle: "table table-hover", headerStyle: "bg-light", caption: "Вибір слів на вивчення",
     mode: WebGridPagerModes.All, numericLinksCount: 5,
     columns: grid.Columns(
         grid.Column(header: "Відмітити", format:

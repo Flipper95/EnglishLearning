@@ -1,4 +1,5 @@
 ﻿using EnglishLearning.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,10 @@ namespace EnglishLearning.Controllers
                            where lection.OwnerId == 1
                            select lection;
             ViewBag.Lections = lections;
+
+            var identity = User.Identity.GetUserId();
+            var user = db.User.Where(x => x.IdentityId == identity).First();
+            ViewBag.User = user;
             return View(allGroups);
         }
 
@@ -58,6 +63,14 @@ namespace EnglishLearning.Controllers
             return File(fs, "application/pdf");
         }
 
+        public FileResult DownloadFile(string filePath, string fileName)
+        {
+            //string filename = filePath.Split('\\').LastOrDefault();
+            fileName += ".pdf";
+            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(stream, "application/force-download", fileName);
+        }
+
     }
 
     public class LectionChoice {
@@ -65,6 +78,7 @@ namespace EnglishLearning.Controllers
         public List<SimpleLection> lection; //Tuple<string,string>
 
         public class SimpleLection {
+            public string Difficult;
             public string Name;
             public string Description;
             public int LectionId;

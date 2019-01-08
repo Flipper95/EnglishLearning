@@ -6,17 +6,20 @@
     private static System.Web.Mvc.HtmlHelper<dynamic> html { get { return page.Html; } }
     private static UrlHelper url { get { return page.Url; } }
     //private static dynamic viewBag { get { return page.ViewBag; } }
-    private static string TreeForLection(IQueryable<EnglishLearning.Models.Lection> lections, int groupdId)//, string name)
+    private static string TreeForLection(IQueryable<EnglishLearning.Models.Lection> lections, int groupdId, EnglishLearning.Models.User user)//, string name)
     {
         int id = groupdId;
-        List<EnglishLearning.Controllers.LectionChoice.SimpleLection> query = lections.Where(x => x.LectionType.Equals(id)).Select(x => new EnglishLearning.Controllers.LectionChoice.SimpleLection { Name = x.Name, LectionId = x.LectionId }).ToList();
+        List<EnglishLearning.Controllers.LectionChoice.SimpleLection> query = lections.Where(x => x.LectionType.Equals(id)).Select(x => new EnglishLearning.Controllers.LectionChoice.SimpleLection { Name = x.Name, LectionId = x.LectionId, Difficult = x.Complexity }).ToList();
         string str = "";
         //if (query.Count > 0) {
         //str += "<a class='btn btn-purple m-1 treeNode' data-toggle='collapse' href='#Collapse_" + id + "' role='button' aria-expanded='false' aria-controls='#Collapse_" + id + "'>"+name+"</a>" +
         //            "<div class='collapse multi-collapse' id='Collapse_" + id + "'><ol type='I'>";
         foreach(var leaf in query)
         {
-            str+= "<li><a class='btn btn-info my-1 treeNode' href='" + url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId }) + "'>" + leaf.Name + "<a></li>";
+            Enum.TryParse(leaf.Difficult.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult difficult);
+            Enum.TryParse(user.ObjectiveLevel.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult userLvl);
+            string color = difficult == userLvl ? "success" : (difficult < userLvl ? "purple" : "info");
+            str+= "<li class='list-group-item list-group-item-action list-group-item-" + color+"'><a class='text-dark my-1 treeNode' data-toggle='tooltip' data-placement='bottom' title='"+leaf.Name+"' href='" + url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId }) + "'>" + leaf.Name + "<a></li>";
         }
         //str += "</ol></div>";
         //}
@@ -32,14 +35,19 @@
         return lections.Where(x => x.LectionType.Equals(id)).Count();
     }
 
-    private static string TreeForTests(IQueryable<EnglishLearning.Models.Test> tests, int groupdId)//, string name)
+    private static string TreeForTests(IQueryable<EnglishLearning.Models.Test> tests, int groupdId, string groupName, EnglishLearning.Models.User user)//, string name)
     {
         int id = groupdId;
         List<EnglishLearning.Models.Test> query = tests.Where(x => x.TestType.Equals(id)).ToList();
         string str = "";
+        //string groupName = tests.Where(x => x.TestGroup.TestGroupId == groupdId).Select(x => x.TestGroup.Name).First();
         foreach (var leaf in query)
         {
-            str += "<li><a class='btn btn-info my-1 treeNode' href='" + url.Action("Test", "Test", new { area = "", id = leaf.TestId }) + "'>" + leaf.Name + "<a></li>";
+            string userComplexity = groupName == "Тести до озвучених історій" ? user.ObjLvlListening : (groupName == "Тести до текстів" ? user.ObjLvlReading : user.ObjectiveLevel);
+            Enum.TryParse(leaf.Difficult.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult difficult);
+            Enum.TryParse(userComplexity.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult userLvl);
+            string color = difficult == userLvl ? "success" : (difficult < userLvl ? "purple" : "info");
+            str += "<li class='list-group-item list-group-item-action list-group-item-"+color+"'><a class='text-dark my-1 treeNode' href='" + url.Action("Test", "Test", new { area = "", id = leaf.TestId }) + "'>" + leaf.Name + "<a></li>";
         }
         return str;
     }
@@ -51,7 +59,7 @@
     }
 }
 
-@helper buildTree(List<EnglishLearning.Models.GroupModel> tree, int parentId, object lections)
+@helper buildTree(List<EnglishLearning.Models.GroupModel> tree, int parentId, object lections, EnglishLearning.Models.User user)
 {
     foreach (var el in tree.Where(x => x.ParentId.Equals(parentId)))
     {
@@ -60,7 +68,7 @@
                 var count = tree.Where(x => x.ParentId.Equals(el.Id)).Count();
                 if (count > 0)
                 {
-                    <a class="btn btn-secondary m-1 treeNode" data-toggle="collapse" href="#Collapse_@el.Id" role="button" aria-expanded="false" aria-controls="#Collapse_@el.Id">@el.Name</a>
+                    <a class="btn btn-secondary m-1 treeNode collapsed" data-toggle="collapse" href="#Collapse_@el.Id" role="button" aria-expanded="false" aria-controls="#Collapse_@el.Id">@el.Name</a>
                 }
                 else
                 {
@@ -87,10 +95,10 @@
                                 }*@
                                 @if (lections as IQueryable<EnglishLearning.Models.Lection> != null)
                                 {
-                                    @:@html.Raw(TreeForLection(lections as IQueryable<EnglishLearning.Models.Lection>, el.Id))
+                                    @:@html.Raw(TreeForLection(lections as IQueryable<EnglishLearning.Models.Lection>, el.Id, user))
                                 }
                                 else {
-                                    @:@html.Raw(TreeForTests(lections as IQueryable<EnglishLearning.Models.Test>, el.Id))
+                                    @:@html.Raw(TreeForTests(lections as IQueryable<EnglishLearning.Models.Test>, el.Id, el.Name, user))
                                 }
                             </ol>
                         </div>
@@ -106,7 +114,7 @@
                 if (count > 0)
                 {
                     <ul class="subList" id="Collapse_@el.Id">
-                        @treeView.buildTree(tree, el.Id, lections)
+                        @treeView.buildTree(tree, el.Id, lections, user)
                     </ul>
                 }
             }

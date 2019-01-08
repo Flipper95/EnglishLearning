@@ -218,7 +218,7 @@ namespace EnglishLearning.Controllers
         }
 
         private string ClearFromSymbols(string value) {
-            var text = Regex.Replace(value, @"[^0-9a-zA-Zа-яА-ЯїієІЇЄ\s]+", "");
+            var text = Regex.Replace(value, @"[^0-9a-zA-Zа-яА-ЯїієІЇЄ\s'-]+", "");
             return text;
         }
 
@@ -235,7 +235,7 @@ namespace EnglishLearning.Controllers
                         where u.IdentityId == userIdentity
                         select u).First();
             string result = user.ObjLvlListening;
-                if (percent >= 50)
+                if (percent >= 80)
                 {
                     Difficult userLvl = (Difficult)Enum.Parse(typeof(Difficult), user.ObjLvlListening.Replace('-', '_'));
                     foreach (Difficult el in Enum.GetValues(typeof(Difficult)))

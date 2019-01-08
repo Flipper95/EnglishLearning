@@ -182,6 +182,42 @@
         $('.modal-backdrop').remove();
     }
 
+    var AjaxResultRequest = function (formId, modalId, funcResult) {
+        var id = $("#TaskId").prop("value");
+        var elem = document.getElementById(formId);
+        var data = new FormData(elem);
+        $.ajax({
+            type: "POST",
+            url: $("#"+formId).prop("action"),
+            data: data,
+            success: function (data) {
+                $("#"+modalId).modal('hide');
+                $('body').removeClass('modal-open');
+                $("#" + modalId).remove();
+                $('.modal-backdrop').remove();
+                funcResult(data, id);
+                //if (data) {
+                //    $("#" + id).children(".TaskName").text(data);
+                //}
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        })
+    }
+
+    var CheckDone = function (done, taskId) {
+        if (done == "True" || done == "true") {
+            $("#" + taskId).remove();
+        }
+    }
+
+    var UpdateName = function (Name, taskId) {
+        if (Name) {
+            $("#" + taskId).children(".TaskName").text(Name);
+        }
+    }
+
     $("#editBody").on("click", "#EditSubmit", function () {
         //$("#EditForm").submit();
         //$("#editModal").modal('hide');
@@ -189,9 +225,9 @@
         //$("#editModal").remove();
         //$('.modal-backdrop').remove();
         ////$("#editModal").remove();
-        var id = $("#TaskId").prop("value");
-        var elem = document.getElementById("EditForm");
-        var data = new FormData(elem);
+        //var id = $("#TaskId").prop("value");
+        //var elem = document.getElementById("EditForm");
+        //var data = new FormData(elem);
         //data.append("file", $("#file")[0].files[0]);
         //data.append("Name", $("#Name")[0].prop("text"));
         //data.append("Description", $("#Description")[0].prop("text"));
@@ -199,23 +235,25 @@
         //data.append("Group", $("#Group")[0].prop("text"));
         //data.append("DocumentPath", $("#DocumentPath")[0].prop("text"));
         //data.append("Difficult", $("#Difficult")[0].prop("value"));
-        $.ajax({
-            type: "POST",
-            url: $("#EditForm").prop("action"),
-            data: data,
-            success: function (data) {
-                $("#editModal").modal('hide');
-                $('body').removeClass('modal-open');
-                $("#editModal").remove();
-                $('.modal-backdrop').remove();
-                if (data) {
-                    $("#"+id).children(".TaskName").text(data);
-                }
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        })
+        //$.ajax({
+        //    type: "POST",
+        //    url: $("#EditForm").prop("action"),
+        //    data: data,
+        //    success: function (data) {
+        //        $("#editModal").modal('hide');
+        //        $('body').removeClass('modal-open');
+        //        $("#editModal").remove();
+        //        $('.modal-backdrop').remove();
+        //        if (data) {
+        //            $("#"+id).children(".TaskName").text(data);
+        //        }
+        //    },
+        //    cache: false,
+        //    contentType: false,
+        //    processData: false
+        //})
+
+        AjaxResultRequest("EditForm", "editModal", UpdateName)
         //hideModal("#EditForm", "#editModal");
     });
 
@@ -245,7 +283,28 @@
         //$('body').removeClass('modal-open');
         //$("#createModal").remove();
         //$('.modal-backdrop').remove();
-        hideModal("#CreateForm", "#createModal");
+        //var id = $("#TaskId").prop("value");
+        //var elem = document.getElementById("CreateForm");
+        //var data = new FormData(elem);
+        //$.ajax({
+        //    type: "POST",
+        //    url: $("#CreateForm").prop("action"),
+        //    data: data,
+        //    success: function (data) {
+        //        $("#createModal").modal('hide');
+        //        $('body').removeClass('modal-open');
+        //        $("#createModal").remove();
+        //        $('.modal-backdrop').remove();
+        //        //if (data) {
+        //        //    $("#" + id).children(".TaskName").text(data);
+        //        //}
+        //    },
+        //    cache: false,
+        //    contentType: false,
+        //    processData: false
+        //})
+        AjaxResultRequest("CreateForm", "createModal", function () { });
+        //hideModal("#CreateForm", "#createModal");
         setTimeout(function () {
             location.reload();
         }, 2000);
@@ -279,10 +338,31 @@
         //$('body').removeClass('modal-open');
         //$("#editUTModal").remove();
         //$('.modal-backdrop').remove();
-        hideModal("#EditUTForm", "#editUTModal");
-        setTimeout(function () {
-            location.reload();
-        }, 2000);
+        //var id = $("#TaskId").prop("value");
+        //var elem = document.getElementById("EditUTForm");
+        //var data = new FormData(elem);
+        //$.ajax({
+        //    type: "POST",
+        //    url: $("#EditUTForm").prop("action"),
+        //    data: data,
+        //    success: function (data) {
+        //        $("#editUTModal").modal('hide');
+        //        $('body').removeClass('modal-open');
+        //        $("#editUTModal").remove();
+        //        $('.modal-backdrop').remove();
+        //        if (data == "True" || data == "true") {
+        //            $("#" + id).remove();//.children(".TaskName").text(data);
+        //        }
+        //    },
+        //    cache: false,
+        //    contentType: false,
+        //    processData: false
+        //})
+        AjaxResultRequest("EditUTForm", "editUTModal", CheckDone);
+        //hideModal("#EditUTForm", "#editUTModal");
+        //setTimeout(function () {
+        //    location.reload();
+        //}, 2000);
     });
 </script>
     @Scripts.Render("~/bundles/ajax")

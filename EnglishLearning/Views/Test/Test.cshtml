@@ -4,26 +4,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Test</h2>
-@if (ViewBag.Text != null) {
+<h2></h2>
+@if (ViewBag.Text != null)
+{
     <div class="Text text-justify col-8 mr-auto ml-auto" style="white-space: pre-wrap;">
         @ViewBag.Text
     </div>
 }
-@if (ViewBag.VoicePath != null) {
-    <audio controls><source src="@Url.Action("GetAudioFile", "Test", new {id = this.ViewContext.RouteData.Values["id"]})" type="audio/mp3" /></audio>
+@if (ViewBag.VoicePath != null)
+{
+    <div class="d-flex flex-row flex-wrap justify-content-center mt-4">
+        <p class="mx-2">Швидкість програвача:</p>
+        <div class="btn btn-secondary text-light align-self-center rate mx-2">0.5</div>
+
+        <div class="btn btn-secondary text-light align-self-center rate mx-2">1</div><div class="btn btn-secondary text-light align-self-center rate mx-2">1.5</div>
+    </div>
+    <div class="d-flex justify-content-center m-4">
+        <audio id="audio" controls><source src="@Url.Action("GetAudioFile", "Test", new {id = this.ViewContext.RouteData.Values["id"]})" type="audio/mp3" /></audio>
+    </div>
 }
 
 <div class="d-flex flex-row flex-wrap">
-    <div class="col-12 col-md-2 align-self-start d-md-flex flex-md-column flex-md-wrap">
+    <div class="col-12 col-md-3 align-self-start">
         <p class="h4">Час: <div class="h4" id="timer" data="@ViewBag.Time"></div></p>
         <p class="h5">Тест: @ViewBag.Name</p>
-        @for (int i=0; i<Model.Count; i++) {
-            <a class="btn @(i==0 ? "act btn-info" : "btn-secondary") text-center text-light mb-1 quest_link" id="@Model[i].QuestionId" data="@Url.Action("ShowAnswers", new { area = "" })">@(i+1)</a>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <a class="btn @(i==0 ? "act btn-info" : "btn-secondary") text-center text-light mb-1 quest_link" id="@Model[i].QuestionId" data="@Url.Action("ShowAnswers", new { area = "" })">@(i + 1)</a>
         }
         @*<p><a class="btn btn-purple">Завершити тест</a></p>*@
     </div>
-    <div class="col-12 col-md-10 align-self-stretch answer_content" id="answer_content" name="answer_content">
+    <div class="col-12 col-md-9 align-self-center answer_content" id="answer_content" name="answer_content">
         @Html.Action("ShowAnswers", new { area = "", id = Model[0].QuestionId, nextId = Model[1].QuestionId })
     </div>
 </div>
@@ -31,6 +42,12 @@
 
 @section scripts{
     <script type="text/javascript" src="@Url.Content("~/Scripts/Tests.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/Timer.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Timer.js")"></script>
+    <script type="text/javascript">
+        $(".rate").on("click", function () {
+            var vid = document.getElementById("audio");
+            vid.playbackRate = $(this).text();
+        });
+    </script>
 }
 

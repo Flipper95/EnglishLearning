@@ -150,7 +150,7 @@
           <Property Name="AuthorId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Words" Type="nvarchar" MaxLength="200" />
+          <Property Name="Words" Type="nvarchar(max)" />
           <Property Name="Difficult" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
@@ -1177,7 +1177,7 @@
           <Property Name="AuthorId" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Words" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Words" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Difficult" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="EnglishLearningModel.Text_User" FromRole="TextTask" ToRole="User" />
           <NavigationProperty Name="ELTask" Relationship="EnglishLearningModel.Task_TextTask" FromRole="TextTask" ToRole="ELTask" />

@@ -39,7 +39,7 @@
             @Html.DisplayFor(modelItem => item.Translate)
         </td>
         <td>
-            @if (item.Voice.Length > 0)
+            @if (item.Voice!=null && item.Voice.Length > 0)
             {
                 <div>true</div>
             }

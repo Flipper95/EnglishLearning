@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*!
  * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
@@ -4260,7 +4260,7 @@ input[type=button].btn-block {
 }
 @media (min-width: 576px) {
   .card-columns {
-    column-count: 3;
+    column-count: 1;
     column-gap: 1.25rem;
     orphans: 1;
     widows: 1;
@@ -4269,6 +4269,23 @@ input[type=button].btn-block {
     display: inline-block;
     width: 100%;
   }
+}
+@media (min-width: 768px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1200px) {
+    .card-columns {
+        column-count: 3;
+    }
 }
 
 .accordion .card:not(:first-of-type):not(:last-of-type) {

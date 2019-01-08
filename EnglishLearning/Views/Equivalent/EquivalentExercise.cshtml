@@ -1,14 +1,14 @@
 ﻿@model List<EnglishLearning.Models.Word>
 @using EnglishLearning.ExtendClasses;
 @{
-    ViewBag.Title = "EquivalentExercise";
+    ViewBag.Title = "Вправа еквівалентів";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
 }
 
-<h2>EquivalentExercise</h2>
+<h2>Вправа еквівалентів</h2>
 
 <audio id="audio">
     <source src="@Url.Action("LoadAudio", new { value = @Model[ViewBag.Index].Word1 })")  />

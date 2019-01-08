@@ -36,3 +36,7 @@
         transform: translateY(-8px);
     }
 }
+
+footer {
+    visibility: collapse !important;
+}

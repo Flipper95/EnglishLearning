@@ -117,7 +117,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Text,Translate,GroupId,AuthorId")] Grammar grammar)
+        public ActionResult Edit([Bind(Include = "Id,Voice,Text,Translate,GroupId,AuthorId")] Grammar grammar)
         {
             if (ModelState.IsValid)
             {

@@ -59,7 +59,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, moderator, user")]
-        public void CreateTask(ELTask eLTask, string date, HttpPostedFileBase file)
+        public string CreateTask(ELTask eLTask, string date, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -84,6 +84,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 db.UserELTask.Add(userTask);
                 db.SaveChanges();
             }
+            return eLTask.Name;
         }
 
         // POST: Moderator/ManageELTasks/Create
@@ -226,7 +227,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin, moderator, user")]
-        public void EditUserTask(UserELTask eLUserTask, HttpPostedFileBase result) {
+        public bool EditUserTask(UserELTask eLUserTask, HttpPostedFileBase result) {
             var path = SaveFile(result);
             if (!string.IsNullOrWhiteSpace(path))
             {
@@ -240,6 +241,9 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             //save don`t work
             db.Entry(eLUserTask).State = EntityState.Modified;
             db.SaveChanges();
+            if (eLUserTask.Done)
+                return true;
+            else return false;
         }
 
         // GET: Moderator/ManageELTasks/Delete/5

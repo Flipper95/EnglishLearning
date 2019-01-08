@@ -44,6 +44,10 @@ namespace EnglishLearning.Controllers
                            where test.OwnerId == 1
                            select test;
             ViewBag.Tests = tests;
+
+            string userIdentity = User.Identity.GetUserId();
+            var temp = db.User.Where(x => x.IdentityId == userIdentity).First();
+            ViewBag.User = temp;
             return View(allGroups);
         }
 
