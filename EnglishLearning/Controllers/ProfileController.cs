@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
 
@@ -47,17 +48,17 @@ namespace EnglishLearning.Controllers
                 //        db.UserELTask.Add(task);
                 //    }
                 UserELTask task;
-                task = AddNewTaskByGroup("Lection", bannedTasks, user.UserId, user.ObjectiveLevel);
+                task = AddNewTaskByGroup("Lection", bannedTasks, user.UserId, user.Level);
                 if (task != null) db.UserELTask.Add(task);
-                task = AddNewTaskByGroup("Test", bannedTasks, user.UserId, user.ObjectiveLevel);
+                task = AddNewTaskByGroup("Test", bannedTasks, user.UserId, user.Level);
                 if (task != null) db.UserELTask.Add(task);
-                task = AddNewTaskByGroup("TextTask", bannedTasks, user.UserId, user.ObjLvlReading);
+                task = AddNewTaskByGroup("TextTask", bannedTasks, user.UserId, user.LvlReading);
                 if (task != null) db.UserELTask.Add(task);
-                task = AddNewTaskByGroup("Grammar", bannedTasks, user.UserId, user.ObjLvlWriting);
+                task = AddNewTaskByGroup("Grammar", bannedTasks, user.UserId, user.LvlWriting);
                 if (task != null) db.UserELTask.Add(task);
-                task = AddNewTaskByGroup("Other", bannedTasks, user.UserId, user.ObjectiveLevel);
+                task = AddNewTaskByGroup("Other", bannedTasks, user.UserId, user.Level);
                 if(task != null) db.UserELTask.Add(task);
-                task = AddNewTaskByGroup("Word", bannedTasks, user.UserId, user.ObjectiveLevel);
+                task = AddNewTaskByGroup("Word", bannedTasks, user.UserId, user.Level);
                 if (task != null) db.UserELTask.Add(task);
             }
             db.SaveChanges();
@@ -83,15 +84,17 @@ namespace EnglishLearning.Controllers
             var temp = tasks.Where(x => x.Difficult == userLvl);
             if (temp.Count() < 1)
             {
-                List<string> lvl = getLessUserLvl(userLvl);
+                List<string> lvl = GetLessUserLvl(userLvl);
                 temp = tasks.Where(x => lvl.Contains(x.Difficult));
             }
             temp = temp.OrderBy(x => Guid.NewGuid()).Take(1);
-                //foreach (var el in tasks)
-                //{
-            UserELTask task = new UserELTask();
-            task.Date = DateTime.Now.AddDays(7);
-            task.UserId = userId;
+            //foreach (var el in tasks)
+            //{
+            UserELTask task = new UserELTask
+            {
+                Date = DateTime.Now.AddDays(7),
+                UserId = userId
+            };
             try
             {
                 task.TaskId = temp.Select(x => x.TaskId).First();//el;
@@ -103,7 +106,7 @@ namespace EnglishLearning.Controllers
             return task;
         }
 
-        private List<string> getLessUserLvl(string user) {
+        private List<string> GetLessUserLvl(string user) {
             List<string> difficulties = new List<string>();
             Enum.TryParse(user.Replace('-', '_'), out Difficult userLvl);
             foreach (Difficult el in (Difficult[])Enum.GetValues(typeof(Difficult)))
@@ -209,6 +212,15 @@ namespace EnglishLearning.Controllers
             }
             ViewBag.TaskGroup = new List<string> { "Word", "Lection", "Test", "Grammar", "TextTask" };
             return PartialView(result.ToList());
+        }
+
+        public ActionResult ShowModal(int id)
+        {
+            var result = (from ut in db.UserELTask.Include("ELTask")
+                          where ut.UserTaskId == id
+                          select ut);
+            ViewBag.TaskGroup = new List<string> { "Word", "Lection", "Test", "Grammar", "TextTask" };
+            return PartialView(result.First());
         }
 
         public void DeleteTask(int id) {

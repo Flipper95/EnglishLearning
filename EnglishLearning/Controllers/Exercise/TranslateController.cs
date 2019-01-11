@@ -7,6 +7,7 @@ using EnglishLearning.Models;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class TranslateController : ExerciseController
     {
         public ActionResult TranslateExercise()

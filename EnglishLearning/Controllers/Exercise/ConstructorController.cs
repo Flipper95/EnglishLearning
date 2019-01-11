@@ -8,6 +8,7 @@ using EnglishLearning.ExtendClasses;
 
 namespace EnglishLearning.Controllers.Exercise
 {
+    [Authorize]
     public class ConstructorController : ExerciseController
     {
 

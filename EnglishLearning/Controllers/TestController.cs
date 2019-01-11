@@ -293,10 +293,11 @@ namespace EnglishLearning.Controllers
                 ViewBag.TextResult = textResult;
                 ViewBag.Success = success;
                 //ViewBag.LevelChange, ViewBag.UserLevel
-
+                SessionClear();
                 return View("ShowResult", questions.ToList());
             }
             else {
+                SessionClear();
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
         }
@@ -363,6 +364,12 @@ namespace EnglishLearning.Controllers
                 return File(Server.MapPath(voicePath), "audio/mp3");
             }
             else return null;
+        }
+
+        private void SessionClear() {
+            Session.Remove("Time");
+            Session.Remove("answers");
+            Session.Remove("questions");
         }
 
     }

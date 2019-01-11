@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class VideoController : Controller
     {
 

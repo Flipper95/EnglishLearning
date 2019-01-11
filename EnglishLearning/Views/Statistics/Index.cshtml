@@ -87,10 +87,12 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="standard" role="tabpanel" aria-labelledby="beginner-tab">
+        <div class="card-deck justify-content-around">
             @Html.Action("ShowTasks", "Profile", new { area = "", type = "Standard", done = true })
+        </div>
     </div>
     <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="elementary-tab">
-        <div id="userTasks">
+        <div class="card-deck justify-content-between" id="userTasks">
             @Html.Action("ShowTasks", "Profile", new { area = "", type = "User", done = true })
         </div>
     </div>
@@ -109,6 +111,8 @@
         footerStyle: "tfoot", htmlAttributes: new { id = "grid" })
 </div>
 
+<div id="DetailedModal"></div>
+
 @section Scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/GoogleCharts.js")"></script>
@@ -120,6 +124,26 @@
             }).on('click', function () {
                 location.href = $(this).find('td:first div').attr("data");
             });
+        });
+
+        $("#myTabContent").on("click", ".TaskName", function (e) {
+            el = $(this);
+            e.stopPropagation();
+            var link = el.attr("data-show");
+            $.ajax({
+                type: "GET",
+                url: link,
+                beforeSend: function () {
+                    el.addClass("fa-spin disabled");
+                    el.attr("disabled");
+                },
+                success: function (data) {
+                    el.removeClass("fa-spin disabled");
+                    el.removeAttr("disabled");
+                    $("#DetailedModal").html(data);
+                    $("#ShowModal").modal('show');
+                }
+            })
         });
     </script>
 }

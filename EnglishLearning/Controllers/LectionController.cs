@@ -10,6 +10,7 @@ using static EnglishLearning.Controllers.LectionChoice;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class LectionController : Controller
     {
         EnglishLearningEntities db = new EnglishLearningEntities();

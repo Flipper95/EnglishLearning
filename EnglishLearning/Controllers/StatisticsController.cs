@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class StatisticsController : Controller
     {
         EnglishLearningEntities db = new EnglishLearningEntities();

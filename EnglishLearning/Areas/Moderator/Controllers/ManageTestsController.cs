@@ -11,6 +11,7 @@ using EnglishLearning.Models;
 
 namespace EnglishLearning.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "moderator")]
     public class ManageTestsController : Controller
     {
         private EnglishLearningEntities db = new EnglishLearningEntities();

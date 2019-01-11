@@ -215,6 +215,8 @@ namespace EnglishLearning.Controllers
             }
             catch
             {
+                ApplicationUser userToDelete = UserManager.FindById(userId);
+                var login = UserManager.DeleteAsync(userToDelete);
                 return View("Error");
             }
             return View(result.Succeeded ? "ConfirmEmail" : "Error");

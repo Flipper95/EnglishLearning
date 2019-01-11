@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class DictionaryController : Controller
     {
 

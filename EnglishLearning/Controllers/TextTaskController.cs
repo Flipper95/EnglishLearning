@@ -9,6 +9,7 @@ using EnglishLearning.ExtendClasses;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class TextTaskController : Controller
     {
         EnglishLearningEntities db = new EnglishLearningEntities();

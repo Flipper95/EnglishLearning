@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace EnglishLearning.Controllers
 {
+    [Authorize]
     public class ExerciseController : Controller
     {
         protected EnglishLearningEntities db = new EnglishLearningEntities();

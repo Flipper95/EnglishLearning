@@ -10,6 +10,7 @@ using EnglishLearning.Models;
 
 namespace EnglishLearning.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "moderator")]
     public class ManageAnswersController : Controller
     {
         private EnglishLearningEntities db = new EnglishLearningEntities();

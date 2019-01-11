@@ -17,7 +17,7 @@ switch (el.ELTask.Group.ToLower()) {
     case ("texttask"): { color = "alert-success"; break; }
     default: { color = "alert-info"; break; }
 }
-    <div id="@el.ELTask.TaskId" class="alert @color col-12 alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = "" })">
+    <div id="@el.ELTask.TaskId" class="alert @color col-12 col-md-5 col-lg-3 m-2 d-flex align-self-center alert-dismissible fade show" data-toggle="modal" data-target="#Modal_@el.UserTaskId" data ="@Url.Action("DeleteTask", new { area = "" })">
         @if (el.Done == false)
         {
         <i id="userTaskEdit" class="far fa-check-square btn" data="@Url.Action("EditUserTaskModal", "ManageELTasks", new { area = "Moderator", id = el.UserTaskId })"></i>
@@ -27,21 +27,27 @@ switch (el.ELTask.Group.ToLower()) {
         <i class="far fa-edit btn" data="@Url.Action("EditTaskModal", "ManageELTasks", new { area = "Moderator", id = el.ELTask.TaskId })"></i>
         @*</a>*@
             }
-            <div class="TaskName btn">
+            <i class="TaskName" style="word-break: break-word; cursor: pointer;" data-show="@Url.Action("ShowModal", new { area="", id = el.UserTaskId})">
         @el.ELTask.Name
-            </div>
+            </i>
           <button class="close-btn close" type="button">
             <span aria-hidden="true">&times;</span>
           </button>
         }
         else
         {
-            @el.ELTask.Name
+            <i class="TaskName" style="word-break: break-word; cursor: pointer;" data-show="@Url.Action("ShowModal", new { area="", id = el.UserTaskId})">
+        @el.ELTask.Name
+            </i>
+            @*@el.ELTask.Name*@
         }
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="Modal_@el.UserTaskId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        @*<div id="DetailedModal">
+
+        </div>*@
+    @*<div class="modal fade" id="Modal_@el.UserTaskId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -63,7 +69,7 @@ switch (el.ELTask.Group.ToLower()) {
                         @if (!string.IsNullOrWhiteSpace(el.ResultDocPath))
                         {
                             <a class="btn btn-purple col-8 align-self-center mt-2" href="@Url.Action("Download", new { area = "", path = el.ResultDocPath })"><i class="far fa-file-alt mr-2"></i>Завантажити власний результат</a>
-                        }
+                        }*@
                         @*@using (Html.BeginForm("Download", "Profile", new { area = "" }, FormMethod.Post))
                         {
                             <input name="path" type="hidden" value="@el.ELTask.DocumentPath">
@@ -75,7 +81,7 @@ switch (el.ELTask.Group.ToLower()) {
                             <button id="ResultDownload" type="submit" class="btn btn-purple my-1" data="@el.ResultDocPath">Завантажити власний результат</button>
                         }*@
                         @*@Ajax.ActionLink("Завантажити власний результат", "Download", new { path = el.ResultDocPath, area = "" }, new AjaxOptions { HttpMethod = "Get"})*@
-                        <div>
+                        @*<div>
                             @el.ELTask.Text
                         </div>
                     </div>
@@ -86,13 +92,13 @@ switch (el.ELTask.Group.ToLower()) {
                     {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                    <a class="btn btn-primary" href="@Url.Action("RedirectToExecute", "Profile", new { area = "", id = el.UserTaskId, ELTaskId = el.ELTask.TaskId })">Виконати</a> @*group = el.ELTask.Group, name = el.ELTask.Name*@
+                    <a class="btn btn-primary" href="@Url.Action("RedirectToExecute", "Profile", new { area = "", id = el.UserTaskId, ELTaskId = el.ELTask.TaskId })">Виконати</a>
                 </div>
                     }
                 }
             </div>
         </div>
-    </div>
+    </div>*@
 }
 }
 else {

@@ -91,14 +91,14 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="standard" role="tabpanel" aria-labelledby="beginner-tab">
-        <div class="card-columns">        </div>
+        <div class="card-deck justify-content-around">
             @Html.Action("ShowTasks", new { area = "", type = "Standard" })
-    </div>
+        </div>
+        </div>
     <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="elementary-tab">
         <a id="create" class="btn text-info" data="@Url.Action("CreateTaskModal", "ManageELTasks", new { area = "Moderator"})"><i class="far fa-plus-square fa-2x"></i></a>
-        <div class="card-columns"> </div>
-        <div id="userTasks">
-            @Html.Action("ShowTasks", new { area = "", type = "User" })
+        <div class="card-deck justify-content-between" id="userTasks">
+                @Html.Action("ShowTasks", new { area = "", type = "User" })
         </div>
     </div>
 </div>
@@ -106,6 +106,7 @@
 <div id="editBody"></div>
 <div id="createBody"></div>
 <div id="editUTBody"></div>
+<div id="DetailedModal"></div>
 
 <script>
     $("#myTabContent").on("click", ".close-btn", function (e) {
@@ -363,6 +364,26 @@
         //setTimeout(function () {
         //    location.reload();
         //}, 2000);
+    });
+
+    $("#myTabContent").on("click", ".TaskName", function (e) {
+        el = $(this);
+        e.stopPropagation();
+        var link = el.attr("data-show");
+        $.ajax({
+            type: "GET",
+            url: link,
+            beforeSend: function () {
+                el.addClass("fa-spin disabled");
+                el.attr("disabled");
+            },
+            success: function (data) {
+                el.removeClass("fa-spin disabled");
+                el.removeAttr("disabled");
+                $("#DetailedModal").html(data);
+                $("#ShowModal").modal('show');
+            }
+        })
     });
 </script>
     @Scripts.Render("~/bundles/ajax")

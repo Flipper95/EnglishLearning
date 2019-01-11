@@ -326,6 +326,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ExerciseStyle.css" />
+    <Content Include="Content\HomePage.css" />
     <Content Include="Content\Images\Background.jpg" />
     <Content Include="Content\Images\constructor.png" />
     <Content Include="Content\Images\equivalent.png" />
@@ -512,6 +513,7 @@
     <Content Include="Views\TextTask\Index.cshtml" />
     <Content Include="Views\Video\Index.cshtml" />
     <Content Include="Views\Video\VideoAccordion.cshtml" />
+    <Content Include="Views\Profile\ShowModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

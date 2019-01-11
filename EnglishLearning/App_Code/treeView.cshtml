@@ -17,7 +17,7 @@
         foreach(var leaf in query)
         {
             Enum.TryParse(leaf.Difficult.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult difficult);
-            Enum.TryParse(user.ObjectiveLevel.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult userLvl);
+            Enum.TryParse(user.Level.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult userLvl);
             string color = difficult == userLvl ? "success" : (difficult < userLvl ? "purple" : "info");
             str+= "<li class='list-group-item list-group-item-action list-group-item-" + color+"'><a class='text-dark my-1 treeNode' data-toggle='tooltip' data-placement='bottom' title='"+leaf.Name+"' href='" + url.Action("ShowLection", "Lection", new { area = "", id = leaf.LectionId }) + "'>" + leaf.Name + "<a></li>";
         }
@@ -43,7 +43,7 @@
         //string groupName = tests.Where(x => x.TestGroup.TestGroupId == groupdId).Select(x => x.TestGroup.Name).First();
         foreach (var leaf in query)
         {
-            string userComplexity = groupName == "Тести до озвучених історій" ? user.ObjLvlListening : (groupName == "Тести до текстів" ? user.ObjLvlReading : user.ObjectiveLevel);
+            string userComplexity = groupName == "Тести до озвучених історій" ? user.LvlListening : (groupName == "Тести до текстів" ? user.LvlReading : user.Level);
             Enum.TryParse(leaf.Difficult.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult difficult);
             Enum.TryParse(userComplexity.Replace('-', '_'), out EnglishLearning.ExtendClasses.Difficult userLvl);
             string color = difficult == userLvl ? "success" : (difficult < userLvl ? "purple" : "info");

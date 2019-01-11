@@ -52,6 +52,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("Index", "Video", new { area = "" })">Навчальні відео</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://91.195.249.139:8000">Чат</a>
+                </li>
                 @if (User.IsInRole("admin"))
                 {
                     @Html.Partial("_AdminPartial")
@@ -130,7 +133,7 @@
     <script type="text/javascript">
         $("#notification-close").on("click", function () {
             $(this).parent(".alert").remove();
-            document.cookie = 'Notification=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            document.cookie = 'Notification=;Path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         });
     </script>
     @RenderSection("scripts", required: false)

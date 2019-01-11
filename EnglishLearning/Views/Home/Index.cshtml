@@ -1,30 +1,185 @@
 ﻿@{
     ViewBag.Title = "Домашня сторінка";
 }
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-purple btn-lg">Learn more &raquo;</a></p>
+@*<div class="jumbotron">
+        <h1>ASP.NET</h1>
+        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+        <p><a href="https://asp.net" class="btn btn-purple btn-lg">Learn more &raquo;</a></p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Getting started</h2>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Get more libraries</h2>
+            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Web Hosting</h2>
+            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        </div>
+    </div>*@
+
+@*<style>
+        .banner-area {
+            background: url(../img/banner-bg.jpg) right;
+            background-size: cover;
+            color: #777;
+        }
+        .relative {
+            position: relative;
+        }
+    </style>
+
+    <section class="banner-area relative" id="home">
+        <div class="overlay overlay-bg"></div>
+        <div class="container">
+            <div class="row fullscreen d-flex align-items-center justify-content-between" style="height: 821px;">
+                <div class="banner-content col-lg-9 col-md-12">
+                    <h1 class="text-uppercase">
+                        We Ensure better education
+                        for a better world
+                    </h1>
+                    <p class="pt-10 pb-10">
+                        In the history of modern astronomy, there is probably no one greater leap forward than the building and launch of the space telescope known as the Hubble.
+                    </p>
+                    <a href="#" class="primary-btn text-uppercase">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>*@
+@section styles{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="@Url.Content("~/Content/HomePage.css")">
+}
+<div id="home">
+
+    <div class="bg-image bg-parallax overlay"></div>
+
+    <div class="home-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="text-white">English Learning безкоштовний онлайн засіб для вивчення англійської мови</h1>
+                    <p class="lead text-white">Купа лекцій, тестів, різноманітних вправ, відео, завдань, спеціально підібраних за рівнем складності. Більше ніж 100 тисяч слів, а також можливість тренування через чат, в якому існують виділені для обговорення теми. Допомога в самовивченні через встановлення рівня знань власноруч, а також нагадувань до ваших подій.</p>
+                    <a class="main-button icon-button bg-purple" href="@Url.Action("Register","Account", new { area=""})">Розпочати!</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<div data-vc-parallax="1.5" class="vc_row wpb_row vc_row-fluid vc_row-has-fill vc_general vc_parallax vc_parallax-content-moving">
+    <div class="container">
+        <div class="row">
+            <div class="wpb_column vc_column_container col-sm-12">
+                <div class="vc_column-inner ">
+                    <div class="wpb_wrapper">
+                        <h3 class="bright-section-title bright-section-title-default text-center margin-top-no_margin margin-bottom-large title-font-size-default">
+                            Ми допоможемо вам, нарешті, вивчити англійську мову, з допомогою:@*<br> навчання з допомогою різних способів та<br> використання ефективних методик для вивчення.*@
+                        </h3>
+                        <div class="vc_newrow wpb_row vc_inner vc_row-fluid d-flex flex-row flex-wrap">
+                            <div class="wpb_column vc_column_container col-12 col-md-4">
+                                <div class="vc_column-inner">
+                                    <div class="wpb_wrapper">
+                                        <div class="activity-item activity-item-blue">
+                                            <div class="icon">
+                                                <i class="fa fa-bolt"></i>
+                                            </div>
+                                            <h3>Короткі лекції</h3>
+                                            <p>На нащому сайті ви знайдете багато коротких лекцій. Короткі лекції краще засвоюються, швидко опанувавши певну тему ви зможете зробити перерву.</p>
+                                            <a class="btn btn-rm btn-common" href="@Url.Action("ShowByGroup", "Lection", new { area = "" })">Розпочати</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wpb_column vc_column_container col-12 col-md-4">
+                                <div class="vc_column-inner">
+                                    <div class="wpb_wrapper">
+                                        <div class="activity-item activity-item-primary active-item">
+                                            <div class="icon">
+                                                <i class="fa fa-graduation-cap"></i>
+                                            </div>
+                                            <h3>Різні типи тестів</h3>
+                                            <p>Величезна кількість тестів для різних рівнів знань, а також тести з текстами та до озвучених історій, для розширення кола перевірки різних навичок.</p>
+                                            <a class="btn btn-rm btn-common" href="@Url.Action("Index", "Test", new { area = "" })">Розпочати</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wpb_column vc_column_container col-12 col-md-4">
+                                <div class="vc_column-inner">
+                                    <div class="wpb_wrapper">
+                                        <div class="activity-item activity-item-red">
+                                            <div class="icon">
+                                                <i class="fa fa-flask"></i>
+                                            </div>
+                                            <h3>Завдання та профіль</h3>
+                                            <p>Вивчайте мову як вам подобається, для цього ви можете ставити власні цілі, або готуватися до певних подій. Встановлюйте власний рівень.</p>
+                                            <a class="btn btn-rm btn-common" href="@Url.Action("Index", "Profile", new { area = "" })">Розпочати</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="wpb_column vc_column_container col-12 col-md-4">
+                                <div class="vc_column-inner">
+                                    <div class="wpb_wrapper">
+                                        <div class="activity-item activity-item-red">
+                                            <div class="icon">
+                                                <i class="fas fa-journal-whills bg-dark"></i>
+                                            </div>
+                                            <h3>Словники</h3>
+                                            <p>Виберіть тему яка вам подобається та вивчіть словник до неї. Теми постійно оновлюються та додаються нові. Кількість слів перевищує 100 тисяч.</p>
+                                            <a class="btn btn-rm btn-common" href="@Url.Action("Index", "Dictionary", new { area = "" })">Розпочати</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wpb_column vc_column_container col-12 col-md-4">
+                                <div class="vc_column-inner">
+                                    <div class="wpb_wrapper">
+                                        <div class="activity-item activity-item-primary active-item">
+                                            <div class="icon">
+                                                <i class="fas fa-brain bg-danger"></i>
+                                            </div>
+                                            <h3>Вправи</h3>
+                                            <p>З допомогою вправ можна вивчити додані слова, а також окремо винесено вправи з реченнями (для тренування граматики та написання) та текстами.</p>
+                                            <a class="btn btn-rm btn-common" href="@Url.Action("Index", "Exercise", new { area = "" })">Розпочати</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wpb_column vc_column_container col-12 col-md-4">
+                                <div class="vc_column-inner">
+                                    <div class="wpb_wrapper">
+                                        <div class="activity-item activity-item-red">
+                                            <div class="icon">
+                                                <i class="fas fa-comment"></i>
+                                            </div>
+                                            <h3>Чат</h3>
+                                            <p>Спілкуйтеся та розвивайте володіння англійською мовою з допомогою дискусій з іншими користувачами. Кожен день тема дискусії змінюється.</p>
+                                            <a class="btn btn-rm btn-common" href="http://91.195.249.139:8000">Розпочати</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="col-12 text-center font-italic text-monospace">А також багато іншого...</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+    <div class="xt-row-overlay" style="background-color:rgba(255,255,255,0.01)"></div>
+    @*<div class="vc_parallax-inner skrollable skrollable-between" data-bottom-top="top: -50%;" data-top-bottom="top: 0%;" style="height: 150%; background-image: url(&quot;http://bright.wpbranch.com/wp-content/uploads/2017/07/bg.jpg&quot;); top: -28.0594%;"></div>*@
 </div>

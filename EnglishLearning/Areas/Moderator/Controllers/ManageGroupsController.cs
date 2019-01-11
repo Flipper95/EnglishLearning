@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace EnglishLearning.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "moderator")]
     public class ManageGroupsController : Controller
     {
         private EnglishLearningEntities db = new EnglishLearningEntities();

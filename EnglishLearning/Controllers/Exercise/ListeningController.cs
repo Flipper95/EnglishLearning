@@ -8,6 +8,7 @@ using EnglishLearning.Models;
 
 namespace EnglishLearning.Controllers.Exercise
 {
+    [Authorize]
     public class ListeningController : ExerciseController
     {
 
