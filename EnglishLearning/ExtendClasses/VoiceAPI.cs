@@ -28,7 +28,7 @@ namespace EnglishLearning.ExtendClasses
             {
                 voice = voiceProvider.Speech<byte[]>(voiceParams);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return voice;

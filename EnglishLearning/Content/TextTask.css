@@ -1,0 +1,7 @@
+﻿.wordPlaceholder {
+    display: inline-block;
+}
+
+footer {
+    visibility: collapse !important;
+}

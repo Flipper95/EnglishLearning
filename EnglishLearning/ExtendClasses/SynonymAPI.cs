@@ -19,7 +19,7 @@ namespace EnglishLearning.ExtendClasses
                 synonyms = ThesaurusUploadSynonyms(word);
                 result = ThesaurusParse(synonyms);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return result;

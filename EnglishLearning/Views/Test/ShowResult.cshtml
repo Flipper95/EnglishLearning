@@ -4,23 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .alert-danger .custom-control-label {
-        color: #721c24 !important;
-    }
-
-    .alert-warning .custom-control-label {
-        color: #856404 !important;
-    }
-
-    .alert-success .custom-control-label {
-        color: #155724 !important;
-    }
-
-    .alert-info .custom-control-label {
-        color: #0c5460 !important;
-    }
-</style>
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/TestResult.css")">
+}
 
 @if (ViewBag.Level != null)
 {

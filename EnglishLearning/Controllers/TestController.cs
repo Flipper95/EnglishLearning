@@ -88,8 +88,7 @@ namespace EnglishLearning.Controllers
             ViewBag.Question = question;
             ViewBag.NextId = nextId;
 
-            Dictionary<int, List<int>> dict = Session["answers"] as Dictionary<int, List<int>>;
-            if(dict != null)
+            if (Session["answers"] is Dictionary<int, List<int>> dict)
             {
                 if (dict.ContainsKey(id))
                     ViewBag.Checked = dict[id];
@@ -115,8 +114,7 @@ namespace EnglishLearning.Controllers
             if (answers != null && answers.Length > 0)
             {
                 List<int> intanswers = Array.ConvertAll(answers, item => Convert.ToInt32(item)).ToList();//answers.OfType<int>().ToList();
-                Dictionary<int, List<int>> dict = Session["answers"] as Dictionary<int, List<int>>;
-                if (dict != null)
+                if (Session["answers"] is Dictionary<int, List<int>> dict)
                 {
                     if (dict.ContainsKey(questId))
                         dict[questId] = intanswers;
@@ -126,13 +124,15 @@ namespace EnglishLearning.Controllers
         }
 
         private TestHistory CreateHistory(int testId, double percent, string[] result) {
-            TestHistory history = new TestHistory();
-            history.Answers = result[1];
-            history.Questions = result[0];
-            history.PassDate = DateTime.Now;
-            history.SuccessPercent = percent;
-            history.TestId = testId;
-            history.UserId = UserId;
+            TestHistory history = new TestHistory
+            {
+                Answers = result[1],
+                Questions = result[0],
+                PassDate = DateTime.Now,
+                SuccessPercent = percent,
+                TestId = testId,
+                UserId = UserId
+            };
             return history;
         }
 
@@ -221,8 +221,7 @@ namespace EnglishLearning.Controllers
         }
 
         public ActionResult CheckResult(int testId) {
-            double percent;
-            string[] result = SaveResult(testId, out percent);
+            string[] result = SaveResult(testId, out double percent);
             TestHistory history = CreateHistory(testId, percent, result);
             var test = (from t in db.Test.Include("TestGroup")
                        where t.TestId == testId

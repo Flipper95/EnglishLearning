@@ -90,9 +90,11 @@ namespace EnglishLearning.Controllers
         private List<string> GetNextConstructorWords(List<Grammar> sentences, int sentenceIndex, int wordIndex ) {
             var temp = ClearFromSymbols(sentences[sentenceIndex].Text).Split(' ');
             var answer = temp[wordIndex];//.ToCharArray();
-            List<string> words = new List<string>();
-            //var tempStr = new string(answer);
-            words.Add(answer);
+            List<string> words = new List<string>
+            {
+                //var tempStr = new string(answer);
+                answer
+            };
             var consonant = DoubleConsonant(answer);
             if (consonant != answer) words.Add(consonant);
             //if (temp.Count() > wordIndex + 1) words.Add(temp[wordIndex + 1]);

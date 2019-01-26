@@ -63,8 +63,8 @@ namespace EnglishLearning.Controllers
 
         //public JsonResult CountResult(List<CountDateStat> data, string xName, string colName) {
         //    var barChart = new BarChart();
-        //    barChart.cols = new object[] { new { id="date", type="string", label = xName }, new { id = "Yvalue", type = "number", label = colName } };
-        //    barChart.rows = new object[data.Count];
+        //    barChart.Cols = new object[] { new { id="date", type="string", label = xName }, new { id = "Yvalue", type = "number", label = colName } };
+        //    barChart.Rows = new object[data.Count];
         //    for (int i=0; i<data.Count;i++) {
         //        barChart.rows[i] = new { c = new object[] { new { v = data[i].date.Value.ToShortDateString() }, new { v = data[i].count } } };
         //    }
@@ -73,8 +73,7 @@ namespace EnglishLearning.Controllers
 
         public JsonResult ChartByCount(string xName, string colName, string col2Name, string from, string to)
         {
-            DateTime begin, end;
-            ConvertToData(from, to, out begin, out end);
+            ConvertToData(from, to, out DateTime begin, out DateTime end);
 
             var tests = (from t in db.TestHistory
                         where t.UserId == UserId && t.PassDate > begin && t.PassDate < end
@@ -95,9 +94,11 @@ namespace EnglishLearning.Controllers
         [NonAction]
         public JsonResult CountResult(List<CountDateStat> data, string xName, string colName, string col2Name)
         {
-            var barChart = new BarChart();
-            barChart.cols = new object[] { new { id = "date", type = "string", label = xName }, new { id = "Yvalue", type = "number", label = colName }, new { id = "Y2value", type = "number", label = col2Name } };
-            barChart.rows = new object[data.Count];
+            var barChart = new BarChart
+            {
+                cols = new object[] { new { id = "date", type = "string", label = xName }, new { id = "Yvalue", type = "number", label = colName }, new { id = "Y2value", type = "number", label = col2Name } },
+                rows = new object[data.Count]
+            };
             for (int i = 0; i < data.Count; i++)
             {
                 barChart.rows[i] = new { c = new object[] { new { v = data[i].Date.Value.ToShortDateString() }, new { v = data[i].CountT }, new { v = data[i].CountW } } };
@@ -115,9 +116,11 @@ namespace EnglishLearning.Controllers
 
         [NonAction]
         public JsonResult TestSuccessResult(List<TestSuccessStat> data, string xName, string colName) {
-            var barChart = new BarChart();
-            barChart.cols = new object[] { new { id = "data", type = "string", label = xName }, new { id = "Yvalue", type = "number", label = colName } };
-            barChart.rows = new object[data.Count];
+            var barChart = new BarChart
+            {
+                cols = new object[] { new { id = "data", type = "string", label = xName }, new { id = "Yvalue", type = "number", label = colName } },
+                rows = new object[data.Count]
+            };
             for (int i = 0; i < data.Count; i++)
             {
                 barChart.rows[i] = new { c = new object[] { new { v = data[i].Name }, new { v = data[i].Percent } } };

@@ -1,0 +1,12 @@
+﻿.listByGroup {
+    list-style: none;
+    columns: 2;
+}
+
+.subList {
+    list-style: none;
+}
+
+.treeNode {
+    width: 50%;
+}

@@ -335,7 +335,11 @@
     <Content Include="Content\Images\similar.png" />
     <Content Include="Content\Images\stats.png" />
     <Content Include="Content\Images\translator.png" />
+    <Content Include="Content\LectionShow.css" />
     <Content Include="Content\MyBootstrap.css" />
+    <Content Include="Content\TestResult.css" />
+    <Content Include="Content\TextTask.css" />
+    <Content Include="Content\TwoColTreeByGroup.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -433,6 +437,8 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\ConstructorExercise.js" />
+    <Content Include="Scripts\ConstructorGrammarExercise.js" />
     <Content Include="Scripts\GoogleCharts.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -445,10 +451,19 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\ListeningExercise.js" />
+    <Content Include="Scripts\ListeningGrammarExercise.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Notification.js" />
+    <Content Include="Scripts\Profile.js" />
+    <Content Include="Scripts\Statistics.js" />
     <Content Include="Scripts\Tests.js" />
+    <Content Include="Scripts\TextTasks.js" />
     <Content Include="Scripts\Timer.js" />
     <Content Include="Scripts\ToolTip.js" />
+    <Content Include="Scripts\TranslateSynEqExercises.js" />
+    <Content Include="Scripts\Video.js" />
+    <Content Include="Scripts\Words.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

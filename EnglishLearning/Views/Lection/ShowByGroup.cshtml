@@ -4,20 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .listByGroup {
-        list-style: none;
-        columns: 2;
-    }
-
-    .subList {
-        list-style: none;
-    }
-
-    .treeNode {
-        width: 50%;
-    }
-</style>
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/TwoColTreeByGroup.css")">
+}
 
 <h2></h2>
 

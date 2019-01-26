@@ -18,7 +18,7 @@
         <img class="img-fluid rounded col-6 col-md-4 my-2 img-active" src="@Url.Content("~/Content/Images/listen.png")" onclick="document.getElementById('audio').play()">
         
         <div class="input-group col-8 col-md-6 col-lg-4 my-4 px-0">
-            <input class="question form-control col-10" id="value" name="value" type="text">
+            <input class="question form-control col-10" id="value" name="value" type="text" data="@Model[ViewBag.Index].WordId">
             <div class="input-group-append col-2 px-0">
                 <button class="btn btn-outline-secondary col-12 questionBtn" type="button">Далі</button>
             </div>
@@ -34,61 +34,7 @@
         @*<a id="NextBtn" name="NextBtn" class="btn btn-teal mt-5 text-light" href="@Url.Action("TranslateExercise", "Exercise", new { area="", StartIndex=(ViewBag.StartIndex+5) })" hidden>Наступне</a>*@
 </div>
 @section Scripts{
-    <script type="text/javascript">
-        //$("div .question").on("click", function () {
-        //    $("div .question").addClass("disabled");
-        //    $(this).addClass("active");
-        //    $("#NextBtn").removeAttr("hidden")//.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
-        //});
-
-        $("div .question").keypress(function (e) {
-            if (e.which == 13) {
-                CheckResult();
-            }
-        });
-
-        $("div .questionBtn").on("click", function () { CheckResult(); });
-
-        var CheckResult = function () {
-                var text = $("#value").val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "CheckResult",
-                    data: { id: @Model[ViewBag.Index].WordId, value: text },
-                    success: function (data) {
-                        AjaxResult(data);
-                    }
-                });
-
-                $("div .question, div .questionBtn").prop("disabled",true);
-                $("div .question").addClass("active");
-                $("#NextBtn").removeAttr("hidden");
-        }
-
-        //var ShowNext = function () {
-        //    //$(this).addClass("active");
-        //    $("#NextBtn").removeAttr("hidden");
-        //}
-
-        var AjaxResult = function (result) {
-            var el = $(".active");
-            //el.removeClass("btn-purple");
-            if (result.toLowerCase() == "true") {
-                el.addClass("bg-teal text-light");
-            }
-            else {
-                el.addClass("bg-danger text-light");
-                $.ajax({
-                    type: "GET",
-                    url: "GetAnswer",
-                    success: function (data) {
-                        $("#answer").removeAttr("hidden").text(String(data))
-                    }
-                });
-                //$("#answer").removeAttr("hidden").text(@Model[ViewBag.Index].Word1);
-            }
-        }
+    <script type="text/javascript" src="~/Scripts/ListeningExercise.js">
     </script>
     @Scripts.Render("~/bundles/ajax")
 }

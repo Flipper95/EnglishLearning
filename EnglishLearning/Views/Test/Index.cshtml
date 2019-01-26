@@ -6,21 +6,9 @@
 
 <h2></h2>
 
-<style>
-    .listByGroup {
-        list-style: none;
-        columns: 2;
-    }
-
-    .subList {
-        list-style: none;
-    }
-
-    .treeNode {
-        width: 50%;
-    }
-</style>
-
+@section styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/TwoColTreeByGroup.css")">
+}
 
 @if (Model.Count() > 0)
 {

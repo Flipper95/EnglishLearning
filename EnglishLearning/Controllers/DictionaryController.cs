@@ -64,12 +64,14 @@ namespace EnglishLearning.Controllers
                 query = query.Where(x => x.word.Contains(search) || x.translate.Contains(search));
             }
             ViewBag.GroupId = id;
-            PagedList<WordsDisplay> list = new PagedList<WordsDisplay>();
-            list.CurrentPage = page;
-            list.PageSize = pageSize;
-            list.TotalRecords = query.Count();
-            list.Content = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            
+            PagedList<WordsDisplay> list = new PagedList<WordsDisplay>
+            {
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalRecords = query.Count(),
+                Content = query.Skip((page - 1) * pageSize).Take(pageSize).ToList()
+            };
+
             return View(list);
         }
 

@@ -24,7 +24,7 @@ namespace EnglishLearning.Controllers
             return View();
         }
 
-        protected int getCurrentUserId() {
+        protected int GetCurrentUserId() {
             string userIdentity = User.Identity.GetUserId();
             var userId = (from user in db.User
                           where user.IdentityId == userIdentity
@@ -63,7 +63,7 @@ namespace EnglishLearning.Controllers
         //    if (StartIndex == 0)
         //    {
         //        Session["AnswerCount"] = 0;
-        //        int userId = getCurrentUserId();
+        //        int userId = GetCurrentUserId();
         //        //"SELECT * FROM [Word] AS w WHERE w.WordId IN (SELECT TOP 25 lw.WordId FROM [LearningWord] AS lw WHERE (lw.LearnPercent < 100) AND lw.UserId = @user ORDER BY newid())";
         //        var query = (from learningWord in db.LearningWord
         //                     where learningWord.UserId == userId && learningWord.LearnPercent < 100
@@ -121,7 +121,7 @@ namespace EnglishLearning.Controllers
             if (result)
             {
                 Session["AnswerCount"] = Convert.ToInt32(Session["AnswerCount"]) + 1;
-                int userId = getCurrentUserId();
+                int userId = GetCurrentUserId();
                 LearningWord learnedWord = (from lw in db.LearningWord
                                             where lw.WordId == id && lw.UserId == userId
                                             select lw).First();

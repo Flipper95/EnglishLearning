@@ -17,7 +17,7 @@
     @*<div class="d-flex flex-column col-8 col-md-3 mb-2">*@
         <h4 style="font-size:6vw; word-break:break-word;">@word.Translate</h4>
     @*</div>*@
-    <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="value" ondrop="drop(event, this)" ondragover="allowDrop(event)"></div>
+    <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="value" ondrop="drop(event, this)" ondragover="allowDrop(event)" data="@Model[ViewBag.Index].WordId"></div>
     <div class="d-flex flex-row col-12 flex-wrap border border-secondary m-1" style="min-height:4vw" id="question" ondrop="drop(event, this)" ondragover="allowDrop(event)">
         @*@{
                 char[] wordArray = word.Word1.ToCharArray();
@@ -46,69 +46,7 @@
     }
 </div>
 @section Scripts{
-    <script type="text/javascript">
-
-        $(".questionBtn").on("click", function () {
-            $(".questionBtn").prop("hidden", true);
-            $(".letter").off("click").addClass("disabled").addClass("active").prop("draggable", false);
-            //$("letter").addClass("active");
-            $("#NextBtn").removeAttr("hidden");
-
-            var text = $("#value").text();
-            $.ajax({
-                    type: "POST",
-                    url: "CheckResult",
-                    data: { id: @Model[ViewBag.Index].WordId, value: text },
-                    success: function (data) {
-                        AjaxResult(data);
-                    }
-            });
-            //.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
-        });
-
-        //var ShowNext = function () {
-        //    //$(this).addClass("active");
-        //    $("#NextBtn").removeAttr("hidden");
-        //}
-
-        var AjaxResult = function (result) {
-            var el = $(".active");
-            el.removeClass("btn-purple");
-            if (result.toLowerCase() == "true") {
-                el.addClass("btn-success");
-            }
-            else {
-                el.addClass("btn-danger");
-                $.ajax({
-                    type: "GET",
-                    url: "GetAnswer",
-                    success: function (data) {
-                        $("#answer").removeAttr("hidden").text(String(data))
-                    }
-                });
-            }
-        }
-
-        $(".letter").on("click", function () {
-            var id = $(this).parent().attr("id");
-            if (id === "value") $("#question").append($(this));
-            else $("#value").append($(this));
-        })
-
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
-
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-
-        function drop(ev, el) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
-            el.appendChild(document.getElementById(data));
-            //ev.target.appendChild(document.getElementById(data));
-        }
+    <script type="text/javascript" src="~/Scripts/ConstructorExercise.js">
     </script>
     @Scripts.Render("~/bundles/ajax")
 }

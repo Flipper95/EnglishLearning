@@ -1,0 +1,24 @@
+﻿.body-content {
+    min-width: 100vw;
+}
+
+.main-content {
+    min-height: 85vh;
+}
+
+.document-content {
+    height: 85vh;
+}
+
+.document {
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    display: none;
+}
+
+hr {
+    display: none;
+}

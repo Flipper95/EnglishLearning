@@ -33,7 +33,7 @@ namespace EnglishLearning.Controllers
             {
                 Session["AnswerCount"] = 0;
 
-                int userId = getCurrentUserId();
+                int userId = GetCurrentUserId();
                 var query = (from learningWord in db.LearningWord
                              where learningWord.UserId == userId && learningWord.LearnPercent < 100
                              select learningWord);
