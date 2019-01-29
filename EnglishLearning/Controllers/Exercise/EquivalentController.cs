@@ -10,13 +10,13 @@ namespace EnglishLearning.Controllers.Exercise
     [Authorize]
     public class EquivalentController : ExerciseController
     {
-        public ActionResult EquivalentExercise()
+        public ActionResult EquivalentExercise(bool repeat)
         {
-            return EquivalentExercise(0);
+            return EquivalentExercise(0, repeat);
         }
 
         [HttpPost]
-        public ActionResult EquivalentExercise(int StartIndex = 0)
+        public ActionResult EquivalentExercise(int StartIndex = 0, bool repeat = false)
         {
             if (StartIndex >= 25)
             {
@@ -37,12 +37,16 @@ namespace EnglishLearning.Controllers.Exercise
                 var query = (from learningWord in db.LearningWord
                              where learningWord.UserId == userId && learningWord.LearnPercent < 100
                              select learningWord);
+                if (repeat) query = query.Where(x => x.LearnPercent == 100);
+                else query = query.Where(x => x.LearnPercent < 100);
+                ViewBag.Repeat = repeat;
 
                 int total = query.Count();
                 if (total < 25)
                 {
                     SessionClear();
-                    TempData["ErrorMessage"] = "Кількість слів для вправи з еквівалентами не достатньо, виберіть додаткових слів на вивчення";
+                    if(repeat) TempData["ErrorMessage"] = "Кількість слів для повторення не достатньо, спочатку вивчіть ще декілька слів";
+                    else TempData["ErrorMessage"] = "Кількість слів для вправи з еквівалентами не достатньо, виберіть додаткових слів на вивчення";
                     return RedirectToAction("Index", "Exercise", new { area = "" });
                     //ViewBag.ErrorMessage = total+" cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
                     //return View("Index");

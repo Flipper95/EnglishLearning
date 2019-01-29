@@ -1,15 +1,14 @@
 ﻿@model EnglishLearning.Models.Grammar
 @{
-    /**/
 
-    ViewBag.Title = "Listening";
+    ViewBag.Title = "Вправа написання речення";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/ExerciseStyle.css")">
 }
 
-<h2>Listening</h2>
+<h2>Вправа написання речення</h2>
 
 <audio id="audio">
     <source src="@Url.Action("LoadAudio", new { area="" })" />
@@ -21,7 +20,7 @@
     <label style="word-break:break-word;" class="col-8 col-md-6 col-lg-6 mt-2 h5" for="value" id="valueText"></label>
     <div class="input-group col-8 col-md-6 col-lg-6 my-4 px-0">
         <input class="question form-control col-10" id="value" name="value" type="text">
-        <div class="input-group-append col-2 px-0">
+        <div class="input-group-append col-2 px-0" style="overflow: hidden;">
             <button class="btn btn-outline-secondary col-12 questionBtn" type="button">Далі</button>
         </div>
     </div>

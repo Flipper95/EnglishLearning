@@ -233,6 +233,7 @@ namespace EnglishLearning.Controllers
                 SaveListeningLvl(test, percent);
             SaveHistory(test.Time, Convert.ToDateTime(Session["Time"]), GetMinSuccessPercent(test.Name), history);//time
             TempData["history"] = history;
+            TempData["answers"] = Session["answers"] as Dictionary<int, List<int>>;
             return RedirectToAction("Result");//, history);
             //rename to check result and create+call show result
         }
@@ -254,15 +255,16 @@ namespace EnglishLearning.Controllers
         public ActionResult Result(){//TestHistory history) {
             if (TempData["history"] != null)
             {
+                SessionClear();
                 TestHistory history = TempData["history"] as TestHistory;
                 var test = (from t in db.Test
                             where t.TestId == history.TestId
                             select t).First();
                 ViewBag.Name = test.Name;
                 Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
-                if (Session["answers"] as Dictionary<int, List<int>> != null)
+                if (TempData["answers"] as Dictionary<int, List<int>> != null)
                 {
-                    dict = Session["answers"] as Dictionary<int, List<int>>;
+                    dict = TempData["answers"] as Dictionary<int, List<int>>;
                 }
                 else
                 {
@@ -292,11 +294,9 @@ namespace EnglishLearning.Controllers
                 ViewBag.TextResult = textResult;
                 ViewBag.Success = success;
                 //ViewBag.LevelChange, ViewBag.UserLevel
-                SessionClear();
                 return View("ShowResult", questions.ToList());
             }
             else {
-                SessionClear();
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
         }

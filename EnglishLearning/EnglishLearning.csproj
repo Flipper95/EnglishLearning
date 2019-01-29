@@ -462,6 +462,7 @@
     <Content Include="Scripts\Timer.js" />
     <Content Include="Scripts\ToolTip.js" />
     <Content Include="Scripts\TranslateSynEqExercises.js" />
+    <Content Include="Scripts\TreeColumnsSize.js" />
     <Content Include="Scripts\Video.js" />
     <Content Include="Scripts\Words.js" />
     <Content Include="Web.config">

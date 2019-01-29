@@ -52,16 +52,16 @@
         </div>
 
         <div class="d-flex flex-row justify-content-around flex-wrap">
-            <div class="card col-md-3 my-3 col-sm-5 col-12 text-center bg-dark text-light">
+            <div class="card col-md-3 my-3 mr-1 col-sm-5 col-12 text-center bg-dark text-light">
                 <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/equivalent.png")" alt="equivalent exercise image" style="max-width:250px;">
                 <div class="card-body">
                     <h5 class="card-title">Вправа еквівалент.</h5>
                     <p class="card-text">Є слово на рідній мові та варіанти його перекладу на іноземну, знайдіть правильний.</p>
-                    <a class="btn btn-purple text-light" href="@Url.Action("EquivalentExercise", "Equivalent", new { area = ""})">Еквівалент</a>
+                    <a class="btn btn-purple text-light" href="@Url.Action("EquivalentExercise", "Equivalent", new { area = "", repeat = false})">Еквівалент</a>
                 </div>
             </div>
 
-            <div class="card col-md-3 my-3 col-sm-5 col-12 text-center bg-dark text-light">
+            <div class="card col-md-3 my-3 mr-1 col-sm-5 col-12 text-center bg-dark text-light">
                 <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/listening.png")" alt="listening exercise image" style="max-width:250px;">
                 <div class="card-body">
                     <h5 class="card-title">Вправа аудіювання.</h5>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="card col-md-3 my-3 col-sm-5 col-12 text-center bg-dark text-light">
+            <div class="card col-md-3 my-3 mr-1 col-sm-5 col-12 text-center bg-dark text-light">
                 <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/constructor.png")" alt="constructor exercise image" style="max-width:250px;">
                 <div class="card-body">
                     <h5 class="card-title">Вправа конструктор.</h5>
@@ -78,7 +78,18 @@
                     <a class="btn btn-purple text-light" href="@Url.Action("ConstructorExercise", "Constructor", new { area = ""})">Конструктор</a>
                 </div>
             </div>
+
+            <div class="card col-md-3 my-3 mr-1 col-sm-5 col-12 text-center bg-dark text-light">
+                <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/repeat.png")" alt="equivalent exercise image" style="max-width:250px;">
+                <div class="card-body">
+                    <h5 class="card-title">Вправа повторення.</h5>
+                    <p class="card-text">Після вивчення слова необхідно час від часу його повторяти, для закріплення в пам'яті.</p>
+                    <a class="btn btn-purple text-light" href="@Url.Action("EquivalentExercise", "Equivalent", new { area = "", repeat = true})">Повторення</a>
+                </div>
+            </div>
         </div>
+
+        <div class="d-flex flex-row justify-content-around flex-wrap">
 
         <div class="card col-12 text-center bg-secondary text-light">
             <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/similar.png")" alt="similar exercise image" style="max-height:250px;">

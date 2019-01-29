@@ -36,6 +36,14 @@ namespace EnglishLearning.Controllers
             db.UserELTask.RemoveRange(toDelete);
             if ((tasks.Count() - count) < 7) {
                 var bannedTasks = tasks.Select(x => x.ELTask.TaskId);
+
+                string[] excludedRepeatGroups = new string[] { "Lection", "Test", "TextTask" };
+                var completedTasks = from ut in db.UserELTask.Include("ELTask")
+                                     where ut.UserId == user.UserId && ut.Done == true 
+                                     && ut.ELTask.AuthorId == 1 && excludedRepeatGroups.Contains(ut.ELTask.Group)
+                                     select ut.ELTask.TaskId;
+                bannedTasks = bannedTasks.Concat(completedTasks);
+                var list = bannedTasks.ToList();
                 //TODO: add tasks by complexity and only number take to max 7 tasks
                 //    var temp = from t in db.ELTask
                 //               where !bannedTasks.Contains(t.TaskId) && t.AuthorId == 1
@@ -56,7 +64,7 @@ namespace EnglishLearning.Controllers
                 if (task != null) db.UserELTask.Add(task);
                 task = AddNewTaskByGroup("Grammar", bannedTasks, user.UserId, user.LvlWriting);
                 if (task != null) db.UserELTask.Add(task);
-                task = AddNewTaskByGroup("Other", bannedTasks, user.UserId, user.Level);
+                task = AddNewTaskByGroup("Other", bannedTasks, user.UserId, user.Level, true);
                 if(task != null) db.UserELTask.Add(task);
                 task = AddNewTaskByGroup("Word", bannedTasks, user.UserId, user.Level);
                 if (task != null) db.UserELTask.Add(task);
@@ -65,7 +73,7 @@ namespace EnglishLearning.Controllers
             return View(user);
         }
 
-        private UserELTask AddNewTaskByGroup(string groupName, IQueryable<int> bannedTasks, int userId, string userLvl) {
+        private UserELTask AddNewTaskByGroup(string groupName, IQueryable<int> bannedTasks, int userId, string userLvl, bool withLowerLvl = false) {
 
             var ban = from ut in db.UserELTask.Include("ELTask")
                       where 
@@ -82,10 +90,12 @@ namespace EnglishLearning.Controllers
                        t.Group == groupName
                        select t;
             var temp = tasks.Where(x => x.Difficult == userLvl);
-            if (temp.Count() < 1)
+            if (temp.Count() < 1 || withLowerLvl)
             {
                 List<string> lvl = GetLessUserLvl(userLvl);
-                temp = tasks.Where(x => lvl.Contains(x.Difficult));
+                if(withLowerLvl)
+                    temp = temp.Concat(tasks.Where(x => lvl.Contains(x.Difficult)));
+                else temp = tasks.Where(x => lvl.Contains(x.Difficult));
             }
             temp = temp.OrderBy(x => Guid.NewGuid()).Take(1);
             //foreach (var el in tasks)
@@ -251,9 +261,10 @@ namespace EnglishLearning.Controllers
                         switch (name) {
                             case ("listening"): { TaskSaveDone(id); return RedirectToAction("ListeningExercise", "Listening", new { area = "" }); }
                             case ("translate"): { TaskSaveDone(id); return RedirectToAction("TranslateExercise", "Translate", new { area = "" }); }
-                            case ("equivalent"): { TaskSaveDone(id); return RedirectToAction("EquivalentExercise", "Equivalent", new { area = "" }); }
+                            case ("equivalent"): { TaskSaveDone(id); return RedirectToAction("EquivalentExercise", "Equivalent", new { area = "", repeat = false }); }
                             case ("constructor"): { TaskSaveDone(id); return RedirectToAction("ConstructorExercise", "Constructor", new { area = "" }); }
                             case ("synonyms"): { TaskSaveDone(id); return RedirectToAction("SynonymsExercise", "Synonyms", new { area = "" }); }
+                            case ("repeat"): { TaskSaveDone(id); return RedirectToAction("EquivalentExercise", "Equivalent", new { area = "", repeat = true }); }
                         }
                         break;
                 }

@@ -1,6 +1,6 @@
 ﻿@model EnglishLearning.Models.User
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Профіль";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles{
@@ -11,7 +11,7 @@
 @helper DifficultDropDown(string name, string currentValue) {
      @Html.DropDownList(name, new SelectList(new[] { "Beginner", "Elementary", "Intermediate", "Upper-Intermediate", "Advanced", "Proficient" }, currentValue), new { @class = "form-control" })
 }
-<h2>Index</h2>
+<h2>Профіль</h2>
 
 <a class="btn btn-purple text-white" href="@Url.Action("Index", "Manage", new { area = ""})">Керувати паролем</a>
 <hr>

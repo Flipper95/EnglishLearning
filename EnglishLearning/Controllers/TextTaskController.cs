@@ -25,7 +25,7 @@ namespace EnglishLearning.Controllers
             if (!string.IsNullOrWhiteSpace(taskName))
                 task = task.Where(x => x.Name == taskName);
             else
-                task = task.Where(x => x.Difficult == user.LvlReading);
+                task = task.Where(x => x.Difficult == user.LvlReading && !x.Name.Contains("Текст на рівень знань"));
             task = task.OrderBy(x => Guid.NewGuid());
             //TODO Change place to redirect if 0 text found
             if (task.Count() == 0) return RedirectToAction("Index", "Home");

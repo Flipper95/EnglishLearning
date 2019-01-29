@@ -1,6 +1,6 @@
 ﻿@model EnglishLearning.Models.TextTask
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Текст";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,15 +13,15 @@
 <div id="text" class="text-monospace text-justify">
     @Html.Raw(new HtmlString(Model.Text))
 </div>
-<div class="d-flex flex-row col-12 flex-wrap m-1" id="question"> @*ondrop="drop(event, this)" ondragover="allowDrop(event)"*@
+<div class="d-flex flex-row col-12 flex-sm-wrap m-1 fixed-bottom bg-transparent" style="overflow-x:auto;" id="question"> @*ondrop="drop(event, this)" ondragover="allowDrop(event)"*@
     @for (int i = 0; i < ViewBag.Answers.Count; i++) {
         <div id="block_@i" class="btn btn-purple m-1 letter">@ViewBag.Answers[i]</div> @*draggable = "true" ondragstart = "drag(event)"*@
     }
 </div>
 
 <div class="d-flex flex-column align-items-center">
-<button id="CheckBtn" name="CheckBtn" class="btn btn-purple col-8 col-md-6 col-lg-4" type="button" data="@Url.Action("CheckResult","TextTask", new { area=""})">Перевірка результату</button>
-<a id="NextBtn" name="NextBtn" class="btn btn-teal text-white col-8 col-md-6 col-lg-4" href="javascript:window.location.reload();" hidden data="@Model.TextId">Наступний текст</a>
+<button id="CheckBtn" name="CheckBtn" class="btn btn-purple col-8 col-md-6 col-lg-4 mt-2" type="button" data="@Url.Action("CheckResult","TextTask", new { area=""})">Перевірка результату</button>
+<a id="NextBtn" name="NextBtn" class="btn btn-teal text-white col-8 col-md-6 col-lg-4 mt-2" href="javascript:window.location.reload();" hidden data="@Model.TextId">Наступний текст</a>
 </div>
 
 <script type="text/javascript">
@@ -94,15 +94,27 @@
         el.removeClass("btn-purple");
         var i = 0;
         var answer = result;
+        el = $(".wordPlaceholder");
         el.each(function () {
-            var text = $(this).html();
-            if (text === answer[i]) {
-                $(this).addClass("btn-success");
-            }
-            else {
-                $(this).addClass("btn-danger");
+            var btnActive = $(this).children(".active");
+            if (btnActive.length > 0) {
+                var text = $(this).children(".active").html();
+                if (text === answer[i]) {
+                    $(this).children(".active").addClass("btn-success");
+                }
+                else {
+                    $(this).children(".active").addClass("btn-danger");
+                }
             }
             i++;
+            //var text = $(this).html();
+            //if (text === answer[i]) {
+            //    $(this).addClass("btn-success");
+            //}
+            //else {
+            //    $(this).addClass("btn-danger");
+            //}
+            //i++;
         });
         @*if (result.toLowerCase() == "true") {
             el.addClass("btn-success");
