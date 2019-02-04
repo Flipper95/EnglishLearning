@@ -166,6 +166,7 @@ namespace EnglishLearning.Controllers
             }
             else {
                 ViewBag.Index = 1;
+                ViewBag.Random = Guid.NewGuid();
                 int index = Convert.ToInt32(Session["index"]) + 1;
                 Session["index"] = index;
                 int endNumber = Convert.ToInt32(Session["number"]);
@@ -259,7 +260,7 @@ namespace EnglishLearning.Controllers
             //TempData["UserLevel"] = result;
         }
 
-        public FileContentResult LoadAudio()
+        public FileContentResult LoadAudio(string NoCache)
         {
             var result = (Session["questions"] as List<Grammar>)[Convert.ToInt32(Session["index"])];
             if (result.Voice.Length > 1)

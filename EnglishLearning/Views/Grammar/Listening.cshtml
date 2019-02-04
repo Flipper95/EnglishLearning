@@ -11,7 +11,7 @@
 <h2>Вправа написання речення</h2>
 
 <audio id="audio">
-    <source src="@Url.Action("LoadAudio", new { area="" })" />
+    <source src="@Url.Action("LoadAudio", new { area="", NoCache = ViewBag.Random })" />
 </audio>
 
 <div class="d-flex flex-column flex-wrap justify-content-around align-items-center">

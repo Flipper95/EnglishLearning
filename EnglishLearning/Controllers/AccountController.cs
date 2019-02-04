@@ -209,6 +209,12 @@ namespace EnglishLearning.Controllers
                 user.IdentityId = userId;
                 user.Level = "Beginner";
                 user.ObjectiveLevel = "Beginner";
+                user.LvlListening = "Beginner";
+                user.LvlReading = "Beginner";
+                user.LvlWriting = "Beginner";
+                user.ObjLvlListening = "Beginner";
+                user.ObjLvlReading = "Beginner";
+                user.ObjLvlWriting = "Beginner";
                 user.Tested = false;
                 db.User.Add(user);
                 db.SaveChanges();

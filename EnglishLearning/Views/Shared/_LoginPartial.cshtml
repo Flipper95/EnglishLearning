@@ -8,7 +8,7 @@
         @Html.AntiForgeryToken();
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                @Html.ActionLink("Вітаємо, " + User.Identity.GetUserName() + "!", "Index", "Profile", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                @Html.ActionLink(User.Identity.GetUserName(), "Index", "Profile", routeValues: new { area = "" }, htmlAttributes: new { title = "Профіль", @class = "nav-link" })
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Вийти</a>
