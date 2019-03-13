@@ -39,7 +39,6 @@ namespace EnglishLearning.Controllers
                              Name = testG.Name,
                              ParentId = testG.ParentId
                          }).ToList();
-                //db.LectionGroup.OrderBy(x => x.ParentId).ToList();
             var tests = from test in db.Test
                            where test.OwnerId == 1
                            select test;
@@ -52,7 +51,6 @@ namespace EnglishLearning.Controllers
         }
 
         public ActionResult Test(int id) {
-            //db.Question.Local
             Session["Time"] = DateTime.Now;
             var test = db.Test.Where(x => x.TestId == id).First();
             ViewBag.Name = test.Name;
@@ -103,9 +101,7 @@ namespace EnglishLearning.Controllers
 
         [HttpPost]
         public PartialViewResult ShowAnswers(int? nextId, int prevId, int choosenId, object[] answers) {
-            //there was code of SaveAnswers[HttpPost] method
             SaveAnswers(answers, prevId);
-            //save answer in session dictionary? question id: int[] answers
             return ShowAnswers(choosenId, nextId);
         }
 
@@ -180,21 +176,12 @@ namespace EnglishLearning.Controllers
                                 result = name;
                         }
                     }
-                    //switch (test.Name)
-                    //{
-                    //    case ("Рівень Elementary"):
-                    //        {
-                    //            if (Difficult.Elementary > userLvl)
-                    //                result = Enum.Format(typeof(Difficult), Difficult.Elementary, "G");// "Elementary";
-                    //            break;
-                    //        }
-                    //}
                 }
             }
             result = result.Replace('_', '-');
             TempData["LevelChanged"] = (result == user.ObjectiveLevel ? false : true);
             user.ObjectiveLevel = result;
-            //db.SaveChanges();
+            db.SaveChanges();
             TempData["UserLevel"] = result;
         }
 
@@ -226,7 +213,6 @@ namespace EnglishLearning.Controllers
             var test = (from t in db.Test.Include("TestGroup")
                        where t.TestId == testId
                        select t).First();
-            //int time = test.TimeInMin;
             if(test.TestGroup.Name == "Рівень знань")
                 SaveUserLvl(test, percent);
             if (test.TestGroup.Name == "Тести до озвучених історій")
@@ -234,20 +220,15 @@ namespace EnglishLearning.Controllers
             SaveHistory(test.Time, Convert.ToDateTime(Session["Time"]), GetMinSuccessPercent(test.Name), history);//time
             TempData["history"] = history;
             TempData["answers"] = Session["answers"] as Dictionary<int, List<int>>;
-            return RedirectToAction("Result");//, history);
-            //rename to check result and create+call show result
+            return RedirectToAction("Result");
         }
 
         public ActionResult ShowResult(int id) {
-            //string userIdentity = User.Identity.GetUserId();
-            //var userId = (from user in db.User
-            //              where user.IdentityId == userIdentity
-            //              select user.UserId).First();
             var history = (from hist in db.TestHistory
                           where hist.TestHistoryId == id && hist.UserId == UserId
                           select hist).First();
             TempData["history"] = history;
-            return Result();//history);
+            return Result();
         }
 
         //[NonAction]
@@ -293,7 +274,6 @@ namespace EnglishLearning.Controllers
                 }
                 ViewBag.TextResult = textResult;
                 ViewBag.Success = success;
-                //ViewBag.LevelChange, ViewBag.UserLevel
                 return View("ShowResult", questions.ToList());
             }
             else {
@@ -339,9 +319,8 @@ namespace EnglishLearning.Controllers
                 {
                     List<int> userAnswers = dict[el.QuestionId];
 
-                    //var tempArr = rightAnswers.Except(userAnswers);
                     int wrongCount = userAnswers.Except(rightAnswers).Count();
-                    int rightCount = userAnswers.Count() - wrongCount;//userAnswers.Except(rightAnswers).Count();
+                    int rightCount = userAnswers.Count() - wrongCount;
                     int count = rightCount - wrongCount > 0 ? rightCount - wrongCount : 0;
 
                     percent += (count * 100) / answerCount;

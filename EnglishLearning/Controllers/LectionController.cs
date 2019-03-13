@@ -66,7 +66,6 @@ namespace EnglishLearning.Controllers
 
         public FileResult DownloadFile(string filePath, string fileName)
         {
-            //string filename = filePath.Split('\\').LastOrDefault();
             fileName += ".pdf";
             Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             return File(stream, "application/force-download", fileName);

@@ -2,9 +2,6 @@
     var child = $(this).find(".embed-responsive");
     var id = child.prop("id");
     if ($('#' + id).children().length == 0) {
-        //$("#" + id).empty();
-        //}
-        //else {
         var link = $(this).attr("data");
         $.ajax({
             type: "GET",
@@ -15,9 +12,3 @@
         });
     }
 });
-
-        //$(".video_select").on("click", ".video-header", function (e) {
-        //    e.stopPropagation();
-        //    $(this).find(".video-collapse").triggerHandler("click");
-        //    e.preventDefault();
-        //});

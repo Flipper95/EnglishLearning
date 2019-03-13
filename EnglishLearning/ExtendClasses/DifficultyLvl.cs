@@ -5,8 +5,6 @@ using System.Web;
 
 namespace EnglishLearning.ExtendClasses
 {
-    //public class DifficultyLvl
-    //{
         public enum Difficult {
             Beginner,
             Elementary,
@@ -15,5 +13,4 @@ namespace EnglishLearning.ExtendClasses
             Advanced,
             Proficient
         }
-    //}
 }

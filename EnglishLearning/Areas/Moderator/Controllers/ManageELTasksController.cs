@@ -93,7 +93,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, moderator")]
-        public ActionResult Create(ELTask eLTask, HttpPostedFileBase file) // authorid ,DocumentPath   [Bind(Include = "TaskId,Name,Description,Text,Group,Difficult")] ELTask eLTask
+        public ActionResult Create(ELTask eLTask, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "Level", eLTask.AuthorId);
             return View(eLTask);
         }
 
@@ -121,7 +120,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "UserId", eLTask.AuthorId);
             return View(eLTask);
         }
 
@@ -147,33 +145,13 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 eLTask = EditTaskData(eLTask, file);
                 db.Entry(eLTask).State = EntityState.Modified;
-                //var userId = User.Identity.GetUserId();
-                //int temp = db.User.Where(x => x.IdentityId == userId).Select(x => x.UserId).First();
-                //UserELTask userTask = (from ut in db.UserELTask
-                //                       where ut.TaskId == eLTask.TaskId && ut.UserId == temp
-                //                       select ut).First();
-                //userTask.Date = Convert.ToDateTime(date);
-                //userTask.Done = done;
-                //var resPath = SaveFile(result);
-                //if (!string.IsNullOrWhiteSpace(resPath))
-                //{
-                //    if (!string.IsNullOrWhiteSpace(userTask.ResultDocPath))
-                //    {
-                //        if (System.IO.File.Exists(Server.MapPath(userTask.ResultDocPath)))
-                //            System.IO.File.Delete(Server.MapPath(userTask.ResultDocPath));
-                //    }
-                //    userTask.ResultDocPath = resPath;
-                //}
-                //db.Entry(userTask).State = EntityState.Modified;
                 try
                 {
                     db.SaveChanges();
                 }
                 catch { }
-                //return RedirectToAction("Index", "Profile", new { area = "" });
             }
             return eLTask.Name;
-            //return View(eLTask);
         }
 
         // POST: Moderator/ManageELTasks/Edit/5
@@ -191,7 +169,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "UserId", eLTask.AuthorId);
             return View(eLTask);
         }
 
@@ -238,7 +215,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 }
                 eLUserTask.ResultDocPath = path;
             }
-            //save don`t work
             db.Entry(eLUserTask).State = EntityState.Modified;
             db.SaveChanges();
             if (eLUserTask.Done)

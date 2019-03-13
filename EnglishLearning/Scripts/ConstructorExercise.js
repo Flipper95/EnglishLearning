@@ -1,7 +1,6 @@
 ﻿$(".questionBtn").on("click", function () {
     $(".questionBtn").prop("hidden", true);
     $(".letter").off("click").addClass("disabled").addClass("active").prop("draggable", false);
-    //$("letter").addClass("active");
     $("#NextBtn").removeAttr("hidden");
 
     var text = $("#value").text();
@@ -13,13 +12,7 @@
             AjaxResult(data);
         }
     });
-    //.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
 });
-
-//var ShowNext = function () {
-//    //$(this).addClass("active");
-//    $("#NextBtn").removeAttr("hidden");
-//}
 
 var AjaxResult = function (result) {
     var el = $(".active");
@@ -57,5 +50,4 @@ function drop(ev, el) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     el.appendChild(document.getElementById(data));
-    //ev.target.appendChild(document.getElementById(data));
 }

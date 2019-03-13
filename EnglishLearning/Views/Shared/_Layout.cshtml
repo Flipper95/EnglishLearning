@@ -27,19 +27,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("Index", "Exercise", new { area = "" })">Вправи</a>
                 </li>
-                @*<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Вправи з граматики
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action("Constructor", "Grammar", new { area = "" })">Конструктор речень</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="@Url.Action("Listening", "Grammar", new { area = "" })">Написання речень</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "TextTask", new { area = "" })">Вправа з читання</a>
-                </li>*@
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("ShowByGroup", "Lection", new { area = "" })">Лекції</a>
                 </li>
@@ -86,9 +73,6 @@
                                 <a class="dropdown-item" href="@Url.Action("Index", "ManageELTasks", new { area = "Moderator" })">Завдання</a>
                             </div>
                         </li>
-                        @*<li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "ManageQuestions", new { area = "Moderator" })">Редагування записів</a>
-                </li>*@
                     }
                 }
             </ul>
@@ -110,7 +94,6 @@
                    <li>@el</li> 
                 }
                 </ul>
-                @*@Request.Cookies["Notification"].Value*@
                 Перейдіть до <a href="@Url.Action("Index", "Profile", new { area = "" })">профілю</a> для перегляду деталей.
                 <button id="notification-close" class="close-btn close" type="button">
                     <span aria-hidden="true">&times;</span>

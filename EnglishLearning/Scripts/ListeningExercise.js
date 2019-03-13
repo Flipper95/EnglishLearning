@@ -1,9 +1,4 @@
-﻿//$("div .question").on("click", function () {
-//    $("div .question").addClass("disabled");
-//    $(this).addClass("active");
-//    $("#NextBtn").removeAttr("hidden")//.removeClass("disabled").off("click");//.prop("disabled", false).off("click");
-//});
-
+﻿
 $("div .question").keypress(function (e) {
     if (e.which == 13) {
         CheckResult();
@@ -30,14 +25,9 @@ $("div .question").addClass("active");
 $("#NextBtn").removeAttr("hidden");
         }
 
-//var ShowNext = function () {
-//    //$(this).addClass("active");
-//    $("#NextBtn").removeAttr("hidden");
-//}
 
 var AjaxResult = function (result) {
     var el = $(".active");
-    //el.removeClass("btn-purple");
     if (result.toLowerCase() == "true") {
         el.addClass("bg-teal text-light");
     }
@@ -50,6 +40,5 @@ var AjaxResult = function (result) {
                 $("#answer").removeAttr("hidden").text(String(data))
             }
         });
-        //$("#answer").removeAttr("hidden").text(@Model[ViewBag.Index].Word1);
     }
 }

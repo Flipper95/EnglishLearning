@@ -18,46 +18,7 @@
 <h2 class="mt-3">Статистика</h2>
 
 
-@*<script type="text/javascript">
-        google.charts.load('current', {
-            //callback: function () {
-            //    drawChart();
-            //    $(window).resize(drawChart);
-            //},
-            'packages': ['bar'] });
-          google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-
-            var jsonObject = {
-                "xName": "Дата",
-                "colName": "Кількість тестів"
-            }
-
-            var jsonData = $.ajax({
-                url: '@Url.Action("ChartByCount", "Statistics", new { area=""})',
-                data: jsonObject,
-                dataType: "json",
-                async: false
-            }).responseText;
-
-            var data = new google.visualization.DataTable(jsonData);//arrayToDataTable(gData);
-
-            //chartArea: {
-            //    width: '50%'
-            //},
-            //width: '50%',
-            var options = {
-                title: 'Кількість пройдених тестів',
-            };
-
-            var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-            chart.draw(data, google.charts.Bar.convertOptions(options));
-          }
-    </script>*@
-
-@*<div id="columnchart_material" style="width:70%; height:70%"></div>*@
 <a id="ChartCountLink" href="@Url.Action("ChartByCount", "Statistics", new { area=""})" hidden></a>
 <a id="ChartTestLink" href="@Url.Action("ChartByTestSuccess", "Statistics", new { area=""})" hidden></a>
 

@@ -46,21 +46,16 @@ namespace EnglishLearning.Controllers.Exercise
                     SessionClear();
                     TempData["ErrorMessage"] = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
                     return RedirectToAction("Index", "Exercise", new { area = "" });
-                    //ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    //return View("Index");
                 }
 
                 var query1 = (from word in db.Word
                               where (query).OrderBy(x => Guid.NewGuid()).Take(25).Any(x => x.WordId == word.WordId)
                               select word).OrderBy(x => Guid.NewGuid());
-                //var result = query1.ToList();
                 var result = DownloadWords(query1, 5);
                 if (result.Count < 5) {
                     SessionClear();
                     TempData["ErrorMessage"] = " Не вдалося завантажити озвучування cлова для вправи, спробуйте пізніше";
                     return RedirectToAction("Index", "Exercise", new { area = "" });
-                    //ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    //return View("Index");
                 }
                 Session["questions"] = result;
                 return View(result);

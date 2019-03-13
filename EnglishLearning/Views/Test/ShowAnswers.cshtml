@@ -10,8 +10,7 @@
         check = ViewBag.Checked.Contains(el.AnswerId) == true ? "checked" : "";
     }
     <div class="custom-control custom-checkbox">
-        @*@(ViewBag.Checked.Contains(el.AnswerId) == true ? "active" : "")*@
-        <input type="checkbox" class="custom-control-input answer" id="@(el.AnswerId)Cb" @check>  @*@(ViewBag.Checked.Contains(el.AnswerId) == true ? "checked" : "")*@
+        <input type="checkbox" class="custom-control-input answer" id="@(el.AnswerId)Cb" @check>
         <label class="custom-control-label h4" for="@(el.AnswerId)Cb">@el.AnswerText</label>
     </div>
 }

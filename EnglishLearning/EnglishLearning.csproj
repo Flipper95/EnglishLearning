@@ -431,9 +431,6 @@
     <Content Include="Areas\Moderator\Views\ManageGrammarGroups\Details.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageGrammarGroups\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\ManageGrammarGroups\Index.cshtml" />
-    <Content Include="..\..\..\отчет\ClassDiagram1.cd">
-      <Link>ClassDiagram1.cd</Link>
-    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -458,7 +455,6 @@
     <Content Include="Scripts\Profile.js" />
     <Content Include="Scripts\Statistics.js" />
     <Content Include="Scripts\Tests.js" />
-    <Content Include="Scripts\TextTasks.js" />
     <Content Include="Scripts\Timer.js" />
     <Content Include="Scripts\ToolTip.js" />
     <Content Include="Scripts\TranslateSynEqExercises.js" />

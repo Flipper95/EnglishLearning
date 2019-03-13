@@ -5,9 +5,6 @@
 {
 foreach (var el in Model)
 {
-    @*<div class="alert alert-info">
-        @el.ELTask.Name
-    </div>*@
 string color;
 switch (el.ELTask.Group.ToLower()) {
     case ("word"): { color = "alert-teal"; break; }
@@ -23,9 +20,7 @@ switch (el.ELTask.Group.ToLower()) {
         <i id="userTaskEdit" class="far fa-check-square btn" data="@Url.Action("EditUserTaskModal", "ManageELTasks", new { area = "Moderator", id = el.UserTaskId })"></i>
             if (el.ELTask.AuthorId == el.UserId)
             {
-        @*<a href="@Url.Action("Edit", "ManageELTasks", new { area = "Moderator", id = el.ELTask.TaskId})">*@
         <i class="far fa-edit btn" data="@Url.Action("EditTaskModal", "ManageELTasks", new { area = "Moderator", id = el.ELTask.TaskId })"></i>
-        @*</a>*@
             }
             <i class="TaskName" style="word-break: break-word; cursor: pointer;" data-show="@Url.Action("ShowModal", new { area="", id = el.UserTaskId})">
         @el.ELTask.Name
@@ -39,66 +34,9 @@ switch (el.ELTask.Group.ToLower()) {
             <i class="TaskName" style="word-break: break-word; cursor: pointer;" data-show="@Url.Action("ShowModal", new { area="", id = el.UserTaskId})">
         @el.ELTask.Name
             </i>
-            @*@el.ELTask.Name*@
         }
     </div>
 
-    <!-- Modal -->
-        @*<div id="DetailedModal">
-
-        </div>*@
-    @*<div class="modal fade" id="Modal_@el.UserTaskId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">@el.ELTask.Name</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex flex-column items-align-center">
-                        <div class="my-1"><b>Опис:</b>  @el.ELTask.Description</div>
-                        <div class="my-1"><b>Складність:</b>  @el.ELTask.Difficult</div>
-                        <div class="my-1"><b>Група:</b>  @el.ELTask.Group</div>
-                        <div class="my-1"><b>Дата напоминання:</b> @el.Date.Value.ToShortDateString()</div>
-                        @if (!string.IsNullOrWhiteSpace(el.ELTask.DocumentPath))
-                        {
-                            <a class="btn btn-purple col-8 align-self-center" href="@Url.Action("Download", new { area = "", path = el.ELTask.DocumentPath })"><i class="far fa-file-alt mr-2"></i>Завантажити файл завдання</a>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(el.ResultDocPath))
-                        {
-                            <a class="btn btn-purple col-8 align-self-center mt-2" href="@Url.Action("Download", new { area = "", path = el.ResultDocPath })"><i class="far fa-file-alt mr-2"></i>Завантажити власний результат</a>
-                        }*@
-                        @*@using (Html.BeginForm("Download", "Profile", new { area = "" }, FormMethod.Post))
-                        {
-                            <input name="path" type="hidden" value="@el.ELTask.DocumentPath">
-                            <button type="submit" class="btn btn-purple my-1">Завантажити файл завдання</button>
-                        }*@
-                        @*@using (Ajax.BeginForm("Download", new { controller = "Profile", area="" }, new AjaxOptions {HttpMethod = "Post" }))
-                        {
-                            <input id="ResultDw" name="path" type="hidden" value="@el.ResultDocPath">
-                            <button id="ResultDownload" type="submit" class="btn btn-purple my-1" data="@el.ResultDocPath">Завантажити власний результат</button>
-                        }*@
-                        @*@Ajax.ActionLink("Завантажити власний результат", "Download", new { path = el.ResultDocPath, area = "" }, new AjaxOptions { HttpMethod = "Get"})*@
-                        @*<div>
-                            @el.ELTask.Text
-                        </div>
-                    </div>
-                </div>
-                @if (ViewBag.TaskGroup != null && el.Done == false)
-                {
-                    if ((ViewBag.TaskGroup as List<string>).Any(x => el.ELTask.Group.Contains(x)))
-                    {
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                    <a class="btn btn-primary" href="@Url.Action("RedirectToExecute", "Profile", new { area = "", id = el.UserTaskId, ELTaskId = el.ELTask.TaskId })">Виконати</a>
-                </div>
-                    }
-                }
-            </div>
-        </div>
-    </div>*@
 }
 }
 else {
@@ -106,91 +44,3 @@ else {
         Для вас поки що не має жодних завдань, але ви можете створити власні "Профіль"->"Власні завдання"
     </div>
 }
-    @*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        Confirm Deletion of Notification
-                    </h4>
-
-                </div>
-                <div class="modal-body">
-                    <h4>Are you sure you want to delete the notification?</h4>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default notificationDeleteCancel" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary notificationDeleteConfirm">Delete Notification</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
-    @*<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="editBody" class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send message</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
-<script>
-    //$(".close-btn").on("click", function () {
-    //    var parent = $(this).parent(".alert");
-    //    var link = parent.attr("data");
-    //    var id = parent.attr("id");
-    //    $.ajax({
-    //        type: "POST",
-    //        url: link,
-    //        data: { id: id },
-    //        beforeSend: function () {
-    //            return confirm("Ви точно хочете видалити завдання?");
-    //        },
-    //        success: function (r) {
-    //            if (r.d == "OK") {
-    //                parent.alert('close');
-    //            }
-    //        }
-    //    })
-    //});
-
-    //$(".alert-info").each(function () {
-    //    $(this).bind("close.bs.alert", function (e) {
-    //        e.preventDefault();
-    //        $("#myModal").modal("show");
-    //    });
-    //});
-
-    //$("#notificationDeleteCancel").on("click", funcion(){
-
-    //});
-
-    //$("#notificationDeleteConfirm").on("click", function () {
-    //    $("#myModal").modal("hide");
-    //    $(".alert-info").alert("close");
-    //});
-    //$("#ResultDownload").on("click", function () {
-    //    var path = $(this).prop("data");
-    //        $.ajax({
-    //                type: "GET",
-    //                url: "Download",
-    //                data: { path: path },
-    //                success: function (data) {
-    //                    AjaxResult(data);
-    //                }
-    //        });
-    //})
-</script>

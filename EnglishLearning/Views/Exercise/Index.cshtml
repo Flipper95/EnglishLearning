@@ -10,9 +10,7 @@
     }
 </style>
 
-@* style="background: linear-gradient(to bottom,#B6D2EE, #E8BFFF 100%);" *@
-@* dark style body class="text-light" style="background: radial-gradient(#6c757d, #343a40);"
-    first and last card = bg-secondary text-light*@
+
 @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
 {
     <div class="col-12 alert alert-warning alert-dismissible show" role="alert">
@@ -25,28 +23,13 @@
 
 <div>
     <div class="px-4 px-sm-0">
-        @*@if (!string.IsNullOrEmpty(@ViewBag.SuccessMessage))
-        {
-            <div class="alert alert-success alert-dismissible show col-12" role="alert">
-                @Html.Raw(@ViewBag.SuccessMessage)
-                <br>
-                <div class="progress col-12 my-2 p-0">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-teal" role="progressbar" style="width:@ViewBag.SuccessPercent%"></div>
-                </div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        }*@
+
         <h2>Вправи словнику</h2>
         <div class="card col-12 text-center bg-secondary text-light">
             <img class="card-img-top align-self-center" src="@Url.Content("~/Content/Images/translator.png")" alt="translate exercise image" style="max-height:250px;">
             <div class="card-body">
                 <h5 class="card-title">Вправа перекладу.</h5>
                 <p class="card-text">Надається слово на іноземній мові та п’ять варіантів слова на рідній мові, один з варіантів є перекладеним іноземнимм словом, необхідно знайти його.</p>
-                @*@Ajax.RawActionLink("<div class='btn btn - purple text - light' href='"+ @Url.Action("TranslateExercise", "Exercise", new { area = "" }) + "'>Переклад</div>",
-                "TranslateCount", "Exercise", new { area=""},
-                new AjaxOptions { OnSuccess = "MessageShow('переклад')" }, null)*@
                 <a class="btn btn-purple text-light" href="@Url.Action("TranslateExercise", "Translate", new { area = ""})">Переклад</a>
             </div>
         </div>

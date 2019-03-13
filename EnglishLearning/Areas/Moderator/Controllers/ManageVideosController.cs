@@ -41,7 +41,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         // GET: Moderator/ManageVideos/Create
         public ActionResult Create()
         {
-            //ViewBag.UserId = new SelectList(db.User, "UserId", "UserId");
             return View();
         }
 
@@ -68,7 +67,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.UserId = new SelectList(db.User, "UserId", "UserId", video.UserId);
             return View(video);
         }
 
@@ -84,7 +82,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.UserId = new SelectList(db.User, "UserId", "UserId", video.UserId);
             return View(video);
         }
 
@@ -102,7 +99,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //ViewBag.UserId = new SelectList(db.User, "UserId", "UserId", video.UserId);
             return View(video);
         }
 

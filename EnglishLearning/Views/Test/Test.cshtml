@@ -32,7 +32,6 @@
         {
             <a class="btn @(i==0 ? "act btn-info" : "btn-secondary") text-center text-light mb-1 quest_link" id="@Model[i].QuestionId" data="@Url.Action("ShowAnswers", new { area = "" })">@(i + 1)</a>
         }
-        @*<p><a class="btn btn-purple">Завершити тест</a></p>*@
     </div>
     <div class="col-12 col-md-9 align-self-center answer_content" id="answer_content" name="answer_content">
         @Html.Action("ShowAnswers", new { area = "", id = Model[0].QuestionId, nextId = Model[1].QuestionId })

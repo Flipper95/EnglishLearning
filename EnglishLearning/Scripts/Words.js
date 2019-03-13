@@ -76,11 +76,6 @@ window.onload =
         $("#rowsperpage").val(value);
 
         $("#rowsperpage").change(function () { BuildUrl(); });
-        //    function () {
-        //    var url = $("#rowsperpage option:selected").data('url');
-        //    document.location = url;
-        //    }
-        //);
 
         $("#search").on("click", function () { BuildUrl(); });
 

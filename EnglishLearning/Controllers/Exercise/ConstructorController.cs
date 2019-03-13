@@ -45,7 +45,6 @@ namespace EnglishLearning.Controllers.Exercise
                 {
                     SessionClear();
                     TempData["ErrorMessage"] = "Кількість слів для конструктору не достатньо, виберіть додаткових слів на вивчення";
-                    //ViewBag.ErrorMessage = "Кількість слів для вправи перекладу не достатньо, виберіть додаткових слів на вивчення";
                     return RedirectToAction("Index", "Exercise", new { area = "" });//View("Index");
                 }
 

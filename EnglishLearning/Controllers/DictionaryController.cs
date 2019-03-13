@@ -24,28 +24,13 @@ namespace EnglishLearning.Controllers
             return View(query);
         }
 
-        //TO DO: решить стоит ли вообще использовать такой код, в плане перехода на другую страницу, если да, сменить параметры с nullable на обычные, расскоментировать
-        //<option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId,page = Model.CurrentPage, prevPageSize = Model.PageSize, totalPages = Model.TotalPages, pageSize = 10 })" value="10">10</option>
-        //TO DO: осторожно хрупкий код, даже не переставлять строки totalPages-1 может быть 0 (когда на первой странице с 100 записями переход на 10 записей)
         public ActionResult RowsPerPage(int id, int? prevPageSize, int? totalPages, int page = 1, int pageSize = 25) {
-                //if (prevPageSize != pageSize)
-                //{
-                //    page = (int)Math.Ceiling(page * ((double)prevPageSize / (double)pageSize));
-                //    int newTotalPages = (int)Math.Ceiling((prevPageSize * (totalPages-1)) / (double)pageSize);
-                //    if (page > newTotalPages) page = newTotalPages;
-                //    if (page <= 0) page = 1;
-                //}
             return RedirectToAction("Words", new { id, page, pageSize });
         }
 
         public ActionResult Search(int id, int pageSize, string search, int page = 1) {
             return RedirectToAction("Words", new { id, page, pageSize,search });
         }
-
-        //[HttpPost]
-        //public ActionResult SearchAndRows(int GroupId, int rowsperpage, string searchData, int page = 1) {
-        //    return RedirectToAction("Words", new { id = GroupId, page, pageSize = rowsperpage, search = searchData });
-        //}
 
         public ActionResult Words(int id, int page = 1, int pageSize = 25, string search="")
         {

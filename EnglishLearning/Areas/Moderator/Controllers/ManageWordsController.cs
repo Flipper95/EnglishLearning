@@ -65,7 +65,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", new { GroupId = word.GroupId});
             }
-            //ViewBag.GroupId = new SelectList(db.Group, "GroupId", "Name", word.GroupId);
             return View(word);
         }
 

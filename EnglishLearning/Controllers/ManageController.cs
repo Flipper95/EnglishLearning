@@ -66,10 +66,6 @@ namespace EnglishLearning.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            //var user = (from u in db.User
-            //           where u.IdentityId == userId
-            //           select u).First();
-            //ViewBag.UserData = user;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),

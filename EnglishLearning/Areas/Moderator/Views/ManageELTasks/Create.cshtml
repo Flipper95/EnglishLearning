@@ -7,13 +7,7 @@
 
 <h2>Create</h2>
 
-@*@if (User.IsInRole("moderator"))
-{*@
     @Html.BeginForm("Create", "ManageELTasks", FormMethod.Post, new { enctype = "multipart/form-data" });
-@*}
-else {
-    Html.BeginForm("CreateTask", "ManageELTasks", FormMethod.Post, new { enctype = "multipart/form-data" });
-}*@
 
     @Html.AntiForgeryToken()
     
@@ -21,72 +15,9 @@ else {
         <h4>ELTask</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.AuthorId, "AuthorId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("AuthorId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+
         <div class="d-flex flex-column align-items-center">
             @Html.Partial("ModifyTask", Model)
-        @*<div class="form-group col-12 col-md-6">
-            @Html.LabelFor(model => model.Name, "Завдання", htmlAttributes: new { @class = "control-label" })
-            <div>
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group col-12 col-md-6">
-            @Html.LabelFor(model => model.Description, "Опис завдання", htmlAttributes: new { @class = "control-label" })
-            <div>
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group col-12 col-md-6">
-            @Html.LabelFor(model => model.Text, "Текст", htmlAttributes: new { @class = "control-label" })
-            <div >
-                @Html.TextAreaFor(model => model.Text, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group col-12 col-md-6">
-            @Html.LabelFor(model => model.Group, "Група завдання", htmlAttributes: new { @class = "control-label" })
-            <div>
-                <button type="button" class="alert alert-info align-self-start" data-toggle="tooltip"
-                        data-placement="top" title="Lection, Word, Test, Grammar, Other"></button>
-                @Html.EditorFor(model => model.Group, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Group, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group col-12 col-md-6">
-            @Html.LabelFor(model => model.Difficult, "Складність завдання", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div>
-                <button type="button" class="alert alert-info align-self-start" data-toggle="tooltip"
-                        data-placement="top" title="Beginner, Elementary, Intermediate, Upper-Intermediate, Advanced, Proficient"></button>
-                @Html.EditorFor(model => model.Difficult, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Difficult, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-            @*@if (!User.IsInRole("moderator")) {
-                <div class="form-group col-12 col-md-6">
-                <div>
-                    <input id="date" name="date" type="date" min="2018-11-10" class="form-control col-12 col-sm-4 col-lg-3 m-2"
-           data-toggle="tooltip" data-placement="bottom" title="Дата напоминання">
-                </div>
-                </div>
-            }*@
-
-        @*<div class="custom-file col-12 col-md-6">
-          <input type="file" name="file" class="custom-file-input btn btn-secondary" id="customFile" accept=".pdf, .doc, .docx">
-          <label class="custom-file-label form-control-file" for="customFile">Файл до завдання (pdf, doc, docx)</label>
-        </div>*@
 
         <div class="form-group col-12 col-md-4 mt-2">
             <div>

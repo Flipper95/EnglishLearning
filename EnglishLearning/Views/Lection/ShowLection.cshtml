@@ -10,7 +10,7 @@
 <h2 class="mt-3">@Model[ViewBag.Index].Name</h2>
 
 @{
-    var path = HttpContext.Current.Server.MapPath(Model[ViewBag.Index].LectionPath);//"~/App_Data/Lections/Way.pdf"
+    var path = HttpContext.Current.Server.MapPath(Model[ViewBag.Index].LectionPath);
 }
 <div class="d-flex flex-row flex-wrap main-content">
     <div class="col-12 col-lg-2 align-self-start">

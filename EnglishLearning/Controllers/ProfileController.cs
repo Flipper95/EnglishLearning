@@ -44,17 +44,6 @@ namespace EnglishLearning.Controllers
                                      select ut.ELTask.TaskId;
                 bannedTasks = bannedTasks.Concat(completedTasks);
                 var list = bannedTasks.ToList();
-                //TODO: add tasks by complexity and only number take to max 7 tasks
-                //    var temp = from t in db.ELTask
-                //               where !bannedTasks.Contains(t.TaskId) && t.AuthorId == 1
-                //               select t.TaskId;
-                //    foreach (var el in temp) {
-                //        UserELTask task = new UserELTask();
-                //        task.Date = now.AddDays(7);
-                //        task.TaskId = el;
-                //        task.UserId = user.UserId;
-                //        db.UserELTask.Add(task);
-                //    }
                 UserELTask task;
                 task = AddNewTaskByGroup("Lection", bannedTasks, user.UserId, user.Level);
                 if (task != null) db.UserELTask.Add(task);
@@ -98,8 +87,6 @@ namespace EnglishLearning.Controllers
                 else temp = tasks.Where(x => lvl.Contains(x.Difficult));
             }
             temp = temp.OrderBy(x => Guid.NewGuid()).Take(1);
-            //foreach (var el in tasks)
-            //{
             UserELTask task = new UserELTask
             {
                 Date = DateTime.Now.AddDays(7),
@@ -112,7 +99,6 @@ namespace EnglishLearning.Controllers
             catch {
                 task = null;
             }
-                //}
             return task;
         }
 
@@ -206,7 +192,6 @@ namespace EnglishLearning.Controllers
         }
 
         public ActionResult ShowTasks(string type, bool done = false) {
-            //IQueryable<Task> result;
             var temp = User.Identity.GetUserId();
             var userId = db.User.Where(x => x.IdentityId == temp).Select(x => x.UserId).First();
             var result = (from ut in db.UserELTask.Include("ELTask")
@@ -247,12 +232,9 @@ namespace EnglishLearning.Controllers
                 db.UserELTask.Remove(userTask);
             }
             db.SaveChanges();
-            //var userTask = from ut in db.UserELTask
-            //               where ut.TaskId == id && ut.UserId == userId
-            //               select ut
         }
 
-        public ActionResult RedirectToExecute(int id, int ELTaskId) { //string group, string name
+        public ActionResult RedirectToExecute(int id, int ELTaskId) {
             var elTask = db.ELTask.Find(ELTaskId);
             string name = elTask.Name;
             name = name.ToLower();
@@ -271,9 +253,9 @@ namespace EnglishLearning.Controllers
                 case ("Lection"): {
                         if (elTask.LectionId != null)
                         {
-                            var lection = db.Lection.Where(x => x.LectionId == elTask.LectionId);//x.Name.ToLower() == name).First();
+                            var lection = db.Lection.Where(x => x.LectionId == elTask.LectionId);
                             if (lection.Count() > 0)
-                            { //!= null) {
+                            { 
                                 TaskSaveDone(id);
                                 return RedirectToAction("ShowLection", "Lection", new { area = "", id = elTask.LectionId });
                             }
@@ -335,96 +317,12 @@ namespace EnglishLearning.Controllers
             return false;
         }
 
-        //public ActionResult Edit(int id) {
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ELTask eLTask = db.ELTask.Find(id);
-        //    if (eLTask == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return PartialView("EditTask", eLTask);
-        //}
-
-        //[HttpPost]
-        //public void EditTask(ELTask eLTask, string date, bool? done, HttpPostedFileBase result, HttpPostedFileBase file)
-        //{
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        var temp = User.Identity.GetUserId();
-        //        var userId = db.User.Where(x => x.IdentityId == temp).Select(x => x.UserId).First();
-        //        var path = SaveFile(file);
-        //        if (!string.IsNullOrWhiteSpace(path))
-        //        {
-        //            if (!string.IsNullOrWhiteSpace(eLTask.DocumentPath))
-        //            {
-        //                if (System.IO.File.Exists(Server.MapPath(eLTask.DocumentPath)))
-        //                    System.IO.File.Delete(Server.MapPath(eLTask.DocumentPath));
-        //            }
-        //            eLTask.DocumentPath = path;
-        //        }
-        //        eLTask.AuthorId = userId;
-        //        db.Entry(eLTask).State = EntityState.Modified;
-        //        UserELTask userTask = (from ut in db.UserELTask
-        //                               where ut.TaskId == eLTask.TaskId && ut.UserId == userId
-        //                               select ut).First();
-        //        DateTime dateNotify;
-        //        try
-        //        {
-        //            dateNotify = Convert.ToDateTime(date);
-        //        }
-        //        catch {
-        //            dateNotify = DateTime.Now.AddDays(1);
-        //        }
-        //        userTask.Date = dateNotify;
-        //        userTask.Done = Convert.ToBoolean(done);
-        //        var resPath = SaveFile(result);
-        //        if (!string.IsNullOrWhiteSpace(resPath))
-        //        {
-        //            if (!string.IsNullOrWhiteSpace(userTask.ResultDocPath))
-        //            {
-        //                if (System.IO.File.Exists(Server.MapPath(userTask.ResultDocPath)))
-        //                    System.IO.File.Delete(Server.MapPath(userTask.ResultDocPath));
-        //            }
-        //            userTask.ResultDocPath = resPath;
-        //        }
-        //        db.Entry(userTask).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        //return RedirectToAction("Index", "Profile", new { area = "" });
-        //    }
-        //    //RedirectToAction("Edit", new { id = eLTask.TaskId });
-        //    //return View(eLTask);
-        //}
-
-        //private string SaveFile(HttpPostedFileBase file)
-        //{
-        //    var path = "";
-        //    if (file != null && file.ContentLength > 0)
-        //    {
-        //        var extension = Path.GetExtension(file.FileName);
-        //        if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
-        //        {
-        //            var fileName = Path.GetFileName(file.FileName);
-        //            fileName = Guid.NewGuid().ToString() + extension;
-        //            path = "~/App_Data/TaskDocuments/";
-        //            var tempPath = Path.Combine(Server.MapPath(path), fileName);
-        //            path = path + fileName;
-        //            file.SaveAs(tempPath);
-        //        }
-        //    }
-        //    return path;
-        //}
-
         //[HttpPost]
         public FileResult Download(string path)
         {
             path = Server.MapPath(path);
             if (System.IO.File.Exists(path))
             {
-                //byte[] fileBytes = System.IO.File.ReadAllBytes(path);
                 var fileType = path.Split('.').Last();
                 var mime = "";
                 switch (fileType) {
@@ -435,8 +333,6 @@ namespace EnglishLearning.Controllers
                     case ("jpg"): { mime = "image/jpeg"; break; }
                     default: { mime = "application/octet-stream"; break; }
                 }
-                //var response = new FileContentResult(fileBytes, mime);
-                //string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 return File(path, mime, "Завдання."+fileType);
             }
             else {

@@ -12,12 +12,9 @@
 
 @if (Model.Count() > 0)
 {
-    @*<a class="btn btn-secondary my-2" data-toggle="collapse" href="#Collapse_0" role="button" aria-expanded="false" aria-controls="#Collapse_0">Список по групам</a>
-        <div class="collapse multi-collapse" id="Collapse_0">*@
     <ul class="listByGroup">
         @treeView.buildTree(Model, Model.FirstOrDefault().ParentId, ViewBag.Tests, ViewBag.User)
     </ul>
-    @*</div>*@
 }
 
 @section Scripts{

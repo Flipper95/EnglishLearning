@@ -1,18 +1,5 @@
 ﻿@model List<EnglishLearning.Controllers.LectionChoice>
 
-@*@foreach (var el in Model.Where(x => x.Complexity == "Beginner").GroupBy(x => x.ComplexityOrder))
-    {
-        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Урок @el.Key</div>
-            <div class="card-body">
-                @foreach (var leaf in el)
-                {
-                    <h5 class="card-title">@leaf.Name</h5>
-                    <p class="card-text">@leaf.Description</p>
-                }
-            </div>
-        </div>
-    }*@
 @foreach (var el in Model)
 {
 <div class="card text-white bg-secondary mt-1" style="max-width: 18rem;">

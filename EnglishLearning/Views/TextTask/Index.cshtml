@@ -13,9 +13,9 @@
 <div id="text" class="text-monospace text-justify">
     @Html.Raw(new HtmlString(Model.Text))
 </div>
-<div class="d-flex flex-row col-12 flex-sm-wrap m-1 fixed-bottom bg-transparent" style="overflow-x:auto;" id="question"> @*ondrop="drop(event, this)" ondragover="allowDrop(event)"*@
+<div class="d-flex flex-row col-12 flex-sm-wrap m-1 fixed-bottom bg-transparent" style="overflow-x:auto;" id="question">
     @for (int i = 0; i < ViewBag.Answers.Count; i++) {
-        <div id="block_@i" class="btn btn-purple m-1 letter">@ViewBag.Answers[i]</div> @*draggable = "true" ondragstart = "drag(event)"*@
+        <div id="block_@i" class="btn btn-purple m-1 letter">@ViewBag.Answers[i]</div> 
     }
 </div>
 
@@ -29,7 +29,6 @@
     var number = 1;
     $(".wordPlaceholder").each(function () {
         $(this).prop("id", number + "_answer").prop("tabindex", number);
-            //.attr("ondrop", "drop(event, this)").attr("ondragover", "allowDrop(event)");
         number++;
     });
 
@@ -70,13 +69,10 @@
             $(".letter").off("click").addClass("disabled").addClass("active");//.prop("draggable", false);
             $("#NextBtn").removeAttr("hidden");
 
-            //var text = "";
             var text = new Array();
             $(".wordPlaceholder").each(function () {
                 text.push($(this).text());
-                //text += $(this).text();
             });
-            //var link = $("#CheckBtn").attr(data);
         $.ajax({
                 type: "POST",
                 url: "TextTask/CheckResult",
@@ -107,36 +103,7 @@
                 }
             }
             i++;
-            //var text = $(this).html();
-            //if (text === answer[i]) {
-            //    $(this).addClass("btn-success");
-            //}
-            //else {
-            //    $(this).addClass("btn-danger");
-            //}
-            //i++;
         });
-        @*if (result.toLowerCase() == "true") {
-            el.addClass("btn-success");
-        }
-        else {
-            el.addClass("btn-danger");
-            var answer = @Model.Words.Split(';')
-        }*@
     }
-
-    //function allowDrop(ev) {
-    //    ev.preventDefault();
-    //}
-
-    //function drag(ev) {
-    //    ev.dataTransfer.setData("text", ev.target.id);
-    //}
-
-    //function drop(ev, el) {
-    //    ev.preventDefault();
-    //    var data = ev.dataTransfer.getData("text");
-    //    el.appendChild(document.getElementById(data));
-    //}
 </script>
 

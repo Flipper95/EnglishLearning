@@ -18,15 +18,6 @@ namespace EnglishLearning.Controllers
         private int userId = 0;
         int UserId
         {
-            //get {
-            //    if (Session["userId"] == null) {
-            //        string userIdentity = User.Identity.GetUserId();
-            //        var temp = db.User.Where(x => x.IdentityId == userIdentity)
-            //                          .Select(x => x.UserId).First();
-            //        Session["userId"] = temp;
-            //    }
-            //    return Convert.ToInt32(Session["userId"]);
-            //}
             get
             {
                 if (userId == 0)
@@ -50,26 +41,6 @@ namespace EnglishLearning.Controllers
                         select history).ToList();
             return View(model);
         }
-
-        //public JsonResult ChartByCount(string xName, string colName) {
-        //    DateTime begin = DateTime.Now.Date.AddDays(-1);
-        //    DateTime end = DateTime.Now.Date.AddDays(1);
-        //    var query2 = (from history in db.TestHistory
-        //                  where history.UserId == UserId && history.PassDate > begin && history.PassDate < end
-        //                  group history by DbFunctions.TruncateTime(history.PassDate) into g //need this?
-        //                  select new CountDateStat { date = g.Key, count = g.Count() }).ToList();
-        //    return CountResult(query2, xName, colName);
-        //}
-
-        //public JsonResult CountResult(List<CountDateStat> data, string xName, string colName) {
-        //    var barChart = new BarChart();
-        //    barChart.Cols = new object[] { new { id="date", type="string", label = xName }, new { id = "Yvalue", type = "number", label = colName } };
-        //    barChart.Rows = new object[data.Count];
-        //    for (int i=0; i<data.Count;i++) {
-        //        barChart.rows[i] = new { c = new object[] { new { v = data[i].date.Value.ToShortDateString() }, new { v = data[i].count } } };
-        //    }
-        //    return this.Json(barChart, JsonRequestBehavior.AllowGet);
-        //}
 
         public JsonResult ChartByCount(string xName, string colName, string col2Name, string from, string to)
         {
@@ -146,11 +117,6 @@ namespace EnglishLearning.Controllers
         }
 
     }
-
-    //public class CountDateStat {
-    //    public DateTime? date;
-    //    public int count;
-    //}
 
     public class CountDateStat
     {

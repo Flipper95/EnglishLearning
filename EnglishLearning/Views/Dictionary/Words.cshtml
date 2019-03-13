@@ -6,17 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var grid = new WebGrid(canPage: true, rowsPerPage: Model.PageSize, ajaxUpdateContainerId: "gridContent");
     grid.Bind(source: Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
-    @*@:<script>$("#RowsPerPage").text()</script>*@
 }
 
 <h1 class="mt-4"></h1>
-@*@Html.DropDownList("RowsPerPage", new SelectList(new List<int> { 10, 25, 50, 100 }), new { id = "RowsPerPage", @class = "btn btn-info text-light" })*@
 <div class="d-flex flex-row">
-    @*@using (Html.BeginForm("SearchAndRows", "Dictionary", FormMethod.Post)) {*@
-    @*<input id="GroupId" type="hidden" name="GroupId" value="@ViewBag.GroupId" />*@
     <select class="btn btn-outline-info mb-1 mr-1" id="rowsperpage" name="rowsperpage" val="@Model.PageSize">
-        @*onchange="this.form.submit();"*@
-        <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 10 })" value="10">10</option>  @*page = Model.CurrentPage, prevPageSize = Model.PageSize,totalPages = Model.TotalPages*@
+        <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 10 })" value="10">10</option> 
         <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 25 })" value="25">25</option>
         <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 50 })" value="50">50</option>
         <option data-url="@Url.Action("RowsPerPage", new { area = "", id = ViewBag.GroupId, pageSize = 100 })" value="100">100</option>
@@ -27,7 +22,6 @@
             <input id="searchData" type="text" class="form-control" placeholder="Слово або значення" aria-label="Слово або значення" aria-describedby="button-addon2" value="@(ViewBag.SearchData == null ? "" : ViewBag.SearchData)">
             <div class="input-group-append">
                 <button id="search" class="btn btn-outline-secondary" type="button" data-url="@Url.Action("Search", new { area = "", id = ViewBag.GroupId })">Пошук</button>
-                @*<input id="search" class="btn btn-outline-secondary" type="submit" data-url="@Url.Action("Search", new { area = "", id = ViewBag.GroupId })" value="Пошук" />*@
             </div>
         </div>
     </div>

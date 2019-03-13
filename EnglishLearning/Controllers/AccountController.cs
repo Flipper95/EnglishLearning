@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EnglishLearning.Models;
 using System.Data.Entity;
+using System.Collections.Generic;
+using System.Web.Routing;
 
 namespace EnglishLearning.Controllers
 {
@@ -170,18 +172,12 @@ namespace EnglishLearning.Controllers
                 if (result.Succeeded)
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    IDictionary<string, object> routeValues = new Dictionary<string, object>();
+                    routeValues.Add("userId", user.Id);
+                    routeValues.Add("code", code);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new RouteValueDictionary(routeValues), protocol: Request.Url.Scheme, hostName: Request.Url.Host);
                     await UserManager.AddToRoleAsync(user.Id, "user");
                     await UserManager.SendEmailAsync(user.Id, "Email Confirm", "Для підтвердження реєстрації перейдіть за посиланням: <a href=\"" + callbackUrl + "\">Завершення реєстрації</a>");
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-                    // Дополнительные сведения о включении подтверждения учетной записи и сброса пароля см. на странице https://go.microsoft.com/fwlink/?LinkID=320771.
-                    // Отправка сообщения электронной почты с этой ссылкой
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
-
-                    //return RedirectToAction("Index", "Home");
                     return View("DisplayEmail");
                 }
                 AddErrors(result);
@@ -418,12 +414,6 @@ namespace EnglishLearning.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        //using (EnglishLearningEntities db = new EnglishLearningEntities())
-                        //{
-                        //    string userIdentity = User.Identity.GetUserId();
-                        //    Session["userId"] = db.User.Where(x => x.IdentityId == userIdentity)
-                        //                  .Select(x => x.UserId).First();
-                        //}
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -441,8 +431,6 @@ namespace EnglishLearning.Controllers
         public ActionResult LogOff()
         {
             Response.Cookies["Notification"].Expires = DateTime.Now.AddDays(-1);
-            //Response.Cookies.Clear();
-            //Session.Clear();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

@@ -27,7 +27,6 @@ namespace EnglishLearning.Controllers.Exercise
             ViewBag.StartIndex = StartIndex;
             int index = new Random().Next(StartIndex, StartIndex);
             Session["Index"] = index;
-            //ViewBag.Index = index;
             Session["Exercise"] = "synonyms";
 
             if (StartIndex == 0)
@@ -45,8 +44,6 @@ namespace EnglishLearning.Controllers.Exercise
                     SessionClear();
                     TempData["ErrorMessage"] = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
                     return RedirectToAction("Index", "Exercise", new { area = "" });
-                    //ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    //return View("Index");
                 }
 
                 var query1 = (from word in db.Word
@@ -61,14 +58,11 @@ namespace EnglishLearning.Controllers.Exercise
                     SessionClear();
                     TempData["ErrorMessage"] = " Не вдалося завантажити достатньо синонімів для вправи, спробуйте пізніше";
                     return RedirectToAction("Index", "Exercise", new { area = "" });
-                    //ViewBag.ErrorMessage = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    //return View("Index");
                 }
                 Session["questions"] = answers.ToList();
                 var notIn = answers.Select(x => x.WordId);
                 List<Word> model = query1.Where(x => !notIn.Contains(x.WordId)).ToList();
                 Session["wrongQuestions"] = model;
-                //ViewBag.Answer = answers[index];
                 model = model.GetRange(StartIndex*5, 4);
                 model.Add(answers[index]);
                 model = Shuffle.ShuffleList(model);
@@ -79,7 +73,6 @@ namespace EnglishLearning.Controllers.Exercise
             {
                 var model = Session["wrongQuestions"] as List<Word>;
                 model = model.GetRange(StartIndex*5, 4);
-                //ViewBag.Answer = (Session["answers"] as List<Word>)[index];
                 var tempWord = (Session["questions"] as List<Word>)[index];
                 model.Add(tempWord);
                 model = Shuffle.ShuffleList(model);
@@ -126,10 +119,6 @@ namespace EnglishLearning.Controllers.Exercise
                     else
                     {
                         string concatSyn = String.Join("|", synonyms.ToArray());
-                        //Synonym syn = new Synonym();
-                        //syn.FirstWordId = list[i].WordId;
-                        //syn.Synonyms = concatSyn;
-                        //ICollection<Synonym> synCollection = new List<Synonym> { syn };
                         list[i].Synonyms = concatSyn;
                         count--;
                     }

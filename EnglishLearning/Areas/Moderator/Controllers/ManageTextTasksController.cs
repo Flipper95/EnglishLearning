@@ -40,7 +40,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         // GET: Moderator/ManageTextTasks/Create
         public ActionResult Create()
         {
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "UserId");
             return View();
         }
 
@@ -63,7 +62,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "UserId", textTask.AuthorId);
             return View(textTask);
         }
 
@@ -79,7 +77,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "UserId", textTask.AuthorId);
             return View(textTask);
         }
 
@@ -97,7 +94,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //ViewBag.AuthorId = new SelectList(db.User, "UserId", "Level", textTask.AuthorId);
             return View(textTask);
         }
 

@@ -25,14 +25,6 @@
                     {
                         Enum.TryParse(video.Difficult.Replace('-', '_'), out Difficult difficult);
                         string color = difficult == ViewBag.UserLvl ? "success" : (difficult < ViewBag.UserLvl ? "purple" : "info");
-                        //if (difficult == ViewBag.UserLvl) { color = "success"; }
-                        //else {
-                        //    if ((int)difficult < (int)ViewBag.UserLvl) { color = "purple"; }
-                        //    else
-                        //    {
-                        //        if ((int)difficult > (int)ViewBag.UserLvl) { color = "info"; }
-                        //    }
-                        //}
                         <div class="accordion video" id="watch_@video.Id" data="@Url.Action("GetVideo", "Video", new { area="", id = video.Id})">
                             <div class="card">
                                 <div class="card-header list-group-item list-group-item list-group-item-action list-group-item-@color video-header">

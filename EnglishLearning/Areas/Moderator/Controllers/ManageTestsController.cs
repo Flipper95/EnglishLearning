@@ -75,7 +75,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             string[] testdata = result.Split('\r','\n');
             List<string> data = testdata.ToList();
             data = data.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-            //test.Question.Add(new Question() { })
             for (int i = 0; i < data.Count / 2; i++)
             {
                 Question quest = new Question();
@@ -88,12 +87,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 quest.QuestText = data[i*2];
                 test.Question.Add(quest);
             }
-            //int count = testdata.Length;
-            //for (int i = testdata.Length-1; i >= 0; i--) {
-            //    if (testdata[i] == "" || testdata[i] == "\n" || testdata[i] == "\r") {
-
-            //    }
-            //}
             string text = data[0];
         }
 
