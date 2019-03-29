@@ -212,6 +212,7 @@
     <Compile Include="Areas\Moderator\Controllers\ManageTextTasksController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageVideosController.cs" />
     <Compile Include="Areas\Moderator\Controllers\ManageWordsController.cs" />
+    <Compile Include="Areas\Moderator\Models\FileOperations.cs" />
     <Compile Include="Areas\Moderator\Models\UserTasks.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />

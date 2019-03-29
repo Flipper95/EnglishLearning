@@ -18,6 +18,8 @@ namespace EnglishLearning.Areas.Moderator.Controllers
     public class ManageELTasksController : Controller
     {
         private EnglishLearningEntities db = new EnglishLearningEntities();
+        private string[] extensions = new string[]{ ".pdf", ".doc", ".docx", ".png", ".jpg" };
+        private string pathToSave = "~/App_Data/TaskDocuments/";
 
         // GET: Moderator/ManageELTasks
         [Authorize(Roles = "admin, moderator")]
@@ -63,7 +65,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         {
             if (ModelState.IsValid)
             {
-                eLTask.DocumentPath = SaveFile(file);
+                eLTask.DocumentPath = FileOperations.SaveFile(file, Server, pathToSave, extensions);
                 eLTask.AuthorId = GetUser(eLTask);
                 if (string.IsNullOrEmpty(eLTask.Name)) eLTask.Name = "";
                 db.ELTask.Add(eLTask);
@@ -97,7 +99,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         {
             if (ModelState.IsValid)
             {
-                eLTask.DocumentPath = SaveFile(file);
+                eLTask.DocumentPath = FileOperations.SaveFile(file, Server, pathToSave, extensions);
                 eLTask.AuthorId = GetUser(eLTask);
                 db.ELTask.Add(eLTask);
                 db.SaveChanges();
@@ -174,14 +176,10 @@ namespace EnglishLearning.Areas.Moderator.Controllers
 
         [Authorize(Roles = "admin, moderator")]
         private ELTask EditTaskData(ELTask eLTask, HttpPostedFileBase file) {
-            var path = SaveFile(file);
+            var path = FileOperations.SaveFile(file, Server, pathToSave, extensions);
             if (!string.IsNullOrWhiteSpace(path))
             {
-                if (!string.IsNullOrWhiteSpace(eLTask.DocumentPath))
-                {
-                    if (System.IO.File.Exists(Server.MapPath(eLTask.DocumentPath)))
-                        System.IO.File.Delete(Server.MapPath(eLTask.DocumentPath));
-                }
+                FileOperations.DeleteIfExist(Server, eLTask.DocumentPath);
                 eLTask.DocumentPath = path;
             }
             eLTask.AuthorId = GetUser(eLTask);
@@ -205,14 +203,10 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         [HttpPost]
         [Authorize(Roles = "admin, moderator, user")]
         public bool EditUserTask(UserELTask eLUserTask, HttpPostedFileBase result) {
-            var path = SaveFile(result);
+            var path = FileOperations.SaveFile(result, Server, pathToSave, extensions);
             if (!string.IsNullOrWhiteSpace(path))
             {
-                if (!string.IsNullOrWhiteSpace(eLUserTask.ResultDocPath))
-                {
-                    if (System.IO.File.Exists(Server.MapPath(eLUserTask.ResultDocPath)))
-                        System.IO.File.Delete(Server.MapPath(eLUserTask.ResultDocPath));
-                }
+                FileOperations.DeleteIfExist(Server, eLUserTask.ResultDocPath);
                 eLUserTask.ResultDocPath = path;
             }
             db.Entry(eLUserTask).State = EntityState.Modified;
@@ -245,11 +239,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ELTask eLTask = db.ELTask.Find(id);
-            if (!string.IsNullOrWhiteSpace(eLTask.DocumentPath))
-            {
-                if (System.IO.File.Exists(Server.MapPath(eLTask.DocumentPath)))
-                    System.IO.File.Delete(Server.MapPath(eLTask.DocumentPath));
-            }
+            FileOperations.DeleteIfExist(Server, eLTask.DocumentPath);
             db.ELTask.Remove(eLTask);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -276,25 +266,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
                 result = db.User.Where(x => x.IdentityId == userId).Select(x => x.UserId).First();
             }
             return result;
-        }
-
-        private string SaveFile(HttpPostedFileBase file)
-        {
-            var path = "";
-            if (file != null && file.ContentLength > 0)
-            {
-                var extension = Path.GetExtension(file.FileName);
-                if (extension == ".pdf" || extension == ".doc" || extension == ".docx" || extension == ".png" || extension == ".jpg")
-                {
-                    var fileName = Path.GetFileName(file.FileName);
-                    fileName = Guid.NewGuid().ToString() + extension;
-                    path = "~/App_Data/TaskDocuments/";
-                    var tempPath = Path.Combine(Server.MapPath(path), fileName);
-                    path = path + fileName;
-                    file.SaveAs(tempPath);
-                }
-            }
-            return path;
         }
 
     }

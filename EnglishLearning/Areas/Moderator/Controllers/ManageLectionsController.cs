@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using EnglishLearning.Areas.Moderator.Models;
 using EnglishLearning.Models;
 
 namespace EnglishLearning.Areas.Moderator.Controllers
@@ -15,6 +16,8 @@ namespace EnglishLearning.Areas.Moderator.Controllers
     public class ManageLectionsController : Controller
     {
         private EnglishLearningEntities db = new EnglishLearningEntities();
+        string[] extensions = new string[] { ".pdf" };
+        private string pathToSave = "~/App_Data/Lections/";
 
         // GET: Moderator/ManageLections
         public ActionResult Index()
@@ -55,7 +58,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         {
             if (ModelState.IsValid)
             {
-                lection.LectionPath = SaveFile(file);
+                lection.LectionPath = FileOperations.SaveFile(file, Server, pathToSave, extensions);
                 lection.LectionText = new byte[] { };
                 ELTask task = new ELTask() { AuthorId = 1, Difficult = lection.Complexity, Group = "Lection", Lection = lection, Name = lection.Name, Description = "Прочитайте зазначену лекцію" };
                 db.ELTask.Add(task);
@@ -95,14 +98,10 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = SaveFile(file);
+                var path = FileOperations.SaveFile(file, Server, pathToSave, extensions);
                 if (!string.IsNullOrWhiteSpace(path))
                 {
-                    if (!string.IsNullOrWhiteSpace(lection.LectionPath))
-                    {
-                        if (System.IO.File.Exists(Server.MapPath(lection.LectionPath)))
-                            System.IO.File.Delete(Server.MapPath(lection.LectionPath));
-                    }
+                    FileOperations.DeleteIfExist(Server, lection.LectionPath);
                     lection.LectionPath = path;
                 }
                 lection.LectionText = new byte[] { };
@@ -136,11 +135,7 @@ namespace EnglishLearning.Areas.Moderator.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Lection lection = db.Lection.Find(id);
-            if (!string.IsNullOrWhiteSpace(lection.LectionPath))
-            {
-                if (System.IO.File.Exists(Server.MapPath(lection.LectionPath)))
-                    System.IO.File.Delete(Server.MapPath(lection.LectionPath));
-            }
+            FileOperations.DeleteIfExist(Server, lection.LectionPath);
             var task = db.ELTask.Where(x => x.LectionId == lection.LectionId && x.AuthorId == 1);
             if (task.Count() > 0)
             {
@@ -149,21 +144,6 @@ namespace EnglishLearning.Areas.Moderator.Controllers
             db.Lection.Remove(lection);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        private string SaveFile(HttpPostedFileBase file)
-        {
-            var path = "";
-            if (file != null && file.ContentLength > 0)
-            {
-                var fileName = Path.GetFileName(file.FileName);
-                fileName = Guid.NewGuid().ToString() + ".pdf";
-                path = "~/App_Data/Lections/";
-                var tempPath = Path.Combine(Server.MapPath(path), fileName);
-                path = path + fileName;
-                file.SaveAs(tempPath);
-            }
-            return path;
         }
 
         protected override void Dispose(bool disposing)
