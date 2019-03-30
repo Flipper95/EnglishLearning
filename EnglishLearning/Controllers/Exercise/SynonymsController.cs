@@ -21,64 +21,50 @@ namespace EnglishLearning.Controllers.Exercise
         {
             if (StartIndex >= 5)
             {
-                return RedirectToAction("ShowResult", "Exercise", new { count = Session["AnswerCount"], max = 5 });
+                return base.ShowResult(5);//RedirectToAction("ShowResult", "Exercise", new { count = Session["AnswerCount"], max = 5 });
             }
+            var result = base.Excercise("synonyms", 25, 30, StartIndex: StartIndex);
+            if (result == null) return RedirectToAction("Index", "Exercise", new { area = "" });
+            return View(result);
+        }
 
-            ViewBag.StartIndex = StartIndex;
-            int index = new Random().Next(StartIndex, StartIndex);
-            Session["Index"] = index;
-            Session["Exercise"] = "synonyms";
-
-            if (StartIndex == 0)
+        protected override List<Word> OperationsWithQuery(IOrderedQueryable<Word> query1)
+        {
+            List<Word> answers;
+            try
             {
-                Session["AnswerCount"] = 0;
-
-                int userId = GetCurrentUserId();
-                var query = (from learningWord in db.LearningWord
-                             where learningWord.UserId == userId && learningWord.LearnPercent < 100
-                             select learningWord);
-
-                int total = query.Count();
-                if (total < 25)
-                {
-                    SessionClear();
-                    TempData["ErrorMessage"] = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    return RedirectToAction("Index", "Exercise", new { area = "" });
-                }
-
-                var query1 = (from word in db.Word
-                              where (query).OrderBy(x => Guid.NewGuid()).Take(30).Any(x => x.WordId == word.WordId)
-                              select word).OrderBy(x => Guid.NewGuid());
-                List<Word> answers;
-                try
-                {
-                    answers = DownloadWords(query1, 5);
-                }
-                catch {
-                    SessionClear();
-                    TempData["ErrorMessage"] = " Не вдалося завантажити достатньо синонімів для вправи, спробуйте пізніше";
-                    return RedirectToAction("Index", "Exercise", new { area = "" });
-                }
-                Session["questions"] = answers.ToList();
-                var notIn = answers.Select(x => x.WordId);
-                List<Word> model = query1.Where(x => !notIn.Contains(x.WordId)).ToList();
-                Session["wrongQuestions"] = model;
-                model = model.GetRange(StartIndex*5, 4);
-                model.Add(answers[index]);
-                model = Shuffle.ShuffleList(model);
-                ViewBag.Index = model.IndexOf(answers[index]);
-                return View(model);
+                answers = DownloadWords(query1, 5);
             }
-            else
+            catch
             {
-                var model = Session["wrongQuestions"] as List<Word>;
-                model = model.GetRange(StartIndex*5, 4);
-                var tempWord = (Session["questions"] as List<Word>)[index];
-                model.Add(tempWord);
-                model = Shuffle.ShuffleList(model);
-                ViewBag.Index = model.IndexOf(tempWord);
-                return View(model);
+                SessionClear();
+                TempData["ErrorMessage"] = " Не вдалося завантажити достатньо синонімів для вправи, спробуйте пізніше";
+                return null;//RedirectToAction("Index", "Exercise", new { area = "" });
             }
+            return answers.ToList();
+        }
+
+        protected override List<Word> OperationsWithWordsOnFirstLap(List<Word> words, IOrderedQueryable<Word> query1, int index)
+        {
+            var notIn = words.Select(x => x.WordId);
+            List<Word> model = query1.Where(x => !notIn.Contains(x.WordId)).ToList();
+            Session["wrongQuestions"] = model;
+            model = model.GetRange(0, 4);
+            model.Add(words[index]);
+            model = Shuffle.ShuffleList(model);
+            ViewBag.Index = model.IndexOf(words[index]);
+            return model;
+        }
+
+        protected override List<Word> OperationWithWordsOnEachLap(List<Word> words, int index, int startIndex)
+        {
+            var model = Session["wrongQuestions"] as List<Word>;
+            model = model.GetRange(startIndex * 5, 4);
+            var tempWord = words[index];
+            model.Add(tempWord);
+            model = Shuffle.ShuffleList(model);
+            ViewBag.Index = model.IndexOf(tempWord);
+            return model;
         }
 
         private List<Word> DownloadWords(IOrderedQueryable<Word> words, int totalCount)

@@ -22,46 +22,23 @@ namespace EnglishLearning.Controllers.Exercise
         {
             if (StartIndex >= 5)
             {
-                return RedirectToAction("ShowResult", "Exercise", new { count = Session["AnswerCount"], max = 5 });
+                return base.ShowResult(5);//RedirectToAction("ShowResult", "Exercise", new { count = Session["AnswerCount"], max = 5 });
             }
+            var result = base.Excercise("constructor", 5, 5, StartIndex: StartIndex);
+            if (result == null) return RedirectToAction("Index", "Exercise", new { area = "" });
+            return View(result);
+        }
 
-            ViewBag.StartIndex = StartIndex;
-            int index = new Random().Next(StartIndex, StartIndex);
-            Session["Index"] = index;
-            ViewBag.Index = index;
-            Session["Exercise"] = "constructor";
+        protected override List<Word> OperationsWithWordsOnFirstLap(List<Word> words, IOrderedQueryable<Word> query1, int index)
+        {
+            ViewBag.wordArray = ShuffleWord(words[index]);
+            return words;
+        }
 
-            if (StartIndex == 0)
-            {
-                Session["AnswerCount"] = 0;
-
-                int userId = GetCurrentUserId();
-                var query = (from learningWord in db.LearningWord
-                             where learningWord.UserId == userId && learningWord.LearnPercent < 100
-                             select learningWord);
-
-                int total = query.Count();
-                if (total < 5)
-                {
-                    SessionClear();
-                    TempData["ErrorMessage"] = "Кількість слів для конструктору не достатньо, виберіть додаткових слів на вивчення";
-                    return RedirectToAction("Index", "Exercise", new { area = "" });//View("Index");
-                }
-
-                var query1 = (from word in db.Word
-                              where (query).OrderBy(x => Guid.NewGuid()).Take(5).Any(x => x.WordId == word.WordId)
-                              select word).OrderBy(x => Guid.NewGuid());
-                var result = query1.ToList();
-                Session["questions"] = result;
-                ViewBag.wordArray = ShuffleWord(result[index]);
-                return View(result);
-            }
-            else
-            {
-                var result = Session["questions"] as List<Word>;
-                ViewBag.wordArray = ShuffleWord(result[index]);
-                return View(result);
-            }
+        protected override List<Word> OperationWithWordsOnEachLap(List<Word> words, int index, int startIndex)
+        {
+            ViewBag.wordArray = ShuffleWord(words[index]);
+            return words;
         }
 
         private char[] ShuffleWord(Word word)

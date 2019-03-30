@@ -22,49 +22,24 @@ namespace EnglishLearning.Controllers.Exercise
         {
             if (StartIndex >= 5)
             {
-                return RedirectToAction("ShowResult", "Exercise", new { count = Session["AnswerCount"], max = 5 });
+                return base.ShowResult(5);
             }
+            var result = base.Excercise("listening", 5, 25, StartIndex: StartIndex);
+            if(result == null) return RedirectToAction("Index", "Exercise", new { area = "" });
+            return View(result);
+        }
 
-            ViewBag.StartIndex = StartIndex;
-            int index = new Random().Next(StartIndex, StartIndex + 0);
-            Session["Index"] = index;
-            ViewBag.Index = index;
-            Session["Exercise"] = "listening";
-
-            if (StartIndex == 0)
+        protected override List<Word> OperationsWithQuery(IOrderedQueryable<Word> query1)
+        {
+            var result = DownloadWords(query1, 5);
+            if (result.Count < 5)
             {
-                Session["AnswerCount"] = 0;
-
-                int userId = GetCurrentUserId();
-                var query = (from learningWord in db.LearningWord
-                                where learningWord.UserId == userId && learningWord.LearnPercent < 100
-                                select learningWord);
-
-                int total = query.Count();
-                if (total < 5)
-                {
-                    SessionClear();
-                    TempData["ErrorMessage"] = total + " cлів для вправи не достатньо, виберіть додаткових слів на вивчення";
-                    return RedirectToAction("Index", "Exercise", new { area = "" });
-                }
-
-                var query1 = (from word in db.Word
-                              where (query).OrderBy(x => Guid.NewGuid()).Take(25).Any(x => x.WordId == word.WordId)
-                              select word).OrderBy(x => Guid.NewGuid());
-                var result = DownloadWords(query1, 5);
-                if (result.Count < 5) {
-                    SessionClear();
-                    TempData["ErrorMessage"] = " Не вдалося завантажити озвучування cлова для вправи, спробуйте пізніше";
-                    return RedirectToAction("Index", "Exercise", new { area = "" });
-                }
-                Session["questions"] = result;
-                return View(result);
+                SessionClear();
+                TempData["ErrorMessage"] = " Не вдалося завантажити озвучування cлова для вправи, спробуйте пізніше";
+                return null;
+                //return RedirectToAction("Index", "Exercise", new { area = "" });
             }
-            else
-            {
-                var result = Session["questions"] as List<Word>;
-                return View(result);
-            }
+            return result;
         }
 
         private List<Word> DownloadWords(IOrderedQueryable<Word> words, int totalCount) {
