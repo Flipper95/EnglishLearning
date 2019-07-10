@@ -31,23 +31,36 @@ namespace EnglishLearning.Controllers
         // GET: Test
         public ActionResult Index()
         {
-            List<GroupModel> allGroups = new List<GroupModel>();
-            allGroups = (from testG in db.TestGroup
-                         orderby testG.ParentId
-                         select new GroupModel {
-                             Id = testG.TestGroupId,
-                             Name = testG.Name,
-                             ParentId = testG.ParentId
-                         }).ToList();
-            var tests = from test in db.Test
-                           where test.OwnerId == 1
-                           select test;
-            ViewBag.Tests = tests;
 
             string userIdentity = User.Identity.GetUserId();
-            var temp = db.User.Where(x => x.IdentityId == userIdentity).First();
-            ViewBag.User = temp;
-            return View(allGroups);
+            var user = db.User.Where(x => x.IdentityId == userIdentity).First();
+            ViewBag.User = user;
+
+            SubTreeComponent root = new SubTreeComponent(0, "Перегляд за групою");
+            root = CreateTreeRecursively(root) as SubTreeComponent;
+
+            var url = new UrlHelper(System.Web.HttpContext.Current.Request.RequestContext);
+            return View((object)root.Print(user, url));
+        }
+
+        private TreeComponent CreateTreeRecursively(SubTreeComponent root)
+        {
+            var subTreeList = db.TestGroup.Where(x => x.ParentId == root.Id)
+                .OrderBy(x => x.TestGroupId).Select(x => new SubTreeComponent { Id = x.TestGroupId, Name = x.Name }).ToList();
+            List<TreeComponent> component = subTreeList.ConvertAll<TreeComponent>(x => x);
+            root.AddRange(component);
+            for (int i = 0; i < subTreeList.Count; i++)
+            {
+                var subTree = subTreeList[i];//root.GetChild(i) as SubTreeComponent;
+                CreateTreeRecursively(subTree);
+            }
+            List<TreeItem> leafList = db.Test
+                .Where(x => x.OwnerId == 1 && x.TestType == root.Id)
+                .Select(x => new TreeItem { Id = x.TestId, Name = x.Name, Difficult = x.Difficult, GroupName = root.Name, Controller = "Test", Action = "Test" })
+                .ToList();
+            List<TreeComponent> leaf = leafList.ConvertAll<TreeComponent>(x => x);
+            root.AddRange(leaf);
+            return root;
         }
 
         public ActionResult Test(int id) {

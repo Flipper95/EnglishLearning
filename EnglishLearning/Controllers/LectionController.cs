@@ -21,17 +21,34 @@ namespace EnglishLearning.Controllers
         }
 
         public ActionResult ShowByGroup() {
-            List<GroupModel> allGroups = new List<GroupModel>();
-            allGroups = db.LectionGroup.OrderBy(x => x.ParentId).Select(x => new GroupModel { Id=x.LectionGroupId, ParentId = x.ParentId, Name = x.Name}).ToList();
-            var lections = from lection in db.Lection
-                           where lection.OwnerId == 1
-                           select lection;
-            ViewBag.Lections = lections;
 
             var identity = User.Identity.GetUserId();
             var user = db.User.Where(x => x.IdentityId == identity).First();
             ViewBag.User = user;
-            return View(allGroups);
+
+            SubTreeComponent root = new SubTreeComponent(0, "Перегляд за групою");
+            root = CreateTreeRecursively(root) as SubTreeComponent;
+
+            var url = new UrlHelper(System.Web.HttpContext.Current.Request.RequestContext);
+            return View("ShowByGroup", (object)root.Print(user, url));
+        }
+
+        private TreeComponent CreateTreeRecursively(SubTreeComponent root) {
+            var subTreeList = db.LectionGroup.Where(x => x.ParentId == root.Id)
+                .OrderBy(x => x.LectionGroupId).Select(x => new SubTreeComponent { Id = x.LectionGroupId, Name = x.Name }).ToList();
+            List<TreeComponent> component = subTreeList.ConvertAll<TreeComponent>(x => x);
+            root.AddRange(component);
+            for (int i = 0; i < subTreeList.Count; i++) {
+                var subTree = subTreeList[i];// root.GetChild(i) as SubTreeComponent;
+                CreateTreeRecursively(subTree);
+            }
+            List<TreeItem> leafList = db.Lection
+                .Where(x => x.OwnerId == 1 && x.LectionType == root.Id)
+                .Select(x => new TreeItem { Id = x.LectionId, Name = x.Name, Difficult = x.Complexity, GroupName = root.Name, Controller = "ShowLection", Action = "Lection" })
+                .ToList();
+            List<TreeComponent> leaf = leafList.ConvertAll<TreeComponent>(x => x);
+            root.AddRange(leaf);
+            return root;
         }
 
         public PartialViewResult ShowByComplexity(string complexity) {
